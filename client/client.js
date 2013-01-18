@@ -1,4 +1,4 @@
-Meteor.subscribe("directory");
+Meteor.subscribe("directory"); //subscribe to the users
 
 ///////////////////////////////////////////////////////////////////////////////
 // Tracking
@@ -36,14 +36,15 @@ var updateUserPosition = function (position) {
 
     Meteor.users.update(user, {$set: { profile: {position: now }}});
 };
-Meteor.setInterval(function () {
-    if (navigator.geolocation) {
+
+if (navigator.geolocation) {
+    Meteor.setInterval(function () {
         navigator.geolocation.getCurrentPosition(updateUserPosition);
-    }
-}, POS_UPDATE_HEARTBEAT);
+    }, POS_UPDATE_HEARTBEAT);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
-// Map display
+// Map
 Template.map.events({
 //    'dblclick mousedown text': function (event, template) {
 //        //Session.set("selected", event.currentTarget.id);
@@ -67,6 +68,7 @@ Template.map.rendered = function () {
 };
 
 Template.map.destroyed = function () {
+    //TODO destroy map
     this.handle && this.handle.stop();
 };
 
@@ -86,3 +88,16 @@ Meteor.users.find().observe({
         console.log("Lost one");
     }
 });
+
+///////////////////////////////////////////////////////////////////////////////
+// Chat
+
+//options should include: recipient, text
+var createMessage = function (options) {
+    options.created = new Date();
+    Meteor.call('createMessage', options, function (error, message) {
+        if (!error) {
+            //TODO update sent status of message
+        }
+    });
+};
