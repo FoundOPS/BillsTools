@@ -1,0 +1,10 @@
+{
+  "name": "routey",
+  "version": "0.0.1",
+  "author": "Routey <routey.com>",
+  "description": "a simple zero-configuration command-line http server",
+  "dependencies" : {
+    "leaflet"   :  "0.5.*"
+  },
+  "license": "Copyright FoundOPS LLC"
+}
