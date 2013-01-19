@@ -25,13 +25,16 @@ var updateUserPosition = function (position) {
     var user = Meteor.user();
     if (!user) return;
 
+    //change the position object to the one we use
+    position = {time: position.timestamp, accuracy: position.coords.accuracy, lat: position.coords.latitude, lng: position.coords.longitude};
+
     var last = user.profile.position;
     var now = position;
 
     //if the last position was < 25 meters, do not update
-    if (last && last.coords) {
+    if (last && last.lat) {
         if (MIN_UPDATE_DISTANCE >
-            distanceCalculator(last.coords.latitude, last.coords.longitude, now.coords.latitude, now.coords.longitude, EARTH_DIAMETER)) return;
+            distanceCalculator(last.lat, last.lng, now.lat, now.lng, EARTH_DIAMETER)) return;
     }
 
     Meteor.users.update(user, {$set: { profile: {position: now }}});
@@ -45,41 +48,14 @@ if (navigator.geolocation) {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Map
-var addIcon = function (map, location) {
-    //create an icon to be used for all map markers
-    var icon = L.icon({
-        iconUrl: "emptyPerson3.png",
-        iconAnchor: [11, 47],
-        popupAnchor: [0, -50],
-        shadowUrl: "marker7.png",
-        shadowAnchor: [14, 50]
-    });
-
-    var marker = L.marker([location.latitude, location.longitude], {
-        icon: icon
-    });
-
-    marker.bindPopup("<div class='chatBox'><div class='chatTop'>" +
-        "<img src='emptyPerson3.png' /> Bob</div>" +
-        "<div class='chatArea'>" +
-        "<ul class='messages'>" +
-        "<li class='message'><span class='messageContent'>Hey, This is Bob. I'm hungry!</span><br /><span class='time'>6:16 pm</span></li>" +
-        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
-        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
-        "<li class='message'><span class='messageContent'>Hey, This is Bob. I'm hungry!</span><br /><span class='time'>6:16 pm</span></li>" +
-        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
-        "</ul>" +
-        "<textarea></textarea>" +
-        "</div>" +
-        "</div>");
-
-    map.addLayer(marker);
-
-    colorMarkers("#7fbb00");
-
-    map.setView([location.latitude, location.longitude], 12);
+var hexToRGB = function (Hex) {
+    var Long = parseInt(Hex.replace(/^#/, ""), 16);
+    return {
+        R: (Long >>> 16) & 0xff,
+        G: (Long >>> 8) & 0xff,
+        B: Long & 0xff
+    };
 };
-
 var colorMarkers = function (color) {
     //wait for the markers to be loaded
     _.delay(function () {
@@ -122,17 +98,70 @@ var colorMarkers = function (color) {
     }, 100);
 };
 
-var hexToRGB = function (Hex) {
-    var Long = parseInt(Hex.replace(/^#/, ""), 16);
-    return {
-        R: (Long >>> 16) & 0xff,
-        G: (Long >>> 8) & 0xff,
-        B: Long & 0xff
-    };
+var getMap = function () {
+    return $("#map").data("map");
+};
+
+//add a person icon to the map
+var addIcon = function (user) {
+    var map = getMap();
+    var location = user.profile.position;
+    if (!(location && location.lat && location.lng))
+        return;
+
+    var icon = L.icon({
+        iconUrl: "emptyPerson3.png",
+        iconAnchor: [11, 47],
+        popupAnchor: [0, -50],
+        shadowUrl: "marker7.png",
+        shadowAnchor: [14, 50]
+    });
+
+    var marker = L.marker([location.lat, location.lng], {
+        icon: icon
+    });
+    //store the associated it
+    marker.userId = user._id;
+
+//    marker.bindPopup("<div class='chatBox'><div class='chatTop'>" +
+    //TODO template inside here? http://docs.meteor.com/#meteor_render
+//        "<img src='emptyPerson3.png' /> Bob</div>" +
+//        "<div class='chatArea'>" +
+//        "<ul class='messages'>" +
+//        "<li class='message'><span class='messageContent'>Hey, This is Bob. I'm hungry!</span><br /><span class='time'>6:16 pm</span></li>" +
+//        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
+//        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
+//        "<li class='message'><span class='messageContent'>Hey, This is Bob. I'm hungry!</span><br /><span class='time'>6:16 pm</span></li>" +
+//        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
+//        "</ul>" +
+//        "<textarea></textarea>" +
+//        "</div>" +
+//        "</div>");
+
+    map.addLayer(marker);
+    colorMarkers("#7fbb00");
+
+    map.setView([location.lat, location.lng], 12);
+};
+var moveIcon = function (user, oldLocation) {
+    var map = getMap();
+    var newLocation = user.profile.position;
+    if (!(newLocation.lat && newLocation.lng))
+        return;
+
+    var layers = map._layers;
+    for (var key in layers) {
+        var layer = layers[key];
+        if (layer.userId === user._id) {
+            layer.setLatLng(newLocation);
+        }
+    }
 };
 
 Template.map.rendered = function () {
-    window.map = L.map('map', {
+    var self = this;
+
+    var map = L.map('map', {
         doubleClickZoom: false
     }).setView([49.25044, -123.137], 13);
 
@@ -140,32 +169,32 @@ Template.map.rendered = function () {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
     }).addTo(map);
 
-//    var location = {
-//        latitude: 40,
-//        longitude: -86
-//    };
-
-    //addIcon(map, location);
-
-    //scrolls to the newest messages(at the bottom) on popup open
+    //scrolls to the newest messages (at the bottom) on popup open
     map.on('popupopen', function (e) {
         var objDiv = $(".messages")[0];
         objDiv.scrollTop = objDiv.scrollHeight;
     });
+
+    //store the map on the element so it can be retrieved elsewhere
+    $("#map").data("map", map);
+
+//    var location = {
+//        latitude: 40,
+//        longitude: -86
+//    };
+    //addIcon(map, location);
 };
 
 Meteor.users.find().observe({
     added: function (user) {
-        //TODO generate on map
-        console.log("Added");
-        console.log(user);
-        if (user.profile.position)
-            addIcon(map, user.profile.position.coords);
+        console.log("User Added");
+        addIcon(user);
     },
-    changed: function (newDocument, atIndex, oldDocument) {
-        console.log("Changed");
-        //TODO move
-        addIcon(map, newDocument.profile.position.coords);
+    changed: function (newUser, atIndex, oldUser) {
+        console.log("User Changed");
+        var oldPosition = oldUser.profile.position;
+        if (oldPosition)
+            moveIcon(newUser, oldPosition);
     },
     removed: function () {
         //TODO remove from map
