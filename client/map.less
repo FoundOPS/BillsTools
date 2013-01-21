@@ -107,7 +107,7 @@ html, body{
         }
     }
     .chatArea{
-        height: 100%;
+        background: @grey;
         .messages{
             //TODO: 100%
             height: 238px;
@@ -156,36 +156,36 @@ html, body{
                 background-color: @white;
             }
         }
-        textarea{
-            position: absolute;
-            left: 13px;
-            bottom: 57px;
-            width: 195px;
-            height: 32px;
-            resize: none;
-            border: none;
-            font-family: verdana, arial, sans-serif;
-            &:focus{
-                outline: none;
-            }
+    }
+    textarea{
+        position: absolute;
+        left: 13px;
+        bottom: 57px;
+        width: 195px;
+        height: 32px;
+        resize: none;
+        border: none;
+        font-family: verdana, arial, sans-serif;
+        &:focus{
+            outline: none;
         }
-        .textAreaArrow{
-            position: relative;
-            float: right;
-            top: 19px;
-            right: 5px;
-            width: 15px;
-            height: 15px;
-            background: url("../textAreaArrow.png") no-repeat;
-        }
-        .senderImage{
-            position: relative;
-            float: right;
-            top: 11px;
-            right: 7px;
-            width: 24px;
-            height: 24px;
-        }
+    }
+    .textAreaArrow{
+        position: relative;
+        float: right;
+        top: 19px;
+        left: -5px;
+        width: 15px;
+        height: 15px;
+        background: url("../textAreaArrow.png") no-repeat;
+    }
+    .senderImage{
+        position: relative;
+        float: right;
+        top: 11px;
+        right: 7px;
+        width: 24px;
+        height: 24px;
     }
 }
 
@@ -223,3 +223,10 @@ html, body{
 }
 
 /*endregion*/
+
+//firefox only
+@-moz-document url-prefix() {
+    .chatBox .textAreaArrow{
+        left: -9px;
+    }
+}
