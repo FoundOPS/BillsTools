@@ -1,10 +1,46 @@
-Meteor.subscribe("directory"); //subscribe to the users
+//subscribe to the messages / users
+Meteor.subscribe("directory");
+Meteor.subscribe("messages");
+
+///////////////////////////////////////////////////////////////////////////////
+// Users
+Accounts.ui.config({
+    requestPermissions: {
+        gmail: ["profile", "email"]
+    },
+    requestOfflineToken: {
+        google: true
+    }
+});
+
+Meteor.autorun(function () {
+    var user = Meteor.user();
+    if (user)
+        Session.set("currentUser", user._id);
+    else
+        Session.set("currentUser", null);
+});
+
+var displayName = function (user) {
+    if (!user)
+        return "";
+
+    if (user.profile && user.profile.name)
+        return user.profile.name;
+
+    if (user.emails && user.emails[0])
+        return user.emails[0].address;
+
+    if (user.services && user.services.google && user.services.google.email)
+        return user.services.google.email;
+
+    return "test";
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Tracking
 var POS_UPDATE_HEARTBEAT = 5000; //milliseconds
-var MIN_UPDATE_DISTANCE = 50; //meters
-var MIN_ACCURACY = 25; //meters
+var MIN_ACCURACY = 75; //meters
 
 var EARTH_DIAMETER = 12756274; // meters
 /**
@@ -23,7 +59,7 @@ var distanceCalculator = function (a, b, c, d, e, z) {
 var updateUserPosition = function (position) {
     if (!position || !position.coords || position.coords.accuracy > MIN_ACCURACY) return;
     var user = Meteor.user();
-    if (!user) return;
+    if (!user || !user.profile) return;
 
     //change the position object to the one we use
     position = {time: position.timestamp, accuracy: position.coords.accuracy, lat: position.coords.latitude, lng: position.coords.longitude};
@@ -31,13 +67,13 @@ var updateUserPosition = function (position) {
     var last = user.profile.position;
     var now = position;
 
-    //if the last position was < 25 meters, do not update
+    //only update if the location changed > than the accuracy
     if (last && last.lat) {
-        if (MIN_UPDATE_DISTANCE >
+        if (now.accuracy >
             distanceCalculator(last.lat, last.lng, now.lat, now.lng, EARTH_DIAMETER)) return;
     }
 
-    Meteor.users.update(user, {$set: { profile: {position: now }}});
+    Meteor.users.update(user, {"$set": {"profile.position": now }});
 };
 
 if (navigator.geolocation) {
@@ -45,6 +81,95 @@ if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(updateUserPosition);
     }, POS_UPDATE_HEARTBEAT);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Chat
+
+//options should include: recipient, text
+var createMessage = function (text) {
+    var options = {created: new Date(), recipient: Session.get("recipient"), text: text};
+    Meteor.call('createMessage', options, function (error, message) {
+        if (!error) {
+            //TODO update sent status of message
+        }
+    });
+};
+
+//recipient -> the user currently talking with
+Template.chat.recipientName = function () {
+    var recipient = Meteor.users.find({_id: Session.get("recipient")}).fetch();
+    if (recipient[0])
+        return displayName(recipient[0]);
+    return "";
+};
+
+Template.chat.recipientImage = function () {
+    //TODO setup
+    return "emptyPerson3.png";
+};
+
+//Returns if the userId is the current user
+Template.chat.iAm = function (userId) {
+    return Session.get("currentUser") === userId;
+};
+
+//{$or: [
+//    {
+//        author: ,
+//        recipient:
+//    },
+//    {
+//        ,
+//        recipient: Session.get("currentUser")
+//    }
+//]}
+
+Template.chat.messages = function () {
+
+    return Messages.find({
+            $or: [
+                {author: Session.get("recipient")},
+                {recipient: Session.get("recipient")}
+            ]},
+        {sort: {created: 1}});
+};
+
+//track enter on text area & scroll to bottom
+var setupPopup = function (popup) {
+    var textArea = $(popup._container).find("textarea");
+
+    textArea.keyup(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            var textArea = e.currentTarget;
+            var text = textArea.value;
+            createMessage(text);
+            textArea.value = "";
+            textArea.focus();
+        }
+    });
+
+    var objDiv = $(popup._container).find(".messages")[0];
+    if (objDiv)
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+    textArea.focus();
+};
+
+Template.chat.rendered = function () {
+    var icon = findIcon(Session.get("recipient"));
+    if (!icon) {
+        return;
+    }
+
+    var clonedChat = $($("#currentChat").clone().outerHTML()).attr("id", "").outerHTML();
+    icon._popup.setContent(clonedChat);
+
+    setupPopup(icon._popup);
+
+    //setup popup
+    console.log("rendered chat");
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Map
@@ -95,7 +220,7 @@ var colorMarkers = function (color) {
             this.src = canvas.toDataURL("image/png");
             i++;
         });
-    }, 100);
+    }, 200);
 };
 
 var getMap = function () {
@@ -104,6 +229,14 @@ var getMap = function () {
 
 //add a person icon to the map
 var addIcon = function (user) {
+    var currentUser = Meteor.user();
+
+    //Do not add an icon for the current user
+    if (!currentUser || user._id === currentUser._id)
+        return;
+
+    if (!user.profile || !user.profile.position) return;
+
     var map = getMap();
     var location = user.profile.position;
     if (!(location && location.lat && location.lng))
@@ -120,47 +253,70 @@ var addIcon = function (user) {
     var marker = L.marker([location.lat, location.lng], {
         icon: icon
     });
+    //setup an empty popup
+    marker.bindPopup("");
+
     //store the associated it
     marker.userId = user._id;
-
-//    marker.bindPopup("<div class='chatBox'><div class='chatTop'>" +
-    //TODO template inside here? http://docs.meteor.com/#meteor_render
-//        "<img src='emptyPerson3.png' /> Bob</div>" +
-//        "<div class='chatArea'>" +
-//        "<ul class='messages'>" +
-//        "<li class='message'><span class='messageContent'>Hey, This is Bob. I'm hungry!</span><br /><span class='time'>6:16 pm</span></li>" +
-//        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
-//        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
-//        "<li class='message'><span class='messageContent'>Hey, This is Bob. I'm hungry!</span><br /><span class='time'>6:16 pm</span></li>" +
-//        "<li class='message owner'><span class='messageContent'>There's nothing I can do for you from here, sorry Bob.</span><br /><span class='time'>6:16 pm</span></li>" +
-//        "</ul>" +
-//        "<textarea></textarea>" +
-//        "</div>" +
-//        "</div>");
-
     map.addLayer(marker);
-    colorMarkers("#7fbb00");
 
+    colorMarkers("#7fbb00");
     map.setView([location.lat, location.lng], 12);
 };
-var moveIcon = function (user, oldLocation) {
+var findIcon = function (userId) {
     var map = getMap();
-    var newLocation = user.profile.position;
-    if (!(newLocation.lat && newLocation.lng))
-        return;
+    if (!map)
+        return null;
 
     var layers = map._layers;
     for (var key in layers) {
         var layer = layers[key];
-        if (layer.userId === user._id) {
-            layer.setLatLng(newLocation);
+        if (layer.userId === userId) {
+            return layer;
         }
     }
+
+    return null;
+};
+var moveIcon = function (user) {
+    var newLocation = user.profile.position;
+    if (!(newLocation && newLocation.lat && newLocation.lng))
+        return false;
+
+    var icon = findIcon(user._id);
+    if (icon) {
+        icon.setLatLng(newLocation);
+        return true;
+    }
+
+    return false;
+};
+
+var watchingUserChanged = false;
+var watchUserChanged = function () {
+    if (watchingUserChanged)
+        return;
+
+    Meteor.users.find().observe({
+        added: function (user) {
+            console.log("User Added");
+            addIcon(user);
+        },
+        changed: function (newUser, atIndex, oldUser) {
+            console.log("User Changed");
+            if (!moveIcon(newUser))
+                addIcon(newUser);
+        },
+        removed: function () {
+            //TODO remove from map
+            console.log("Lost one");
+        }
+    });
+
+    watchingUserChanged = true;
 };
 
 Template.map.rendered = function () {
-    var self = this;
-
     var map = L.map('map', {
         doubleClickZoom: false
     }).setView([49.25044, -123.137], 13);
@@ -171,46 +327,14 @@ Template.map.rendered = function () {
 
     //scrolls to the newest messages (at the bottom) on popup open
     map.on('popupopen', function (e) {
-        var objDiv = $(".messages")[0];
-        objDiv.scrollTop = objDiv.scrollHeight;
+        //recipient
+        var recipient = e.popup._source.userId;
+        Session.set("recipient", recipient);
+        setupPopup(e.popup);
     });
 
     //store the map on the element so it can be retrieved elsewhere
     $("#map").data("map", map);
 
-//    var location = {
-//        latitude: 40,
-//        longitude: -86
-//    };
-    //addIcon(map, location);
-};
-
-Meteor.users.find().observe({
-    added: function (user) {
-        console.log("User Added");
-        addIcon(user);
-    },
-    changed: function (newUser, atIndex, oldUser) {
-        console.log("User Changed");
-        var oldPosition = oldUser.profile.position;
-        if (oldPosition)
-            moveIcon(newUser, oldPosition);
-    },
-    removed: function () {
-        //TODO remove from map
-        console.log("Lost one");
-    }
-});
-
-///////////////////////////////////////////////////////////////////////////////
-// Chat
-
-//options should include: recipient, text
-var createMessage = function (options) {
-    options.created = new Date();
-    Meteor.call('createMessage', options, function (error, message) {
-        if (!error) {
-            //TODO update sent status of message
-        }
-    });
+    watchUserChanged();
 };

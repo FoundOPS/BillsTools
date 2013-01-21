@@ -8,10 +8,33 @@
 <body>
 <div id="top">
     <img src="logo1.png" id="logo"/>
-    {{loginButtons align="right"}}
+    {{loginButtons}}
 </div>
 {{> map}}
+<div style="visibility: hidden">
+    {{> chat}}
+</div>
 </body>
+
+<template name="chat">
+    <div id="currentChat" class='chatBox'>
+        <div class='chatTop'>
+            <img src='{{recipientImage}}'/>
+            {{recipientName}}
+        </div>
+        <div class='chatArea'>
+            <ul class='messages'>
+                {{#each messages}}
+                <li class='message {{#if iAm author}}owner{{/if}}'>
+                    <span class='messageContent'>{{text}}</span><br/>
+                    <span class='time'>{{calendarTime created}}</span>
+                </li>
+                {{/each}}
+            </ul>
+            <textarea></textarea>
+        </div>
+    </div>
+</template>
 
 <template name="map">
     {{#constant}}
