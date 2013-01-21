@@ -286,7 +286,7 @@ var addIcon = function (user) {
         iconUrl: "emptyPerson3.png",
         iconAnchor: [11, 23],
         popupAnchor: [67, -40],
-        shadowUrl: "marker8.png",
+        shadowUrl: "marker9.png",
         shadowAnchor: [14, 26]
     });
 
