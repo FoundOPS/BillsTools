@@ -45,12 +45,11 @@ html, body{
 .map{
     height: 100%;
     .leaflet-popup-content-wrapper {
-//        -webkit-border-radius: 10px;
-//        border-radius: 10px;
         border: 6px solid #7fbb00;
+        background: @grey;
         padding: 0;
         .leaflet-popup-content {
-            margin: 0;
+            margin: 0 -1px 0 0;
         }
     }
     .leaflet-marker-pane img{
@@ -64,16 +63,33 @@ html, body{
             .hoverColor(@grey);
         }
     }
+    .leaflet-popup-tip-container{
+        width: 100%;
+        height: 50px;
+        margin-top: -7px;
+        .leaflet-popup-tip{
+            margin: 0 0 0 50px;
+            width: 30px;
+            height: 50px;
+            padding: 0;
+            background: url("../popupArrow5.png") no-repeat;
+            -webkit-transform: none;
+            -moz-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+            box-shadow: none;
+        }
+    }
 }
 
 .chatBox{
     width: 250px;
     height: 320px;
     margin-bottom: 6px;
-    background: @grey;
     .chatTop{
         height: 32px;
-        width: 251px;
+        width: 250px;
         border-bottom: 2px solid @green;
         background: @green;
         color: @white;
@@ -85,36 +101,90 @@ html, body{
             left: 5px;
             margin-right: 5px;
         }
+        .recepientName{
+            position: relative;
+            top: -1px;
+        }
     }
     .chatArea{
         height: 100%;
-        margin-right: 2px;
         .messages{
             //TODO: 100%
-            height: 244px;
+            height: 238px;
             margin: 0 0 2px 0;
             padding-left: 0;
             background: @grey;
-            border-left: 4px solid @grey;
+            border-top: 3px solid @grey;
+            border-right: 2px solid @grey;
+            border-left: 3px solid @grey;
             overflow: auto;
-            .message{
+            .messageGroup{
                 float: left;
                 width: 90%;
-                padding: 4px 6px;
-                border-bottom: 1px solid @grey;
-                background: @white;
+                padding: 4px 8px;
+                border-bottom: 2px solid @grey;
                 list-style: none;
+                .triangle{
+                    position: relative;
+                    width: 0;
+                    height: 0;
+                }
+                .message{
+                    margin-bottom: 6px;
+                }
+                .message:last-child{
+                    margin-bottom: 2px;
+                }
+                .time{
+                    position: relative;
+                    top: -5px;
+                    display: block;
+                    margin-bottom: -5px;
+                    color: #999;
+                }
             }
-            .message.owner{
+            .messageGroup:last-child{
+                border-bottom: none;
+            }
+            .messageGroup:not(.owner){
+                background: url("../top-left-arrow.png") no-repeat top left;
+                background-color: @white;
+            }
+            .messageGroup.owner{
                 float: right;
+                background: url("../bottom-right-arrow.png") no-repeat bottom right;
+                background-color: @white;
             }
         }
         textarea{
             position: absolute;
-            bottom: 32px;
-            width: 89%;
+            left: 13px;
+            bottom: 57px;
+            width: 195px;
             height: 32px;
             resize: none;
+            border: none;
+            font-family: verdana, arial, sans-serif;
+            &:focus{
+                outline: none;
+            }
+        }
+        .textAreaArrow{
+            position: relative;
+            float: right;
+            top: 19px;
+            right: 5px;
+            width: 15px;
+            height: 15px;
+            background: url("../textAreaArrow.png") no-repeat;
+        }
+        .senderImage{
+            position: relative;
+            float: right;
+            top: 11px;
+            right: 7px;
+            width: 24px;
+            height: 24px;
         }
     }
 }

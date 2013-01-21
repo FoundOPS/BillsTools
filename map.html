@@ -20,18 +20,25 @@
     <div id="currentChat" class='chatBox'>
         <div class='chatTop'>
             <img src='{{recipientImage}}'/>
-            {{recipientName}}
+            <span class="recepientName">{{recipientName}}</span>
         </div>
         <div class='chatArea'>
             <ul class='messages'>
-                {{#each messages}}
-                <li class='message {{#if iAm author}}owner{{/if}}'>
-                    <span class='messageContent'>{{text}}</span><br/>
-                    <span class='time'>{{calendarTime created}}</span>
+                {{#each messageGroups}}
+                <li class='messageGroup {{#if iAm author}}owner{{/if}}'>
+                    <span class="triangle"></span>
+                        {{#each messages}}
+                            <div class="message">
+                                {{text}}
+                            </div>
+                        {{/each}}
+                    <span class='time'>{{calendarTime last}}</span>
                 </li>
                 {{/each}}
             </ul>
-            <textarea></textarea>
+            <textarea placeholder="Type message"></textarea>
+            <img class="senderImage" src='{{senderImage}}'/>
+            <span class="textAreaArrow"></span>
         </div>
     </div>
 </template>

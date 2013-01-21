@@ -108,6 +108,11 @@ Template.chat.recipientImage = function () {
     return "emptyPerson3.png";
 };
 
+Template.chat.senderImage = function () {
+    //TODO setup
+    return "testImage.png";
+};
+
 //Returns if the userId is the current user
 Template.chat.iAm = function (userId) {
     return Session.get("currentUser") === userId;
@@ -124,14 +129,49 @@ Template.chat.iAm = function (userId) {
 //    }
 //]}
 
-Template.chat.messages = function () {
+//Template.chat.messages = function () {
+//    return Messages.find({
+//            $or: [
+//                {author: Session.get("recipient")},
+//                {recipient: Session.get("recipient")}
+//            ]},
+//        {sort: {created: 1}});
+//};
 
-    return Messages.find({
+Template.chat.messageGroups = function () {
+    var messages = Messages.find({
             $or: [
                 {author: Session.get("recipient")},
                 {recipient: Session.get("recipient")}
             ]},
-        {sort: {created: 1}});
+        {sort: {created: 1}}).fetch();
+
+    //Each message group has:
+    //messages: an array of messages
+    //author: the author of the messages
+    //last: the last message's date
+    var messageGroups = [];
+
+    var groupIndex = -1;
+    for (var i in messages) {
+        var message = messages[i];
+        var messageGroup = messageGroups[groupIndex];
+
+        //
+
+        //use the same message group if the author is the same
+        //and the last message is within 5 minutes
+        if (messageGroup && messageGroup.author === message.author &&
+            (new Date(message.created) - new Date(messageGroup.last) < 5 * 60000)) {
+            messageGroup.messages.push(message);
+            messageGroup.last = message.created;
+        } else {
+            messageGroups.push({author: message.author, messages: [message], last: message.created});
+            groupIndex++;
+        }
+    }
+
+    return messageGroups;
 };
 
 //track enter on text area & scroll to bottom
@@ -244,10 +284,10 @@ var addIcon = function (user) {
 
     var icon = L.icon({
         iconUrl: "emptyPerson3.png",
-        iconAnchor: [11, 47],
-        popupAnchor: [0, -50],
-        shadowUrl: "marker7.png",
-        shadowAnchor: [14, 50]
+        iconAnchor: [11, 23],
+        popupAnchor: [67, -40],
+        shadowUrl: "marker8.png",
+        shadowAnchor: [14, 26]
     });
 
     var marker = L.marker([location.lat, location.lng], {
