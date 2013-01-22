@@ -8,22 +8,17 @@
 <body>
 <div id="top">
     {{>topBar}}
+    {{loginButtons}}
 </div>
 {{> map}}
-<div style="visibility: hidden">
+<div style="display: none">
     {{> chat}}
 </div>
 </body>
 
 <template name="topBar">
-    <!--Label needs to be here or crashes?-->
-    <label for="select-choice-0" class="select"></label>
-    <select name="select-choice-0" id="select-choice-0">
-        <option value="Settings">Settings</option>
-        <option value="Logout">Logout</option>
-    </select>
     <img src="logo1.png" id="logo"/>
-    {{loginButtons}}
+    <img src="user.png" id="menu"/>
 </template>
 
 <template name="chat">
@@ -47,9 +42,12 @@
                 {{/each}}
             </ul>
         </div>
-        <textarea placeholder="Type message"></textarea>
-        <img class="senderImage" src='{{senderImage}}'/>
-        <span class="textAreaArrow"></span>
+        <div class="chatBottom">
+            <textarea placeholder="Type message"></textarea>
+            <img class="senderImage" src='{{senderImage}}'/>
+            <span class="textAreaArrow"></span>
+        </div>
+
     </div>
 </template>
 

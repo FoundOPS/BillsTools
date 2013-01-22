@@ -94,7 +94,13 @@ if (navigator.geolocation) {
 // Top Bar
 
 Template.topBar.rendered = function () {
-    $("#select-choice-0").selectmenu();
+    $("#menu").optionsPopup({
+        id: "menu",
+        contents: [
+            {name: "Logout"}
+        ],
+        disableHeader: true
+    });
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -228,9 +234,6 @@ Template.chat.rendered = function () {
     icon._popup.setContent(clonedChat);
 
     setupPopup(icon._popup);
-
-    //setup popup
-    console.log("rendered chat");
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -361,17 +364,14 @@ var watchUserChanged = function () {
 
     Meteor.users.find().observe({
         added: function (user) {
-            console.log("User Added");
             addIcon(user);
         },
         changed: function (newUser, atIndex, oldUser) {
-            console.log("User Changed");
             if (!moveIcon(newUser))
                 addIcon(newUser);
         },
         removed: function () {
             //TODO remove from map
-            console.log("Lost one");
         }
     });
 

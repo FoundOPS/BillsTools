@@ -1,0 +1,233 @@
+/*  Colors */
+@lightCharcoal: #777779;
+@lighterGrey: #FAFAFA;
+@lightGrey: #F1F2F2;
+@darkGrey: #CCCCCC;
+@grey: #E6E6E6;
+
+@charcoal: #333335;
+@orange: #D9591E;
+@black: #000000;
+@white: #ffffff;
+@green: #5aad52;
+@blue: #488FCD;
+@red: #d06268;
+
+@popupHeaderHeight: 45px;
+@popupCarrotHeight: 14px;
+@popupCarrotWidth: 28px;
+
+@hoverOpacity: .5;
+
+.hoverColor (@color: @white, @strength: 10%){
+    background-color: darken(@color, @strength);
+}
+
+html{
+    font-size: 100%;
+}
+
+.borderBox {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.hover(){
+     &:hover {
+         opacity: @hoverOpacity;
+     }
+ }
+
+#popupWrapper {
+    font-family: verdana, sans-serif;
+    position: fixed;
+    height: 100%;
+    width: 305px;
+    padding-top: @popupCarrotHeight - 4;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    .borderBox;
+    z-index: 10;
+    //pointer-events allows click-throughs to popup. Possibly find better fix in the future.
+    pointer-events: none;
+    -webkit-transform: translateZ(0);
+}
+
+#popup {
+    position: relative;
+    .borderBox;
+    height: 100%;
+    width: 100%;
+    color: @charcoal;
+    visibility: visible !important;
+    z-index: 10;
+    -webkit-transform: translateZ(0);
+    border-top: 1px solid @darkGrey;
+
+    a {
+        color: @charcoal;
+    }
+}
+
+#popupHeader {
+    position: absolute;
+    z-index:1;
+    .borderBox;
+    width: 100%;
+    overflow: hidden;
+    //border-bottom: 1px solid @charcoal;
+    line-height: @popupHeaderHeight;
+    font-size: 16/18em;
+    background: @white;
+    border-bottom: 1px solid @darkGrey;
+    visibility: visible;
+    border-right: 1px solid @darkGrey;
+    border-left: 1px solid @darkGrey;
+    height: 49px;
+    pointer-events: auto;
+}
+
+#popupArrow {
+    position: absolute;
+    float: left;
+    margin-top: -1* @popupCarrotHeight;
+    margin-left: -1 * (@popupCarrotWidth / 2)-2; /* Half width */
+    visibility: visible;
+    left: 50%;
+    z-index: 2;
+
+    height: @popupCarrotHeight;
+    width: @popupCarrotWidth;
+
+    background: url('images/popupSprite.png') no-repeat 0px 0px;
+}
+
+.flipArrow{
+    background: url('images/popupSprite.png') no-repeat 0px -20px !important;
+    //-webkit-transform: rotate(180deg);
+    //-moz-transform: rotate(180deg);
+    //filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
+
+.hover(){
+    &:hover {
+        opacity: @hoverOpacity;
+    }
+}
+
+#popupBack, #popupClose{
+    position: absolute;
+    cursor: pointer;
+    height: 22px;
+    width: 21px;
+    top: 14px;
+    .hover;
+}
+
+#popupBack {
+    left: 14px;
+    background: url('images/popupSprite.png') no-repeat -9px -116px;
+}
+
+#popupClose {
+    right: 14px;
+    background: url('images/popupSprite.png') no-repeat -5px -89px;
+}
+
+#popupTitle{
+    white-space: nowrap;
+    text-align: center;
+    max-width: 225px;
+    overflow: hidden;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    .borderBox;
+}
+
+#popupContentWrapper {
+    position: relative;
+    overflow: visible !important;
+    padding-top: 0px;
+    height: 100%;
+    width: 100%;
+    .borderBox;
+}
+
+#popupContent {
+    visibility: visible;
+    position: relative;
+    overflow: auto;
+    min-height: 43px;
+    max-height: 100%;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    background: @white;
+    border-right: 1px solid @darkGrey;
+    border-left: 1px solid @darkGrey;
+    border-bottom: 1px solid @darkGrey;
+    .borderBox;
+    .last {
+        border-bottom: none;
+        padding-bottom: 13px;
+    }
+}
+
+.popupContentRow {
+    display: block;
+    cursor: pointer;
+    padding: 12px 23px;
+    border-bottom: 1px solid @lightGrey;
+}
+
+.popupContentRow:hover{
+    background: @darkGrey;
+}
+
+@media only screen and (max-width:390px) {
+    #popupWrapper {
+        //width: 90%;
+    }
+}
+
+// ========================================================================
+//                        jScrollPane Specific Css
+// ========================================================================
+#popupContentWrapper .jspPane{
+    width: 100% !important;
+    //border-radius: 8px;
+    -webkit-box-shadow: 0 0 10px @lightCharcoal;
+    box-shadow: 0 0 10px @lightCharcoal;
+}
+
+#popupContentWrapper .jspContainer {
+    //TODO: Find better fix.
+    //overflow: visible;
+}
+#popupContentWrapper .jspDrag {
+    background: @lightCharcoal;
+}
+
+#popupContentWrapper .jspCapTop {
+    display: block;
+    height: @popupHeaderHeight+4;
+}
+#popupContentWrapper .jspCapBottom {
+    display: block;
+    height: 2px;
+}
+
+#popupWrapper, #popup, #popupContentWrapper .jspContainer{
+    pointer-events: auto;
+}
+
+#popupWrapper .jspPane{
+    pointer-events: auto;
+}
+
+#popupWrapper .jspVerticalBar{
+    pointer-events: auto;
+}
