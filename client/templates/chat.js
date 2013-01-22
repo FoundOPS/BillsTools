@@ -114,3 +114,7 @@ Template.chat.rendered = _.debounce(function () {
     //setup popup
     console.log("rendered chat");
 }, 200);
+
+Template.chat.destroyed = function () {
+    //TODO
+};
