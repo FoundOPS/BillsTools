@@ -9,6 +9,6 @@ accounts-google
 less
 accounts-facebook
 accounts-password
-accounts-ui-bills-tools
-meteor-router
-meteor-page-js
+accounts-ui
+page-js
+router

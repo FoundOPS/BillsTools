@@ -6,16 +6,28 @@
 </head>
 
 <body>
-<div id="top">
-    <img src="logo1.png" id="logo"/>
-    {{loginButtons}}
-</div>
+{{renderPage}}
+
 <!--if view === mobileChat-->
 <!--else-->
-{{> mapView}}
 </body>
 
+<template name="loginView">
+    Login Here
+    {{loginButtons}}
+</template>
+
+<template name="topBar">
+    <div id="top">
+        <img src="logo1.png" id="logo"/>
+        {{loginButtons}}
+    </div>
+</template>
+
+
 <template name="mapView">
+    {{> topBar}}
+
     {{> map}}
     <!--TODO rename to desktopChat, wrap around handlebar if ! mobile-->
     <div style="visibility: hidden">
@@ -24,6 +36,7 @@
 </template>
 
 <template name="chat">
+    {{#if currentUser}}
     <div id="currentChat" class='chatBox'>
         <div class='chatTop'>
             <img src='{{recipientImage}}'/>
@@ -48,6 +61,7 @@
         <img class="senderImage" src='{{senderImage}}'/>
         <span class="textAreaArrow"></span>
     </div>
+    {{/if}}
 </template>
 
 <template name="map">
