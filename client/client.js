@@ -57,14 +57,17 @@ var distanceCalculator = function (a, b, c, d, e, z) {
     with (Math)return z = PI / 360, e * atan2(sqrt(z = pow(sin((c - a) * z), 2) + cos(a * z * 2) * cos(c * z * 2) * pow(sin((d - b) * z), 2)), sqrt(1 - z))
 };
 var updateUserPosition = function (position) {
-    if (!position || !position.coords || position.coords.accuracy > MIN_ACCURACY) return;
+    //TODO add back min accuracy: || position.coords.accuracy > MIN_ACCURACY
+
+    if (!position || !position.coords) return;
     var user = Meteor.user();
-    if (!user || !user.profile) return;
+    if (!user) return;
+
 
     //change the position object to the one we use
     position = {time: position.timestamp, accuracy: position.coords.accuracy, lat: position.coords.latitude, lng: position.coords.longitude};
 
-    var last = user.profile.position;
+    var last = user.profile ? user.profile.position : null;
     var now = position;
 
     //only update if the location changed > than the accuracy
@@ -73,7 +76,12 @@ var updateUserPosition = function (position) {
             distanceCalculator(last.lat, last.lng, now.lat, now.lng, EARTH_DIAMETER)) return;
     }
 
-    Meteor.users.update(user, {"$set": {"profile.position": now }});
+    if (!user.profile) {
+        var profile = {position: now};
+        Meteor.users.update(user, {"$set": {"profile": profile }});
+    } else {
+        Meteor.users.update(user, {"$set": {"profile.position": now }});
+    }
 };
 
 if (navigator.geolocation) {
@@ -174,6 +182,13 @@ Template.chat.messageGroups = function () {
     return messageGroups;
 };
 
+var sendMessage = function (textArea) {
+    var text = textArea.value;
+    createMessage(text);
+    textArea.value = "";
+    textArea.focus();
+};
+
 //track enter on text area & scroll to bottom
 var setupPopup = function (popup) {
     var textArea = $(popup._container).find("textarea");
@@ -181,12 +196,12 @@ var setupPopup = function (popup) {
     textArea.keyup(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            var textArea = e.currentTarget;
-            var text = textArea.value;
-            createMessage(text);
-            textArea.value = "";
-            textArea.focus();
+            sendMessage(textArea[0]);
         }
+    });
+
+    $(popup._container).find(".senderImage").click(function () {
+        sendMessage(textArea[0]);
     });
 
     var objDiv = $(popup._container).find(".messages")[0];
