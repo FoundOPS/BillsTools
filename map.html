@@ -13,8 +13,10 @@
 </body>
 
 <template name="loginView">
-    Login Here
-    {{loginButtons}}
+    <div id="loginBg">
+        Login Here
+        {{loginButtons}}
+    </div>
 </template>
 
 <template name="topBar">
@@ -25,7 +27,6 @@
         {{/if}}
     </div>
 </template>
-
 
 <template name="mapView">
     {{> topBar}}
