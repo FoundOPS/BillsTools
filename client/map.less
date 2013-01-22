@@ -27,6 +27,25 @@ html, body{
     height: 40px;
     background: @green;
     z-index: 2;
+    .ui-select{
+        position: absolute;
+        top: 5px;
+        right: 25px;
+        width: 24px;
+        .ui-btn-corner-all{
+            margin: 0;
+            border-radius: 0;
+            border: none;
+            .ui-btn-inner{
+                padding: 15px 10px;
+                border: none;
+                background: url("../user.png") no-repeat;
+                .ui-btn-text, .ui-icon{
+                    display: none;
+                }
+            }
+        }
+    }
     #logo{
         display: block;
         margin: 0 auto;
@@ -104,6 +123,7 @@ html, body{
         .recepientName{
             position: relative;
             top: -1px;
+            font-family: verdana, arial, sans-serif;
         }
     }
     .chatArea{

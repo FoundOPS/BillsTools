@@ -7,14 +7,24 @@
 
 <body>
 <div id="top">
-    <img src="logo1.png" id="logo"/>
-    {{loginButtons}}
+    {{>topBar}}
 </div>
 {{> map}}
 <div style="visibility: hidden">
     {{> chat}}
 </div>
 </body>
+
+<template name="topBar">
+    <!--Label needs to be here or crashes?-->
+    <label for="select-choice-0" class="select"></label>
+    <select name="select-choice-0" id="select-choice-0">
+        <option value="Settings">Settings</option>
+        <option value="Logout">Logout</option>
+    </select>
+    <img src="logo1.png" id="logo"/>
+    {{loginButtons}}
+</template>
 
 <template name="chat">
     <div id="currentChat" class='chatBox'>
@@ -27,11 +37,11 @@
                 {{#each messageGroups}}
                 <li class='messageGroup {{#if iAm author}}owner{{/if}}'>
                     <span class="triangle"></span>
-                        {{#each messages}}
-                            <div class="message">
-                                {{text}}
-                            </div>
-                        {{/each}}
+                    {{#each messages}}
+                    <div class="message">
+                        {{text}}
+                    </div>
+                    {{/each}}
                     <span class='time'>{{calendarTime last}}</span>
                 </li>
                 {{/each}}
