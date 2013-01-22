@@ -20,7 +20,9 @@
 <template name="topBar">
     <div id="top">
         <img src="logo1.png" id="logo"/>
-        {{loginButtons}}
+        {{#if currentUser}}
+        <img src="user.png" id="menu"/>
+        {{/if}}
     </div>
 </template>
 
@@ -30,7 +32,7 @@
 
     {{> map}}
     <!--TODO rename to desktopChat, wrap around handlebar if ! mobile-->
-    <div style="visibility: hidden">
+    <div style="display: none">
         {{> chat}}
     </div>
 </template>
@@ -57,9 +59,11 @@
                 {{/each}}
             </ul>
         </div>
-        <textarea placeholder="Type message"></textarea>
-        <img class="senderImage" src='{{senderImage}}'/>
-        <span class="textAreaArrow"></span>
+        <div class="chatBottom">
+            <textarea placeholder="Type message"></textarea>
+            <img class="senderImage" src='{{senderImage}}'/>
+            <span class="textAreaArrow"></span>
+        </div>
     </div>
     {{/if}}
 </template>

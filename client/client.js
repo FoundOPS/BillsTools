@@ -24,6 +24,23 @@ Meteor.autorun(function () {
     //when the user is logged in, switch to the map
     if (Meteor.user()) {
         Meteor.Router.to("/map");
+// Top Bar
+
+Template.topBar.rendered = function () {
+    $("#menu").optionsPopup({
+        id: "menu",
+        contents: [
+            {name: "Logout", id: "logout"}
+        ],
+        disableHeader: true
+    });
+
+    $("#logout").live("click", function (e) {
+        Meteor.logout();
+    });
+};
+
+///////////////////////////////////////////////////////////////////////////////
     }
     //when logged out, switch to login
     else {
