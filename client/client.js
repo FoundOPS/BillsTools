@@ -30,3 +30,5 @@ Meteor.autorun(function () {
         Meteor.Router.to("/login");
     }
 });
+
+startTracking();

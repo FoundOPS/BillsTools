@@ -46,8 +46,10 @@ var updateUserPosition = function (position) {
     }
 };
 
-if (navigator.geolocation) {
-    Meteor.setInterval(function () {
-        navigator.geolocation.getCurrentPosition(updateUserPosition);
-    }, POS_UPDATE_HEARTBEAT);
+function startTracking() {
+    if (navigator.geolocation) {
+        Meteor.setInterval(function () {
+            navigator.geolocation.getCurrentPosition(updateUserPosition);
+        }, POS_UPDATE_HEARTBEAT);
+    }
 }

@@ -1,0 +1,22 @@
+<template name="loginView">
+    Login Here
+    {{loginButtons}}
+</template>
+
+<template name="mapView">
+    {{> topBar}}
+
+    {{> map}}
+    <!--TODO rename to desktopChat, wrap around handlebar if ! mobile-->
+    <div style="display: none">
+        {{> chat}}
+    </div>
+</template>
+
+<template name="map">
+    {{#constant}}
+    <div class="mapWrapper">
+        <div id="map" class="map"></div>
+    </div>
+    {{/constant}}
+</template>

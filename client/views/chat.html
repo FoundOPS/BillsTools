@@ -1,42 +1,3 @@
-<head>
-    <title>Bills tools</title>
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-</head>
-
-<body>
-{{renderPage}}
-
-<!--if view === mobileChat-->
-<!--else-->
-</body>
-
-<template name="loginView">
-    Login Here
-    {{loginButtons}}
-</template>
-
-<template name="topBar">
-    <div id="top">
-        <img src="logo1.png" id="logo"/>
-        {{#if currentUser}}
-        <img src="user.png" id="menu"/>
-        {{/if}}
-    </div>
-</template>
-
-
-<template name="mapView">
-    {{> topBar}}
-
-    {{> map}}
-    <!--TODO rename to desktopChat, wrap around handlebar if ! mobile-->
-    <div style="display: none">
-        {{> chat}}
-    </div>
-</template>
-
 <template name="chat">
     {{#if currentUser}}
     <div id="currentChat" class='chatBox'>
@@ -66,12 +27,4 @@
         </div>
     </div>
     {{/if}}
-</template>
-
-<template name="map">
-    {{#constant}}
-    <div class="mapWrapper">
-        <div id="map" class="map"></div>
-    </div>
-    {{/constant}}
 </template>

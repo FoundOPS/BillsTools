@@ -1,0 +1,22 @@
+<head>
+    <title>Bills tools</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+</head>
+
+<body>
+{{renderPage}}
+
+<!--if view === mobileChat-->
+<!--else-->
+</body>
+
+<template name="topBar">
+    <div id="top">
+        <img src="logo1.png" id="logo"/>
+        {{#if currentUser}}
+        <img src="user.png" id="menu"/>
+        {{/if}}
+    </div>
+</template>
