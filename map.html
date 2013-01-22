@@ -18,7 +18,9 @@
 
 <template name="topBar">
     <img src="logo1.png" id="logo"/>
+    {{#if currentUser}}
     <img src="user.png" id="menu"/>
+    {{/if}}
 </template>
 
 <template name="chat">
