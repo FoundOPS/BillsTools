@@ -8,4 +8,5 @@ preserve-inputs
 accounts-ui
 accounts-google
 less
+accounts-facebook
 accounts-password
