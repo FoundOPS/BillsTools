@@ -388,8 +388,19 @@ Template.map.rendered = function () {
         setupPopup(e.popup);
     });
 
+    //TODO on close recipient = null
+
+
     //store the map on the element so it can be retrieved elsewhere
     $("#map").data("map", map);
 
     watchUserChanged();
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// General
+var isMobile = function () {
+    return false;
+};
+
+Session.set("mobile", isMobile());

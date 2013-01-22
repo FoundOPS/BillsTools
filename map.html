@@ -10,11 +10,18 @@
     <img src="logo1.png" id="logo"/>
     {{loginButtons}}
 </div>
-{{> map}}
-<div style="visibility: hidden">
-    {{> chat}}
-</div>
+<!--if view === mobileChat-->
+<!--else-->
+{{> mapView}}
 </body>
+
+<template name="mapView">
+    {{> map}}
+    <!--TODO rename to desktopChat, wrap around handlebar if ! mobile-->
+    <div style="visibility: hidden">
+        {{> chat}}
+    </div>
+</template>
 
 <template name="chat">
     <div id="currentChat" class='chatBox'>
@@ -27,11 +34,11 @@
                 {{#each messageGroups}}
                 <li class='messageGroup {{#if iAm author}}owner{{/if}}'>
                     <span class="triangle"></span>
-                        {{#each messages}}
-                            <div class="message">
-                                {{text}}
-                            </div>
-                        {{/each}}
+                    {{#each messages}}
+                    <div class="message">
+                        {{text}}
+                    </div>
+                    {{/each}}
                     <span class='time'>{{calendarTime last}}</span>
                 </li>
                 {{/each}}
