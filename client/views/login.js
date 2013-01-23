@@ -13,8 +13,16 @@ Accounts.ui.config({
 
 
 Template.loginView.rendered = function () {
-    $("#login-buttons-password,#login-buttons-signup,#forgot-password-link,#login-buttons-angies,#login-buttons-quickbooks").click(function () {
+    $("#login-buttons-signup,#forgot-password-link,#login-buttons-angies,#login-buttons-quickbooks").click(function () {
         useGoogleFacebook();
+    });
+    $("#login-buttons-password").click(function () {
+        var userName = $("#login-email").val();
+        var password = $("#login-password").val();
+        Meteor.loginWithPassword(userName, password, function (error) {
+            if (error)
+                alert("There was an error with your username or password");
+        });
     });
 
     $("#login-buttons-facebook").click(function () {

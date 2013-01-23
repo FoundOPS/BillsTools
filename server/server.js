@@ -84,3 +84,8 @@ Meteor.methods({
 //    appId: "324227897678959",
 //    secret: "92f0876e2e21314c6f48556a19d0be91"
 //});
+//Accounts.createUser({
+//    username: "Jonathan Perl",
+//    email : "ab@c.com",
+//    password: "123456"
+//});
