@@ -1,33 +1,35 @@
 <template name="loginView">
     <div id="loginBg">
-        <div id="login-dropdown-list" class="accounts-dialog">
-            <div class="loginPanel">
-                <img src="logo2.png" class="logo"/>
-                <div class="login-form login-password-form">
-                    <input id="login-email" type="email" placeholder="Email">
-                    <input id="login-password" type="password" placeholder="Password">
-                    <div class="login-button login-button-form-submit" id="login-buttons-password">
-                        Login
+        <div id="loginWrapper">
+            <div id="login-dropdown-list" class="accounts-dialog">
+                <div class="loginPanel">
+                    <img src="logo2.png" class="logo"/>
+                    <div class="login-form login-password-form">
+                        <input id="login-email" type="email" placeholder="Email">
+                        <input id="login-password" type="password" placeholder="Password">
+                        <div class="login-button login-button-form-submit" id="login-buttons-password">
+                            Login
+                        </div>
+                        <div class="login-button" id="login-buttons-signup">
+                            Sign Up
+                        </div>
+                        <div class="additional-link-container">
+                            <a id="forgot-password-link" class="additional-link">Forgot password?</a>
+                        </div>
                     </div>
-                    <div class="login-button" id="login-buttons-signup">
-                        Sign Up
+                    <div class="orUse">or use</div>
+                    <div class="socialBtn first" id="login-buttons-angies">
+                        <img class="socialImage" src="alLogin.png"/>
                     </div>
-                    <div class="additional-link-container">
-                        <a id="forgot-password-link" class="additional-link">Forgot password?</a>
+                    <div class="socialBtn" id="login-buttons-google">
+                        <img class="socialImage" src="gLogin.png"/>
                     </div>
-                </div>
-                <div class="orUse">or use</div>
-                <div class="socialBtn first" id="login-buttons-angies">
-                    <img class="socialImage" src="alLogin.png"/>
-                </div>
-                <div class="socialBtn" id="login-buttons-google">
-                    <img class="socialImage" src="gLogin.png"/>
-                </div>
-                <div class="socialBtn" id="login-buttons-facebook">
-                    <img class="socialImage" src="fLogin.png"/>
-                </div>
-                <div class="socialBtn" id="login-buttons-quickbooks">
-                    <img class="socialImage" src="qbLogin.png"/>
+                    <div class="socialBtn" id="login-buttons-facebook">
+                        <img class="socialImage" src="fLogin.png"/>
+                    </div>
+                    <div class="socialBtn" id="login-buttons-quickbooks">
+                        <img class="socialImage" src="qbLogin.png"/>
+                    </div>
                 </div>
             </div>
         </div>

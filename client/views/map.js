@@ -19,11 +19,10 @@ var addIcon = function (user) {
     if (!(location && location.lat && location.lng))
         return;
 
-    //TODO add green color background
     var div = '<img src="' + userImage(user) + '"/>';
     var icon = L.divIcon({
         iconAnchor: [11, 23],
-        popupAnchor: [67, -40],
+        popupAnchor: [69.5, -40],
         html: div
     });
 
@@ -42,8 +41,6 @@ var addIcon = function (user) {
 //    _.delay(function () {
 //        updateIconColor(user, "#FFFFFF");
 //    }, 2500);
-
-    map.setView([location.lat, location.lng], 12);
 
     //TODO opacity if inactive (10 minutes)
 };
@@ -76,6 +73,45 @@ var moveIcon = function (user) {
 
     return false;
 };
+
+var getMarkersBounds = function () {
+    var map = getMap();
+    var layers = map._layers;
+    var bounds = [];
+    for (var key in layers) {
+        var layer = layers[key];
+        if (layer.getLatLng) {
+            var location = layer.getLatLng();
+            bounds.push(L.latLng([location.lat, location.lng]));
+        }
+    }
+    return bounds;
+};
+
+//prevents map centered from being called twice
+var mapCentered = false;
+//centers map on all users, or current user location if no other users
+var centerOnUsers = _.debounce(function (force) {
+    if (!force) {
+        if (mapCentered) return;
+        mapCentered = true;
+    }
+
+    var map = getMap(), location;
+    var bounds = getMarkersBounds();
+    //check if there are users
+    if (bounds.length > 0) {
+        map.fitBounds([bounds]);
+    } else {
+        //center on current user
+        var user = Meteor.user();
+        if (user.profile && user.profile.position) {
+            location = user.profile.position;
+            map.setView([location.lat, location.lng], 12);
+        }
+    }
+}, 500);
+
 var updateIconColor = function (user, color) {
     var icon = findIcon(user._id);
 
@@ -93,6 +129,7 @@ var watchUserChanged = function () {
     observeUsersHandle = Meteor.users.find().observe({
         added: function (user) {
             addIcon(user);
+            centerOnUsers();
         },
         changed: function (newUser, atIndex, oldUser) {
             //if the position changed move the icon
@@ -116,7 +153,7 @@ Template.map.rendered = function () {
     console.log("render map");
     var map = L.map('map', {
         doubleClickZoom: false
-    }).setView([49.25044, -123.137], 13);
+    }).setView([40, -89], 4);
 
     L.tileLayer("http://{s}.tile.cloudmade.com/" + "0187c3ce6f41462a9919ccf1f161aec9" + "/997/256/{z}/{x}/{y}.png", {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'

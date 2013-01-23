@@ -12,6 +12,10 @@ Template.topBar.rendered = function () {
     $("#logout").live("click", function (e) {
         Meteor.logout();
     });
+
+    $("img.logo").on("click", function () {
+        centerOnUsers(true);
+    });
 };
 
 Template.topBar.destroyed = function () {
