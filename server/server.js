@@ -16,3 +16,16 @@ Meteor.publish("messages", function () {
         ]
     });
 });
+
+//NOTE run once in console after reset (or fresh deploy)
+//Accounts.loginServiceConfiguration.insert({
+//    service: "google",
+//    clientId: "960721914827.apps.googleusercontent.com",
+//    secret: "keUopZvvXrGBhnfU5kKY9aZ0"
+//});
+//
+//Accounts.loginServiceConfiguration.insert({
+//    service: "facebook",
+//    appId: "324227897678959",
+//    secret: "92f0876e2e21314c6f48556a19d0be91"
+//});
