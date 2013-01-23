@@ -2,6 +2,8 @@
 Meteor.subscribe("directory");
 Meteor.subscribe("messages");
 
+Messages = new Meteor.Collection("messages");
+
 ///////////////////////////////////////////////////////////////////////////////
 // General
 
