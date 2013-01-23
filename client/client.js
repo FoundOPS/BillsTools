@@ -37,19 +37,18 @@ Meteor.startup(function () {
 
     startTracking();
 
-    //fixFirefoxCss();
+    fixFirefoxCss();
 });
 
 var fixFirefoxCss = function () {
-   if ($.browser.mozilla) {
-       var newHref;
-       var links = $("link");
-       for (var i in links){
-           if (links[i].href && links[i].href.charAt(0) === "\\") {
-               newHref = links[i].href.substring(1);
-               $("link")[i].href = newHref;
-               break;
-           }
-       }
-   }
+    if ($.browser.mozilla) {
+        //replace all encoded backslashes with nothing
+        $("link").each(function () {
+            var link = this;
+            if (link.href.indexOf(".css") !== -1) {
+                var newHref = link.href.replace(/%5C/g, '');
+                link.href = newHref;
+            }
+        });
+    }
 };
