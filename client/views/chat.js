@@ -42,21 +42,14 @@ var setupPopup = function (popup) {
 };
 
 //recipient -> the user currently talking with
+Template.chat.recipient = function () {
+    return Session.get("recipient");
+};
 Template.chat.recipientName = function () {
     var recipient = Meteor.users.find({_id: Session.get("recipient")}).fetch();
     if (recipient[0])
         return displayName(recipient[0]);
     return "";
-};
-
-Template.chat.recipientImage = function () {
-    //TODO setup
-    return "emptyPerson3.png";
-};
-
-Template.chat.senderImage = function () {
-    //TODO setup
-    return "testImage.png";
 };
 
 //Returns if the userId is the current user

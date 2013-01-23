@@ -20,15 +20,18 @@ Meteor.Router.add({
     }
 });
 
-Meteor.autorun(function () {
-    //when the user is logged in, switch to the map
-    if (Meteor.user()) {
-        Meteor.Router.to("/map");
-    }
-    //when logged out, switch to login
-    else {
-        Meteor.Router.to("/login");
-    }
-});
+Meteor.startup(function () {
+    Meteor.autorun(function () {
+        //when the user is logged in: switch to the map and update their image
+        if (Meteor.userId()) {
+            Meteor.Router.to("/map");
+            updateUserImage();
+        }
+        //when logged out, switch to login
+        else {
+            Meteor.Router.to("/login");
+        }
+    });
 
-startTracking();
+    startTracking();
+});

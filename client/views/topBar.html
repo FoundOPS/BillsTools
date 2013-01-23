@@ -1,0 +1,8 @@
+<template name="topBar">
+    <div id="top">
+        <img src="logo.png" id="logo"/>
+        {{#if currentUser}}
+        <img src="{{currentUserImage}}" id="menu"/>
+        {{/if}}
+    </div>
+</template>

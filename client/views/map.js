@@ -71,7 +71,7 @@ var addIcon = function (user) {
         return;
 
     var icon = L.icon({
-        iconUrl: "emptyPerson3.png",
+        iconUrl: userImage(user),
         iconAnchor: [11, 23],
         popupAnchor: [67, -40],
         shadowUrl: "marker9.png",
@@ -133,17 +133,20 @@ var watchUserChanged = function () {
 
     observeUsersHandle = Meteor.users.find().observe({
         added: function (user) {
-            console.log("User Added");
             addIcon(user);
         },
         changed: function (newUser, atIndex, oldUser) {
-            console.log("User Changed");
-            if (!moveIcon(newUser))
-                addIcon(newUser);
+            //if the position changed move the icon
+            if (!(oldUser.profile && newUser.profile &&
+                _.isEqual(oldUser.profile.position, newUser.profile.position))) {
+                //if the icon doesn't exist yet, add it
+                if (!moveIcon(newUser))
+                    addIcon(newUser);
+            }
         },
         removed: function () {
             //TODO remove from map
-            console.log("Lost one");
+
         }
     });
 };
@@ -182,3 +185,39 @@ Template.map.destroyed = function () {
     $("#map").empty();
     $("#map").data("map", null);
 };
+
+Meteor.startup(function () {
+    L.NumberedDivIcon = L.Icon.extend({
+        options: {
+            // EDIT THIS TO POINT TO THE FILE AT http://www.charliecroom.com/marker_hole.png (or your own marker)
+            iconUrl: '<%= image_path("leaflet/marker_hole.png") %>',
+            number: '',
+            shadowUrl: null,
+            iconSize: new L.Point(25, 41),
+            iconAnchor: new L.Point(13, 41),
+            popupAnchor: new L.Point(0, -33),
+            /*
+             iconAnchor: (Point)
+             popupAnchor: (Point)
+             */
+            className: 'leaflet-div-icon'
+        },
+
+        createIcon: function () {
+            var div = document.createElement('div');
+            var img = this._createImg(this.options['iconUrl']);
+            var numdiv = document.createElement('div');
+            numdiv.setAttribute("class", "number");
+            numdiv.innerHTML = this.options['number'] || '';
+            div.appendChild(img);
+            div.appendChild(numdiv);
+            this._setIconStyles(div, 'icon');
+            return div;
+        },
+
+        //you could change this to add a shadow like in the normal marker if you really wanted
+        createShadow: function () {
+            return null;
+        }
+    });
+});

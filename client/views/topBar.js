@@ -1,6 +1,5 @@
 // Top Bar
 ///////////////////////////////////////////////////////////////////////////////
-
 Template.topBar.rendered = function () {
     $("#menu").optionsPopup({
         id: "menu",

@@ -25,7 +25,6 @@ var updateUserPosition = function (position) {
     var user = Meteor.user();
     if (!user) return;
 
-
     //change the position object to the one we use
     position = {time: position.timestamp, accuracy: position.coords.accuracy, lat: position.coords.latitude, lng: position.coords.longitude};
 
