@@ -1,15 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Users
-
-Accounts.ui.config({
-    requestPermissions: {
-        gmail: ["profile", "email"]
-    },
-    requestOfflineToken: {
-        google: true
-    }
-});
-
 Meteor.autorun(function () {
     var user = Meteor.user();
     if (user)
