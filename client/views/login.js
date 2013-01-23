@@ -1,7 +1,3 @@
-var useGoogleFacebook = function () {
-    alert("Please use google or facebook login for now. This feature is not setup.")
-};
-
 Accounts.ui.config({
     requestPermissions: {
         gmail: ["profile", "email"]
@@ -13,9 +9,16 @@ Accounts.ui.config({
 
 
 Template.loginView.rendered = function () {
-    $("#login-buttons-signup,#forgot-password-link,#login-buttons-angies,#login-buttons-quickbooks").click(function () {
-        useGoogleFacebook();
+    $("#login-buttons-signup,#forgot-password-link").click(function () {
+        alert("Custom user accounts are not setup yet. Please use google or facebook login for now.")
     });
+    $("#login-buttons-angies").click(function () {
+        alert("Login with Angie's List not setup yet. Please use google or facebook login for now.")
+    });
+    $("#login-buttons-quickbooks").click(function () {
+        alert("Login with Quickbooks is not setup yet. Please use google or facebook login for now.")
+    });
+
     $("#login-buttons-password").click(function () {
         var userName = $("#login-email").val();
         var password = $("#login-password").val();

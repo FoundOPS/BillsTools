@@ -95,6 +95,8 @@ var addIcon = function (user) {
     }, 200); //TODO change to single
 
     map.setView([location.lat, location.lng], 12);
+
+    //TODO opacity if inactive (10 minutes)
 };
 var findIcon = function (userId) {
     var map = getMap();
