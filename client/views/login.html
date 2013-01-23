@@ -1,4 +1,35 @@
 <template name="loginView">
-    Login Here
-    {{loginButtons}}
+    <div id="loginBg">
+        <div id="login-dropdown-list" class="accounts-dialog">
+            <div class="loginPanel">
+                <img src="logo2.png" class="logo"/>
+                <div class="login-form login-password-form">
+                    <input id="login-email" type="email"  placeholder="Email">
+                    <input id="login-password" type="password" placeholder="Password">
+                    <div class="login-button login-button-form-submit" id="login-buttons-password">
+                        Login
+                    </div>
+                    <div class="login-button" id="login-buttons-signup">
+                        Sign Up
+                    </div>
+                    <div class="additional-link-container">
+                        <a id="forgot-password-link" class="additional-link">Forgot password?</a>
+                    </div>
+                </div>
+                <div class="orUse">or use</div>
+                <div class="socialBtn first">
+                    <span class="socialText">AL</span>
+                </div>
+                <div class="socialBtn">
+                    <span class="socialText">G</span>
+                </div>
+                <div class="socialBtn">
+                    <span class="socialText">FB</span>
+                </div>
+                <div class="socialBtn">
+                    <span class="socialText">QB</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
