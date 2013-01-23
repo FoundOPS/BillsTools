@@ -36,4 +36,20 @@ Meteor.startup(function () {
     });
 
     startTracking();
+
+    //fixFirefoxCss();
 });
+
+var fixFirefoxCss = function () {
+   if ($.browser.mozilla) {
+       var newHref;
+       var links = $("link");
+       for (var i in links){
+           if (links[i].href && links[i].href.charAt(0) === "\\") {
+               newHref = links[i].href.substring(1);
+               $("link")[i].href = newHref;
+               break;
+           }
+       }
+   }
+};
