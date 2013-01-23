@@ -19,9 +19,11 @@ var distanceCalculator = function (a, b, c, d, e, z) {
     with (Math)return z = PI / 360, e * atan2(sqrt(z = pow(sin((c - a) * z), 2) + cos(a * z * 2) * cos(c * z * 2) * pow(sin((d - b) * z), 2)), sqrt(1 - z))
 };
 var updateUserPosition = function (position) {
-    //TODO add back min accuracy: || position.coords.accuracy > MIN_ACCURACY
-
     if (!position || !position.coords) return;
+
+    //require a min accuracy on mobile devices
+    if (isMobileDevice() && position.coords.accuracy > MIN_ACCURACY) return;
+
     var user = Meteor.user();
     if (!user) return;
 
