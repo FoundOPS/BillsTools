@@ -10,13 +10,13 @@ Accounts.ui.config({
 
 Template.loginView.rendered = function () {
     $("#login-buttons-signup,#forgot-password-link").click(function () {
-        alert("Custom user accounts are not setup yet. Please use google or facebook login for now.")
+        alert("Please use google or facebook login. Custom user sign up is not setup yet. ")
     });
     $("#login-buttons-angies").click(function () {
-        alert("Login with Angie's List not setup yet. Please use google or facebook login for now.")
+        alert("Please use google or facebook login. Login with Angie's List not setup yet.")
     });
     $("#login-buttons-quickbooks").click(function () {
-        alert("Login with Quickbooks is not setup yet. Please use google or facebook login for now.")
+        alert("Please use google or facebook login. Login with Quickbooks is not setup yet.")
     });
 
     $("#login-buttons-password").click(function () {
