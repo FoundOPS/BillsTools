@@ -72,7 +72,7 @@ Meteor.methods({
     }
 });
 
-//NOTE run once in console after reset (or fresh deploy)
+//NOTE run once in console after reset
 //Accounts.loginServiceConfiguration.insert({
 //    service: "google",
 //    clientId: "960721914827.apps.googleusercontent.com",
@@ -81,8 +81,8 @@ Meteor.methods({
 //
 //Accounts.loginServiceConfiguration.insert({
 //    service: "facebook",
-//    appId: "324227897678959",
-//    secret: "92f0876e2e21314c6f48556a19d0be91"
+//    appId: "421885287896331",
+//    secret: "5a4ff7bedc49b8c071c2e198a04d6ec7"
 //});
 //Accounts.createUser({
 //    username: "Jonathan Perl",

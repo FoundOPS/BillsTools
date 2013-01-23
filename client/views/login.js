@@ -29,7 +29,9 @@ Template.loginView.rendered = function () {
     });
 
     $("#login-buttons-facebook").click(function () {
-        Meteor.loginWithFacebook();
+        Meteor.loginWithFacebook({
+            requestPermissions: ['email']
+        });
     });
 
     $("#login-buttons-google").click(function () {

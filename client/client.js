@@ -27,7 +27,7 @@ Meteor.startup(function () {
         //when the user is logged in: switch to the map and update their image
         if (Meteor.userId()) {
             Meteor.Router.to("/map");
-            updateUserImage();
+            updateUserProfile();
         }
         //when logged out, switch to login
         else {

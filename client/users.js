@@ -20,6 +20,9 @@ var displayName = function (user) {
 
     if (user.services && user.services.google && user.services.google.email)
         return user.services.google.email;
+
+    if (user.services && user.services.facebook && user.services.facebook.email)
+        return user.services.facebook.email;
 };
 
 /**
@@ -36,9 +39,9 @@ var userImage = function (user) {
 /**
  * Load the user image from their Facebook or Google
  * @param user The user to load
- * @param callback Returns the image as a parameter (if it was succesful)
+ * @param callback Returns the name and image as parameters (if it was successful)
  */
-var loadUserImage = function (user, callback) {
+var loadUserProfile = function (user, callback) {
     if (!user)
         return;
 
@@ -58,16 +61,18 @@ var loadUserImage = function (user, callback) {
         url = "https://graph.facebook.com/me";
 
         data = {
-            fields: "picture.width(32).height(32)",
+            fields: "picture.width(32).height(32),name",
             access_token: fb.accessToken
         };
 
         processor = function (profile) {
             var notSet = profile.picture.data.is_silhouette;
             if (notSet)
-                return;
+                profile.picture.data.url = null;
 
-            callback(profile.picture.data.url);
+            debugger;
+
+            callback(profile.name, profile.picture.data.url);
         };
     }
     else if (goog) {
@@ -78,7 +83,7 @@ var loadUserImage = function (user, callback) {
         };
 
         processor = function (profile) {
-            callback(profile.picture);
+            callback(profile.name, profile.picture);
         };
     }
 
@@ -92,24 +97,34 @@ var loadUserImage = function (user, callback) {
     //Meteor.http.get(url, options, processor);
 };
 
-//Update the current user's image
-var updateUserImage = _.debounce(function () {
+//Update the current user's profile information from the provider (FB, Google)
+//currents updates name and picture (if available)
+var updateUserProfile = _.debounce(function () {
     var user = Meteor.user();
     if (!user)
         return;
 
-    loadUserImage(user, function (image) {
-        if (!image)
+    loadUserProfile(user, function (name, picture) {
+        if (!name && !picture) {
             return;
+        }
 
-        if (!user.profile) {
-            var profile = {
-                picture: image
-            };
+        if (user.profile) {
+            var sets = {};
+            if (name)
+                sets["profile.name"] = name;
+            if (picture)
+                sets["profile.picture"] = picture;
+            Meteor.users.update(user, {$set: sets});
+        }
+        else {
+            var profile = {};
+            if (name)
+                profile.name = name;
+            if (picture)
+                profile.picture = picture;
 
-            Meteor.users.update(user, {"$set": {"profile": profile }});
-        } else {
-            Meteor.users.update(user, {"$set": {"profile.picture": image }});
+            Meteor.users.update(user, {"$set": {profile: profile }});
         }
     });
 }, 2000);
