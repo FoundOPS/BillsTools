@@ -1,54 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////
-// Map
-var hexToRGB = function (Hex) {
-    var Long = parseInt(Hex.replace(/^#/, ""), 16);
-    return {
-        R: (Long >>> 16) & 0xff,
-        G: (Long >>> 8) & 0xff,
-        B: Long & 0xff
-    };
-};
-
-//TODO refactor to happen on single marker (when used with statuses)
-var colorMarkers = function (color) { //wait for the markers to be loaded
-    //http://stackoverflow.com/questions/9303757/how-to-change-color-of-an-image-using-jquery
-    var i = 0;
-    $(".leaflet-shadow-pane").find("img").each(function () {
-        //prevent a canvas error because the widget isn't ready yet, try again
-        if (this.height === 0 || this.width === 0 || this.naturalWidth === 0 || this.naturalHeight === 0) {
-            return false; //break the loop
-        }
-
-        var canvas = document.createElement("canvas");
-        var ctx = canvas.getContext("2d");
-        canvas.width = this.width;
-        canvas.height = this.height;
-
-        ctx.drawImage(this, 0, 0, this.naturalWidth, this.naturalHeight, 0, 0, this.width, this.height);
-        var originalPixels = ctx.getImageData(0, 0, this.width, this.height);
-        var currentPixels = ctx.getImageData(0, 0, this.width, this.height);
-
-        if (!originalPixels) return; // Check if image has loaded
-
-        var newColor = "";
-        if (color) {
-            newColor = hexToRGB(color);
-        }
-
-        for (var I = 0, L = originalPixels.data.length; I < L; I += 4) {
-            if (currentPixels.data[I + 3] > 0) {
-                currentPixels.data[I] = originalPixels.data[I] / 255 * newColor.R;
-                currentPixels.data[I + 1] = originalPixels.data[I + 1] / 255 * newColor.G;
-                currentPixels.data[I + 2] = originalPixels.data[I + 2] / 255 * newColor.B;
-            }
-        }
-
-        ctx.putImageData(currentPixels, 0, 0);
-        this.src = canvas.toDataURL("image/png");
-        i++;
-    });
-};
-
 var getMap = function () {
     return $("#map").data("map");
 };
@@ -70,12 +19,14 @@ var addIcon = function (user) {
     if (!(location && location.lat && location.lng))
         return;
 
-    var icon = L.icon({
-        iconUrl: userImage(user),
+    //TODO add green color background
+    var div = '<img src="' + userImage(user) + '"/>';
+    var icon = L.divIcon({
         iconAnchor: [11, 23],
         popupAnchor: [67, -40],
         shadowUrl: "marker9.png",
-        shadowAnchor: [14, 26]
+        shadowAnchor: [14, 26],
+        html: div
     });
 
     var marker = L.marker([location.lat, location.lng], {
@@ -89,15 +40,16 @@ var addIcon = function (user) {
     marker.userId = user._id;
 
     map.addLayer(marker);
-    //whenever a marker is added, color it
-    _.delay(function () {
-        colorMarkers("#7fbb00");
-    }, 200); //TODO change to single
+    //test coloring to white in 2.5 seconds
+//    _.delay(function () {
+//        updateIconColor(currentUser, "#FFFFFF");
+//    }, 2500);
 
     map.setView([location.lat, location.lng], 12);
 
     //TODO opacity if inactive (10 minutes)
 };
+
 var findIcon = function (userId) {
     var map = getMap();
     if (!map)
@@ -126,8 +78,14 @@ var moveIcon = function (user) {
 
     return false;
 };
+var updateIconColor = function (user, color) {
+    var icon = findIcon(user);
+
+};
+
 //endregion
 
+//TODO add listener for inactive, add opacity if last trackpoint <10 minutes
 var observeUsersHandle;
 var watchUserChanged = function () {
     if (observeUsersHandle)
@@ -145,6 +103,8 @@ var watchUserChanged = function () {
                 if (!moveIcon(newUser))
                     addIcon(newUser);
             }
+
+            //TODO update user image if it changes
         },
         removed: function () {
             //TODO remove from map
@@ -187,39 +147,3 @@ Template.map.destroyed = function () {
     $("#map").empty();
     $("#map").data("map", null);
 };
-
-Meteor.startup(function () {
-    L.NumberedDivIcon = L.Icon.extend({
-        options: {
-            // EDIT THIS TO POINT TO THE FILE AT http://www.charliecroom.com/marker_hole.png (or your own marker)
-            iconUrl: '<%= image_path("leaflet/marker_hole.png") %>',
-            number: '',
-            shadowUrl: null,
-            iconSize: new L.Point(25, 41),
-            iconAnchor: new L.Point(13, 41),
-            popupAnchor: new L.Point(0, -33),
-            /*
-             iconAnchor: (Point)
-             popupAnchor: (Point)
-             */
-            className: 'leaflet-div-icon'
-        },
-
-        createIcon: function () {
-            var div = document.createElement('div');
-            var img = this._createImg(this.options['iconUrl']);
-            var numdiv = document.createElement('div');
-            numdiv.setAttribute("class", "number");
-            numdiv.innerHTML = this.options['number'] || '';
-            div.appendChild(img);
-            div.appendChild(numdiv);
-            this._setIconStyles(div, 'icon');
-            return div;
-        },
-
-        //you could change this to add a shadow like in the normal marker if you really wanted
-        createShadow: function () {
-            return null;
-        }
-    });
-});
