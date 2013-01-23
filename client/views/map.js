@@ -24,8 +24,6 @@ var addIcon = function (user) {
     var icon = L.divIcon({
         iconAnchor: [11, 23],
         popupAnchor: [67, -40],
-        shadowUrl: "marker9.png",
-        shadowAnchor: [14, 26],
         html: div
     });
 
@@ -42,7 +40,7 @@ var addIcon = function (user) {
     map.addLayer(marker);
     //test coloring to white in 2.5 seconds
 //    _.delay(function () {
-//        updateIconColor(currentUser, "#FFFFFF");
+//        updateIconColor(user, "#FFFFFF");
 //    }, 2500);
 
     map.setView([location.lat, location.lng], 12);
@@ -79,8 +77,9 @@ var moveIcon = function (user) {
     return false;
 };
 var updateIconColor = function (user, color) {
-    var icon = findIcon(user);
+    var icon = findIcon(user._id);
 
+    icon._icon.style.background = color;
 };
 
 //endregion
