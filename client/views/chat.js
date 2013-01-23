@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Chat
 
-//options should include: recipient, text
+//Creates a message in the collection. options should include: recipient, text
 var createMessage = function (text) {
     var options = {recipient: Session.get("recipient"), text: text};
     Meteor.call('createMessage', options, function (error, message) {
@@ -11,9 +11,13 @@ var createMessage = function (text) {
     });
 };
 
+//sends a message from the text area, and refocuses
 var sendMessage = function (textArea) {
     var text = textArea.value;
-    createMessage(text);
+    //create message if it's not blank
+    if (text != "\n") {
+        createMessage(text);
+    }
     textArea.value = "";
     textArea.focus();
 };

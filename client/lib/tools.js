@@ -2,7 +2,7 @@ jQuery.fn.outerHTML = function () {
     return jQuery('<div />').append(this.eq(0).clone()).html();
 };
 
-function urlParameters() {
+var urlParameters = function () {
     var urlParams = {};
     (function () {
         var match,
@@ -17,4 +17,4 @@ function urlParameters() {
             urlParams[decode(match[1])] = decode(match[2]);
     })();
     return urlParams;
-}
+};
