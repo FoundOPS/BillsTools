@@ -179,7 +179,8 @@ var watchMessagesRead = function () {
     //find all unread messages for the user
     observeUsersHandle = Messages.find({read: {$ne: true}, recipient: currentUserId}).observe({
         added: function (message) {
-            setIconFlashing(message.author);
+            if (Session.get("recipient") !== message.author)
+                setIconFlashing(message.author);
         }
     });
 };
@@ -202,8 +203,8 @@ Template.map.rendered = function () {
         //recipient
         var recipient = e.popup._source.userId;
         Session.set("recipient", recipient);
-        setIconStable(recipient)
         setupPopup(e.popup);
+        setIconStable(recipient);
     });
 
     map.on('popupclose', function (e) {
