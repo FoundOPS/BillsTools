@@ -1,7 +1,9 @@
 /*region variables*/
 @green: #7fbb00;
 @white: #ffffff;
+//@grey: #6A6E62;
 @grey: #e6e6e6;
+@blue: #1450C5;
 @root: "../../";
 .hoverBgColor(@color: @white, @strength: 10%) {
     background-color: darken(@color, @strength);
@@ -273,8 +275,9 @@ html, body {
     }
     .chatArea {
         position: absolute;
+        left: 8px;
         bottom: 97px;
-        width: 248px;
+        width: 247px;
         background: @grey;
         .messages { //TODO: 100%
             max-height: 238px;

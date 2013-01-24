@@ -37,10 +37,6 @@ var addIcon = function (user) {
     marker.userId = user._id;
 
     map.addLayer(marker);
-    //test coloring to white in 2.5 seconds
-//    _.delay(function () {
-//        updateIconColor(user, "#FFFFFF");
-//    }, 2500);
 
     //TODO opacity if inactive (10 minutes)
 };
@@ -60,6 +56,7 @@ var findIcon = function (userId) {
 
     return null;
 };
+
 var moveIcon = function (user) {
     var newLocation = user.profile.position;
     if (!(newLocation && newLocation.lat && newLocation.lng))
@@ -90,6 +87,7 @@ var getMarkersBounds = function () {
 
 //prevents map centered from being called twice
 var mapCentered = false;
+
 //centers map on all users, or current user location if no other users
 var centerOnUsers = _.debounce(function (force) {
     if (!force) {
@@ -111,6 +109,7 @@ var centerOnUsers = _.debounce(function (force) {
         }
     }
 }, 500);
+
 var updateIconPicture = function (user) {
     var icon = findIcon(user._id);
     if (icon) {
@@ -118,20 +117,27 @@ var updateIconPicture = function (user) {
     }
 };
 
-//TODO
 var setIconFlashing = _.debounce(function (userId) {
+    var icon = findIcon(userId);
+    if (!icon) return;
 
+    //animate the icon from green to white to green...etc
+    icon.flashingId = Meteor.setInterval(function () {
+        var currentColor = icon._icon.style.background;
+        currentColor = currentColor === hexToRGB(green) ? yellow : green;
+        icon._icon.style.background = currentColor;
+    }, 500);
 }, 250);
+
 var setIconStable = function (userId) {
+    var icon = findIcon(userId);
+    if (!icon) return;
 
+    Meteor.clearTimeout(icon.flashingId);
+
+    //set back to green
+    icon._icon.style.background = green;
 };
-//TODO remove?
-var updateIconColor = function (user, color) {
-    var icon = findIcon(user._id);
-
-    icon._icon.style.background = color;
-};
-
 
 //endregion
 
@@ -183,7 +189,6 @@ var watchMessagesRead = function () {
         }
     });
 };
-
 
 //TODO constantly check for inactive every minute, add opacity if last trackpoint <10 minutes
 

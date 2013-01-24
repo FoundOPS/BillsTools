@@ -24,3 +24,14 @@ var isMobileDevice = function () {
         platform.product === "iPhone" || platform.product === "iPod" || platform.product === "iPad"
         || window.cordova; //phonegap apps
 };
+
+var hexToRGB = function (Hex) {
+    var Long = parseInt(Hex.replace(/^#/, ""), 16);
+    var rgb = {
+        R: (Long >>> 16) & 0xff,
+        G: (Long >>> 8) & 0xff,
+        B: Long & 0xff
+    };
+
+    return "rgb(" + rgb.R + ", " + rgb.G + ", " + rgb.B + ")";
+};
