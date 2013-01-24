@@ -182,6 +182,12 @@ html, body {
 
 .map {
     height: 100%;
+    .leaflet-popup{
+        visibility: hidden;
+        &.show{
+            visibility: visible !important;
+        }
+    }
     .leaflet-popup-content-wrapper {
         border: 6px solid #7fbb00;
         background: @grey;

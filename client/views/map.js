@@ -122,7 +122,7 @@ var setIconFlashing = _.debounce(function (userId) {
     if (!icon) return;
 
     if (icon.flashingId) return;
-    
+
     //animate the icon from green to white to green...etc
     icon.flashingId = Meteor.setInterval(function () {
         var currentColor = icon._icon.style.background;
@@ -212,6 +212,12 @@ Template.map.rendered = function () {
         Session.set("recipient", recipient);
         setupPopup(e.popup);
         setIconStable(recipient);
+
+        _.delay(function () {
+            //remove popup hidden
+            //it was there to prevent the popup from showing up before content is sent
+            $(".leaflet-popup").addClass("show");
+        }, 250);
     });
 
     map.on('popupclose', function (e) {
