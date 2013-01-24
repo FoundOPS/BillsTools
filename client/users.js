@@ -70,8 +70,6 @@ var loadUserProfile = function (user, callback) {
             if (notSet)
                 profile.picture.data.url = null;
 
-            debugger;
-
             callback(profile.name, profile.picture.data.url);
         };
     }

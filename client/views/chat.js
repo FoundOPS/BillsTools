@@ -62,13 +62,31 @@ Template.chat.iAm = function (userId) {
 };
 
 Template.chat.messageGroups = function () {
-    var messages = Messages.find({
+    var messagesCursor = Messages.find({
             $or: [
                 {author: Session.get("recipient")},
                 {recipient: Session.get("recipient")}
             ]},
-        {sort: {created: 1}}).fetch();
+        {sort: {created: 1}});
 
+    messagesCursor.observe({
+        added: function (message) {
+            //if a chat window is open (there is a recipient): mark all the messages from the recipient as read
+            var recipient = Session.get("recipient");
+            if (recipient && message.recipient === Meteor.userId() && !message.read) {
+                Meteor.call('readMessage', message._id, function (error) {
+                    if (error) {
+                        //TODO error handling
+                        console.log(error);
+                    } else {
+                        console.log("Read");
+                    }
+                });
+            }
+        }
+    });
+
+    var messages = messagesCursor.fetch();
     //Each message group has:
     //messages: an array of messages
     //author: the author of the messages
@@ -79,8 +97,6 @@ Template.chat.messageGroups = function () {
     for (var i in messages) {
         var message = messages[i];
         var messageGroup = messageGroups[groupIndex];
-
-        //
 
         //use the same message group if the author is the same
         //and the last message is within 5 minutes

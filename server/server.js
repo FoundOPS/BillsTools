@@ -23,7 +23,7 @@ Messages.allow({
         return false; // no cowboy inserts -- use createMessage method
     },
     update: function (userId, messages, fields, modifier) {
-        return false; // no updates
+        return false; // no updates -- use readMessage instead
     },
     remove: function (userId, messages) {
         return false; // no deletes
@@ -69,6 +69,16 @@ Meteor.methods({
             recipient: options.recipient,
             text: options.text
         });
+    },
+    readMessage: function (id) {
+        var message = Messages.find(id).fetch()[0];
+        if (!message)
+            throw new Meteor.Error(400, "Message does not exist");
+
+        if (message.recipient !== this.userId)
+            throw new Meteor.Error(403, "Can only read messages sent to you");
+
+        return Messages.update({_id: id}, {$set: {read: true}});
     }
 });
 

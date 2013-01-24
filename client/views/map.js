@@ -175,7 +175,9 @@ Template.map.rendered = function () {
         setupPopup(e.popup);
     });
 
-    //TODO on close recipient = null
+    map.on('popupclose', function (e) {
+        Session.set("recipient", null);
+    });
 
     //store the map on the element so it can be retrieved elsewhere
     $("#map").data("map", map);
