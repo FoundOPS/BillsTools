@@ -52,3 +52,16 @@ var fixFirefoxCss = function () {
         });
     }
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Main page ui
+
+Meteor.autorun(function () {
+    var currentUserId = Meteor.userId();
+    var unreadMessages = Messages.find({read: {$ne: true}, recipient: currentUserId}).count();
+
+    if (unreadMessages)
+        document.title = "(" + unreadMessages + ") Bills tools";
+    else
+        document.title = "Bills tools";
+});

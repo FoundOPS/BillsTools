@@ -1,8 +1,5 @@
 <template name="topBar">
     <div class="top">
-        {{#if unreadCount}}
-        {{unreadCount}}
-        {{/if}}
         <img src="logo.png" class="logo"/>
         {{#if currentUser}}
         <div id="menu">{{{currentUserPictureElement false}}}</div>

@@ -121,6 +121,8 @@ var setIconFlashing = _.debounce(function (userId) {
     var icon = findIcon(userId);
     if (!icon) return;
 
+    if (icon.flashingId) return;
+    
     //animate the icon from green to white to green...etc
     icon.flashingId = Meteor.setInterval(function () {
         var currentColor = icon._icon.style.background;
