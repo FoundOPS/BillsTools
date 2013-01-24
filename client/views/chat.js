@@ -155,23 +155,20 @@ Template.chat.rendered = _.debounce(function () {
     if (isMobileSize) {
         var scrollPane = $(".chatBox .messages");
         scrollPane.jScrollPane({verticalDragMinHeight: 20});
-        $(window).bind(
-            'resize',
-            function () {
-                var api = scrollPane.data('jsp');
-                var throttleTimeout;
-                if ($.browser.msie) {
-                    if (!throttleTimeout) {
-                        throttleTimeout = setTimeout(function () {
-                            api.reinitialise();
-                            throttleTimeout = null;
-                        }, 50);
-                    }
-                } else {
-                    api.reinitialise();
+        $(window).resize(function () {
+            var api = scrollPane.data('jsp');
+            var throttleTimeout;
+            if ($.browser.msie) {
+                if (!throttleTimeout) {
+                    throttleTimeout = setTimeout(function () {
+                        api.reinitialise();
+                        throttleTimeout = null;
+                    }, 50);
                 }
+            } else {
+                api.reinitialise();
             }
-        );
+        });
 
         scrollPane.data('jsp').scrollToBottom();
         //TODO: Make following a fallback if jsp was not initialized.
@@ -179,19 +176,16 @@ Template.chat.rendered = _.debounce(function () {
             scrollTop: (scrollPane[0].scrollHeight - scrollPane.height())
         }, 0);
         $(".chatBox textarea").focus();
+    } else {
+        var icon = findIcon(Session.get("recipient"));
+        if (!icon || !icon._popup) {
+            return;
+        }
+
+        var clonedChat = $($("#currentChat").clone().outerHTML()).attr("id", "").outerHTML();
+        icon._popup.setContent(clonedChat);
+        setupPopup(icon._popup);
     }
-
-    var icon = findIcon(Session.get("recipient"));
-    if (!icon || !icon._popup) {
-        return;
-    }
-
-    var clonedChat = $($("#currentChat").clone().outerHTML()).attr("id", "").outerHTML();
-    icon._popup.setContent(clonedChat);
-    setupPopup(icon._popup);
-
-    //setup popup
-    console.log("rendered chat");
 }, 200, true);
 
 Template.chat.destroyed = function () {
