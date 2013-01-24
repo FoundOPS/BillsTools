@@ -27,9 +27,9 @@ var displayName = function (user) {
 
 /**
  * @param user
- * @return {String} the user image url
+ * @return {String} the user's picture url
  */
-var userImage = function (user) {
+var userPicture = function (user) {
     if (user && user.profile && user.profile.picture)
         return user.profile.picture;
 

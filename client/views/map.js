@@ -19,7 +19,7 @@ var addIcon = function (user) {
     if (!(location && location.lat && location.lng))
         return;
 
-    var div = '<img src="' + userImage(user) + '"/>';
+    var div = '<img src="' + userPicture(user) + '"/>';
     var icon = L.divIcon({
         iconAnchor: [11, 23],
         popupAnchor: [69.5, -40],
@@ -111,7 +111,12 @@ var centerOnUsers = _.debounce(function (force) {
         }
     }
 }, 500);
-
+var updateIconPicture = function (user) {
+    var icon = findIcon(user._id);
+    if (icon) {
+        $(icon._icon).find("img").attr("src", userPicture(user));
+    }
+};
 var updateIconColor = function (user, color) {
     var icon = findIcon(user._id);
 
@@ -132,15 +137,18 @@ var watchUserChanged = function () {
             centerOnUsers();
         },
         changed: function (newUser, atIndex, oldUser) {
-            //if the position changed move the icon
-            if (!(oldUser.profile && newUser.profile &&
-                _.isEqual(oldUser.profile.position, newUser.profile.position))) {
-                //if the icon doesn't exist yet, add it
-                if (!moveIcon(newUser))
-                    addIcon(newUser);
+            if (oldUser.profile && newUser.profile) {
+                //if the position changed move the icon
+                if (!_.isEqual(oldUser.profile.position, newUser.profile.position)) {
+                    //if the icon doesn't exist yet, add it
+                    if (!moveIcon(newUser))
+                        addIcon(newUser);
+                }
+                //if the profile picture changed update the icon picture
+                else if (!_.isEqual(oldUser.profile.picture, newUser.profile.picture)) {
+                    updateIconPicture(newUser);
+                }
             }
-
-            //TODO update user image if it changes
         },
         removed: function () {
             //TODO remove from map
