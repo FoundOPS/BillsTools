@@ -13,10 +13,17 @@
     color: darken(@color, @strength);
 }
 
+.borderBox{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 /*endregion*/
 body {
     padding: 0;
     margin: 0;
+    font-size: 100%;
     font-family: verdana, arial, sans-serif;
 }
 
@@ -41,6 +48,10 @@ html, body {
     height: 40px;
     background: @green;
     z-index: 2;
+    -webkit-box-shadow: 0px 0px 5px #333335;
+    -moz-box-shadow: 0px 0px 5px #333335;
+    box-shadow: 0px 0px 5px #333335;
+
     #menu{
         position: absolute;
         top: 5px;
@@ -171,7 +182,98 @@ html, body {
     }
 }
 
+#currentChat.fullScreen{
+    .borderBox;
+    width: 100%;
+    height: 100%;
+}
+
+#currentChat.fullScreen .chatTop{
+    position: absolute;
+    top: 40px;
+    height: 38px;
+    left: 0;
+    width: 100%;
+//Why is this behind??
+    z-index: 1;
+    background: #5F9B00;
+    border: none;
+}
+
+#currentChat.fullScreen .chatArea{
+    .borderBox;
+    padding-bottom: 72px;
+    position: absolute;
+    padding-top: 79px;
+    height: 100%;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+#currentChat.fullScreen .chatBottom{
+    overflow: hidden;
+    width: 100%;
+    height: 61px;
+    bottom: 0;
+    right: 0;
+    padding-left: 8px;
+    padding-right: 50px;
+    padding-bottom: 8px;
+    .borderBox;
+}
+#currentChat.fullScreen .chatBottom textarea{
+    position: static;
+    .borderBox;
+
+    width: 100%;
+    height: 100%;
+}
+
+#currentChat.fullScreen .messages{
+    max-height: 100%;
+    height: 100%;
+}
+
+#currentChat.fullScreen .senderImage{
+    position: absolute;
+    right: 10px;
+}
+
+#currentChat.fullScreen .textAreaArrow{
+    left: auto;
+    right: 35px;
+    position: absolute;
+}
+
+#currentChat.fullScreen #closeChatMobile{
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    font-size: 22px;
+    right: 10px;
+    padding: 6px 25px;
+    cursor: pointer;
+    .borderBox;
+}
+
+#currentChat.fullScreen .profileImageSmall {
+    top: 8px;
+}
+
+#currentChat.fullScreen .recepientName {
+    top: 2px;
+}
+
+#closeChatMobile{
+    display: none;
+}
+
 .mapWrapper {
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     top: 0;
     left: 0;
@@ -294,6 +396,7 @@ html, body {
                 padding: 4px 8px;
                 border-bottom: 2px solid @grey;
                 list-style: none;
+                word-wrap: break-word;
                 .triangle {
                     position: relative;
                     width: 0;

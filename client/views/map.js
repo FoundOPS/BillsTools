@@ -122,11 +122,11 @@ var setIconFlashing = _.debounce(function (userId) {
     if (!icon) return;
 
     if (icon.flashingId) return;
-    
+
     //animate the icon from green to white to green...etc
     icon.flashingId = Meteor.setInterval(function () {
         var currentColor = icon._icon.style.background;
-        currentColor = currentColor === hexToRGB(green) ? yellow : green;
+        currentColor = currentColor === HexToRGB(green) ? yellow : green;
         icon._icon.style.background = currentColor;
     }, 500);
 }, 250);
@@ -210,7 +210,16 @@ Template.map.rendered = function () {
         //recipient
         var recipient = e.popup._source.userId;
         Session.set("recipient", recipient);
-        setupPopup(e.popup);
+
+        Meteor.Router.to("/chat?recipient=" + recipient);
+
+        var isMobileSize = IsMobileSize();
+        Session.set("isMobileSize", isMobileSize);
+
+        if (!Session.get("isMobileSize")) {
+            setupPopup(e.popup);
+        }
+
         setIconStable(recipient);
     });
 
@@ -241,9 +250,13 @@ Template.map.destroyed = function () {
 };
 
 //fix map rendering issue on resize
-var invalidateMapSize = _.debounce(function () {
+//update isMobileSize session variable
+var updateSize = _.debounce(function () {
     var map = getMap();
     if (map)
         map.invalidateSize(false);
 }, 250);
-$(window).resize(invalidateMapSize);
+
+Meteor.startup(function () {
+    $(window).resize(updateSize);
+});

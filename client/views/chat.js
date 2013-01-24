@@ -24,14 +24,8 @@ var sendMessage = function (textArea) {
 
 //track enter on text area & scroll to bottom
 var setupPopup = function (popup) {
-    var textArea = $(popup._container).find("textarea");
-
-    textArea.keyup(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-            sendMessage(textArea[0]);
-        }
-    });
+    //var textArea = $(popup._container).find("textarea");
+    var textArea = $(".chatBox").find("textarea");
 
     $(popup._container).find(".senderImage").click(function () {
         sendMessage(textArea[0]);
@@ -45,15 +39,50 @@ var setupPopup = function (popup) {
     textArea.focus();
 };
 
+var setupChat = function () {
+    console.log("Setting up.");
+    $(document).on("keyup", ".chatBox textarea", function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            sendMessage(this);
+            //$(".chatBox textarea").focus();
+            //hideKeyboard($(this));
+        }
+    });
+
+
+    $(document)
+        .on("click", "#closeChatMobile", function () {
+            Meteor.Router.to("/map");
+        })
+        .on('touchstart mousedown', '#closeChatMobile',
+        function () {
+            $(this).css({backgroundColor: "#7fbb00"});
+        }
+    )
+        .on('touchend mouseup mouseout', '#closeChatMobile',
+        function () {
+            $(this).css({backgroundColor: ""});
+        }
+    );
+};
+
 //recipient -> the user currently talking with
 Template.chat.recipient = function () {
     return Session.get("recipient");
 };
+
 Template.chat.recipientName = function () {
+    console.log("Getting recipientName.");
     var recipient = Meteor.users.find({_id: Session.get("recipient")}).fetch();
     if (recipient[0])
         return displayName(recipient[0]);
+    console.log("None Found.");
     return "";
+};
+
+Template.chat.isMobileSize = function () {
+    return Session.get("isMobileSize");
 };
 
 //Returns if the userId is the current user
@@ -118,7 +147,40 @@ Template.chat.messageGroups = function () {
 };
 
 //wait for the map to render
+//Debounce immediate param set to true to immediately focus textarea and scroll to bottom of div. Required for mobile view.
 Template.chat.rendered = _.debounce(function () {
+    console.log("Rendering");
+
+    var isMobileSize = Session.get("isMobileSize");
+    if (isMobileSize) {
+        var scrollPane = $(".chatBox .messages");
+        scrollPane.jScrollPane({verticalDragMinHeight: 20});
+        $(window).bind(
+            'resize',
+            function () {
+                var api = scrollPane.data('jsp');
+                var throttleTimeout;
+                if ($.browser.msie) {
+                    if (!throttleTimeout) {
+                        throttleTimeout = setTimeout(function () {
+                            api.reinitialise();
+                            throttleTimeout = null;
+                        }, 50);
+                    }
+                } else {
+                    api.reinitialise();
+                }
+            }
+        );
+
+        scrollPane.data('jsp').scrollToBottom();
+        //TODO: Make following a fallback if jsp was not initialized.
+        scrollPane.animate({
+            scrollTop: (scrollPane[0].scrollHeight - scrollPane.height())
+        }, 0);
+        $(".chatBox textarea").focus();
+    }
+
     var icon = findIcon(Session.get("recipient"));
     if (!icon || !icon._popup) {
         return;
@@ -130,7 +192,7 @@ Template.chat.rendered = _.debounce(function () {
 
     //setup popup
     console.log("rendered chat");
-}, 200);
+}, 200, true);
 
 Template.chat.destroyed = function () {
     if (messagesCursorHandle) {

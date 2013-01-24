@@ -1,9 +1,16 @@
+<template name="mobileChat">
+    {{> topBar}}
+
+    {{> chat}}
+</template>
+
 <template name="chat">
     {{#if currentUser}}
-    <div id="currentChat" class='chatBox'>
+    <div id="currentChat" class='chatBox{{#if isMobileSize}} fullScreen{{/if}}'>
         <div class='chatTop'>
             <div class="profileImageSmall">{{{userPictureElement recipient true}}}</div>
             <span class="recepientName">{{recipientName}}</span>
+            <span id="closeChatMobile">×</span>
         </div>
         <div class='chatArea'>
             <ul class='messages'>

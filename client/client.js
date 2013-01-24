@@ -15,11 +15,19 @@ Meteor.Router.add({
         return "mapView";
     },
     '/chat': function () {
-//        //TODO if mobile, set mobileView
 //        var params = urlParameters();
 //        var recipient = params["recipient"];
 //        Session.set("recipient", recipient);
+
+        if(Session.get("isMobileSize")){
+            return "mobileChat";
+        }
+        return "mapView";
     }
+});
+
+Meteor.startup(function(){
+    setupChat();
 });
 
 Meteor.startup(function () {
