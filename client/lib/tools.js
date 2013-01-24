@@ -40,7 +40,6 @@ var IsMobileSize = function(){
     var w = $(window).width();
     var h = $(window).height();
     var b = ((w < 540 && h < 960) || (h < 540 && w < 960));
-    //console.log("Testing size: "+b);
     return b;
 };
 

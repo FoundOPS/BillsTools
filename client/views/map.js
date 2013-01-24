@@ -2,7 +2,7 @@ var getMap = function () {
     return $("#map").data("map");
 };
 
-//region Icons
+//region Icons (Markers)
 
 //add a person icon to the map
 var addIcon = function (user) {
@@ -71,6 +71,38 @@ var moveIcon = function (user) {
     return false;
 };
 
+var updateIconPicture = function (user) {
+    var icon = findIcon(user._id);
+    if (icon) {
+        $(icon._icon).html(userPictureElement(user, "false"));
+    }
+};
+
+var setIconFlashing = _.debounce(function (userId) {
+    var icon = findIcon(userId);
+    if (!icon) return;
+
+    if (icon.flashingId) return;
+
+    //animate the icon from green to white to green...etc
+    icon.flashingId = Meteor.setInterval(function () {
+        var currentColor = $(icon._icon).css('background-color');
+        currentColor = currentColor === HexToRGB(green) ? yellow : green;
+        $(icon._icon).css('background-color', currentColor);
+    }, 500);
+}, 250);
+var setIconStable = function (userId) {
+    var icon = findIcon(userId);
+    if (!icon) return;
+
+    Meteor.clearTimeout(icon.flashingId);
+    icon.flashingId = null;
+
+    //set back to green
+    icon._icon.style.background = green;
+};
+
+
 var getMarkersBounds = function () {
     var map = getMap();
     var layers = map._layers;
@@ -87,7 +119,6 @@ var getMarkersBounds = function () {
 
 //prevents map centered from being called twice
 var mapCentered = false;
-
 //centers map on all users, or current user location if no other users
 var centerOnUsers = _.debounce(function (force) {
     if (!force) {
@@ -109,38 +140,6 @@ var centerOnUsers = _.debounce(function (force) {
         }
     }
 }, 500);
-
-var updateIconPicture = function (user) {
-    var icon = findIcon(user._id);
-    if (icon) {
-        $(icon._icon).html(userPictureElement(user, "false"));
-    }
-};
-
-var setIconFlashing = _.debounce(function (userId) {
-    var icon = findIcon(userId);
-    if (!icon) return;
-
-    if (icon.flashingId) return;
-
-    //animate the icon from green to white to green...etc
-    icon.flashingId = Meteor.setInterval(function () {
-        var currentColor = icon._icon.style.background;
-        currentColor = currentColor === HexToRGB(green) ? yellow : green;
-        icon._icon.style.background = currentColor;
-    }, 500);
-}, 250);
-
-var setIconStable = function (userId) {
-    var icon = findIcon(userId);
-    if (!icon) return;
-
-    Meteor.clearTimeout(icon.flashingId);
-    icon.flashingId = null;
-
-    //set back to green
-    icon._icon.style.background = green;
-};
 
 //endregion
 
@@ -197,7 +196,6 @@ var watchMessagesRead = function () {
 //TODO constantly check for inactive every minute, add opacity if last trackpoint <10 minutes
 
 Template.map.rendered = function () {
-    console.log("render map");
     var map = L.map('map', {
         doubleClickZoom: false,
         maxZoom: 17
@@ -208,30 +206,29 @@ Template.map.rendered = function () {
     }).addTo(map);
 
     map.on('popupopen', function (e) {
+        //show popup after a slight delay to let content set (it will override hidden)
+        //it was there to prevent the popup from showing up before content is sent
+        Meteor.setTimeout(function () {
+            $(".leaflet-popup").addClass("show");
+        }, 250);
+
         //recipient
         var recipient = e.popup._source.userId;
         Session.set("recipient", recipient);
-
-        Meteor.Router.to("/chat?recipient=" + recipient);
+        setIconStable(recipient);
 
         var isMobileSize = IsMobileSize();
         Session.set("isMobileSize", isMobileSize);
 
-        if (!Session.get("isMobileSize")) {
+        Meteor.Router.to("/chat");
+
+        if (!isMobileSize) {
             setupPopup(e.popup);
         }
-
-        setIconStable(recipient);
-
-        _.delay(function () {
-            //remove popup hidden
-            //it was there to prevent the popup from showing up before content is sent
-            $(".leaflet-popup").addClass("show");
-        }, 250);
     });
 
     map.on('popupclose', function (e) {
-        Session.set("recipient", null);
+        chatClosed();
     });
 
     //store the map on the element so it can be retrieved elsewhere
