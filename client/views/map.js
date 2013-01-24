@@ -117,15 +117,26 @@ var updateIconPicture = function (user) {
         $(icon._icon).find("img").attr("src", userPicture(user));
     }
 };
+
+//TODO
+var setIconFlashing = _.debounce(function (userId) {
+
+}, 250);
+var setIconStable = function (userId) {
+
+};
+//TODO remove?
 var updateIconColor = function (user, color) {
     var icon = findIcon(user._id);
 
     icon._icon.style.background = color;
 };
 
+
 //endregion
 
-//TODO add listener for inactive, add opacity if last trackpoint <10 minutes
+//when users are added: add the icon, center on the users (if its the first load)
+//when users change [position: move the icon], [picture: update the icon]
 var observeUsersHandle;
 var watchUserChanged = function () {
     if (observeUsersHandle)
@@ -157,6 +168,25 @@ var watchUserChanged = function () {
     });
 };
 
+//when messages are added: if they are unread set their icons to blink
+var observeReadHandle;
+var watchMessagesRead = function () {
+    if (observeReadHandle)
+        return;
+
+    var currentUserId = Meteor.userId();
+
+    //find all unread messages for the user
+    observeUsersHandle = Messages.find({read: {$ne: true}, recipient: currentUserId}).observe({
+        added: function (message) {
+            setIconFlashing(message.author);
+        }
+    });
+};
+
+
+//TODO constantly check for inactive every minute, add opacity if last trackpoint <10 minutes
+
 Template.map.rendered = function () {
     console.log("render map");
     var map = L.map('map', {
@@ -172,6 +202,7 @@ Template.map.rendered = function () {
         //recipient
         var recipient = e.popup._source.userId;
         Session.set("recipient", recipient);
+        setIconStable(recipient)
         setupPopup(e.popup);
     });
 
@@ -183,12 +214,18 @@ Template.map.rendered = function () {
     $("#map").data("map", map);
 
     watchUserChanged();
+    watchMessagesRead();
 };
 
 Template.map.destroyed = function () {
     if (observeUsersHandle) {
         observeUsersHandle.stop();
         observeUsersHandle = null;
+    }
+
+    if (observeReadHandle) {
+        observeReadHandle.stop();
+        observeReadHandle = null;
     }
 
     $("#map").empty();

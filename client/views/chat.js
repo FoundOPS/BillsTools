@@ -6,7 +6,7 @@ var createMessage = function (text) {
     var options = {recipient: Session.get("recipient"), text: text};
     Meteor.call('createMessage', options, function (error, message) {
         if (!error) {
-            //TODO update sent status of message
+            //TODO update sent status of message?
         }
     });
 };
