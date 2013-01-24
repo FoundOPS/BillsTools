@@ -2,7 +2,7 @@
     <div class="top">
         <img src="logo.png" class="logo"/>
         {{#if currentUser}}
-        <img src="{{currentUserPicture}}" id="menu"/>
+        <div id="menu">{{{currentUserPictureElement false}}}</div>
         {{/if}}
     </div>
 </template>

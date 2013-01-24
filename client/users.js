@@ -25,15 +25,27 @@ var displayName = function (user) {
         return user.services.facebook.email;
 };
 
-/**
- * @param user
- * @return {String} the user's picture url
- */
-var userPicture = function (user) {
-    if (user && user.profile && user.profile.picture)
-        return user.profile.picture;
+//generates a users image, a users initials, or a blank image, based on the available data
+var userPictureElement = function (user, useBlankImage) {
+    var element = "";
+    //check if a user and profile exist
+    if (user && user.profile) {
+        var profile = user.profile;
+        //if there's a picture, use it
+        if (profile.picture) {
+            element = "<img src='" + profile.picture + "'/>";
+        //if there's a name, display their initials
+        } else if (profile.name && useBlankImage == "false") {
+            var splitName = profile.name.split(" ");
+            var initials = splitName[0].charAt(0) + splitName[1].charAt(0);
+            element = "<div class='initials'>" + initials + "</div>";
+        //display the default image
+        } else {
+            element = "<img src='emptyPerson3.png'/>";
+        }
+    }
 
-    return "emptyPerson3.png";
+    return element;
 };
 
 /**

@@ -15,21 +15,21 @@ Handlebars.registerHelper('calendarTime', function (date) {
 /**
  * @return The user's profile image
  */
-Handlebars.registerHelper('currentUserPicture', function () {
+Handlebars.registerHelper('currentUserPictureElement', function (useBlankImage) {
     var user = Meteor.user();
 
-    return userPicture(user);
+    return userPictureElement(user, useBlankImage);
 });
 
 /**
  * @param userId The user id
  * @return The user's profile image
  */
-Handlebars.registerHelper('userPicture', function (userId) {
+Handlebars.registerHelper('userPictureElement', function (userId, useBlankImage) {
     var user;
     if (typeof userId === "string") {
         user = Meteor.users.find(userId).fetch()[0];
     }
 
-    return userPicture(user);
+    return userPictureElement(user, useBlankImage);
 });

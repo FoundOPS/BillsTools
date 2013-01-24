@@ -2,7 +2,7 @@
     {{#if currentUser}}
     <div id="currentChat" class='chatBox'>
         <div class='chatTop'>
-            <img class="profileImageSmall" src='{{userPicture recipient}}'/>
+            <div class="profileImageSmall">{{{userPictureElement recipient true}}}</div>
             <span class="recepientName">{{recipientName}}</span>
         </div>
         <div class='chatArea'>
@@ -22,7 +22,7 @@
         </div>
         <div class="chatBottom">
             <textarea placeholder="Type message"></textarea>
-            <img class="profileImageSmall senderImage" class="senderImage" src='{{currentUserPicture}}'/>
+            <div class="profileImageSmall senderImage">{{{currentUserPictureElement false}}}</div>
             <span class="textAreaArrow"></span>
         </div>
     </div>

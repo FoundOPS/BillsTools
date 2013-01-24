@@ -19,7 +19,7 @@ var addIcon = function (user) {
     if (!(location && location.lat && location.lng))
         return;
 
-    var div = '<img src="' + userPicture(user) + '"/>';
+    var div = userPictureElement(user, "false");
     var icon = L.divIcon({
         iconAnchor: [11, 23],
         popupAnchor: [69.5, -40],
@@ -114,7 +114,7 @@ var centerOnUsers = _.debounce(function (force) {
 var updateIconPicture = function (user) {
     var icon = findIcon(user._id);
     if (icon) {
-        $(icon._icon).find("img").attr("src", userPicture(user));
+        $(icon._icon).html(userPictureElement(user, "false"));
     }
 };
 var updateIconColor = function (user, color) {
