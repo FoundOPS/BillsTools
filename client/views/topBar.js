@@ -1,5 +1,11 @@
 // Top Bar
 ///////////////////////////////////////////////////////////////////////////////
+Template.topBar.unreadCount = function () {
+    var currentUserId = Meteor.userId();
+
+    return Messages.find({read: {$ne: true}, recipient: currentUserId}).count();
+};
+
 Template.topBar.rendered = function () {
     $("#menu").optionsPopup({
         id: "menu",
