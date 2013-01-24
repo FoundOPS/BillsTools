@@ -136,6 +136,7 @@ var setIconStable = function (userId) {
     if (!icon) return;
 
     Meteor.clearTimeout(icon.flashingId);
+    icon.flashingId = null;
 
     //set back to green
     icon._icon.style.background = green;
