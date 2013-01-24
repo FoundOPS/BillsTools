@@ -194,3 +194,11 @@ Template.map.destroyed = function () {
     $("#map").empty();
     $("#map").data("map", null);
 };
+
+//fix map rendering issue on resize
+var invalidateMapSize = _.debounce(function () {
+    var map = getMap();
+    if (map)
+        map.invalidateSize(false);
+}, 250);
+$(window).resize(invalidateMapSize);
