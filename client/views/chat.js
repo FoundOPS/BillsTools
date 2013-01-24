@@ -61,6 +61,7 @@ Template.chat.iAm = function (userId) {
     return Session.get("currentUser") === userId;
 };
 
+var messagesCursorHandle;
 Template.chat.messageGroups = function () {
     var messagesCursor = Messages.find({
             $or: [
@@ -69,7 +70,10 @@ Template.chat.messageGroups = function () {
             ]},
         {sort: {created: 1}});
 
-    messagesCursor.observe({
+    if (messagesCursorHandle) {
+        messagesCursorHandle.stop();
+    }
+    messagesCursorHandle = messagesCursor.observe({
         added: function (message) {
             //if a chat window is open (there is a recipient): mark all the messages from the recipient as read
             var recipient = Session.get("recipient");
@@ -129,5 +133,8 @@ Template.chat.rendered = _.debounce(function () {
 }, 200);
 
 Template.chat.destroyed = function () {
-    //TODO
+    if (messagesCursorHandle) {
+        messagesCursorHandle.stop();
+        messagesCursorHandle = null;
+    }
 };
