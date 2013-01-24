@@ -221,6 +221,12 @@ Template.map.rendered = function () {
         }
 
         setIconStable(recipient);
+
+        _.delay(function () {
+            //remove popup hidden
+            //it was there to prevent the popup from showing up before content is sent
+            $(".leaflet-popup").addClass("show");
+        }, 250);
     });
 
     map.on('popupclose', function (e) {
