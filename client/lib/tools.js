@@ -19,8 +19,8 @@ var urlParameters = function () {
     return urlParams;
 };
 
-function isMobileDevice() {
+var isMobileDevice = function () {
     return platform.os.family === "Android" ||
         platform.product === "iPhone" || platform.product === "iPod" || platform.product === "iPad"
         || window.cordova; //phonegap apps
-}
+};

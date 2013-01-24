@@ -160,7 +160,8 @@ var watchUserChanged = function () {
 Template.map.rendered = function () {
     console.log("render map");
     var map = L.map('map', {
-        doubleClickZoom: false
+        doubleClickZoom: false,
+        maxZoom: 17
     }).setView([40, -89], 4);
 
     L.tileLayer("http://{s}.tile.cloudmade.com/" + "0187c3ce6f41462a9919ccf1f161aec9" + "/997/256/{z}/{x}/{y}.png", {
