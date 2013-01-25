@@ -67,6 +67,8 @@ var addIcon = function (user) {
 
     map.addLayer(marker);
 
+    //TODO initialize popup to prevent delay in setting content
+
     //TODO opacity if inactive (10 minutes)
 };
 

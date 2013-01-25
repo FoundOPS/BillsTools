@@ -10,6 +10,10 @@
 var StartChat = function (recipient, popup) {
     console.log("Chat started");
     //set the recipient
+    var lastRecipient = Session.get("lastRecipient");
+    if(typeof lastRecipient !== "undefined" && lastRecipient!==recipient){
+        Session.set("chatInput", "");
+    }
     Session.set("recipient", recipient);
 
     //update isMobileSize before chat is rendered
@@ -19,11 +23,11 @@ var StartChat = function (recipient, popup) {
     //route to chat, this will change the view to mobileChat if it is mobile size
     Meteor.Router.to("/chat");
 
-    //TODO remove
     //if not mobile size setup the popup
     if (!isMobileSize) {
         setupPopup(popup);
 
+        //TODO remove after initial popup setup
         //show popup after a slight delay to let content be set first
         Meteor.setTimeout(function () {
             $(".leaflet-popup").addClass("show"); //(it will override hidden)
@@ -35,6 +39,7 @@ var StartChat = function (recipient, popup) {
 var CloseChat = function () {
     console.log("Chat closed");
     Meteor.Router.to("/map");
+    Session.set("lastRecipient", Session.get("recipient"));
     Session.set("recipient", null);
 };
 
