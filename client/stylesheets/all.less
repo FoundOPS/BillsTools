@@ -32,6 +32,11 @@ html, body {
     width: 100%;
 }
 
+.page{
+    position: absolute;
+    top: 40px;
+}
+
 .profileImageMedium img{
     height: 32px;
 }
@@ -524,5 +529,28 @@ html, body {
         box-shadow: none;
         -webkit-box-shadow: none;
         border-radius: 0;
+    }
+}
+
+//TODO: find way to hide this without using css
+.ui-loading .ui-loader{
+    display: none !important;
+}
+
+.team{
+
+}
+
+@media ( min-width: 640px ) {
+    .team{
+    /* Show the table header rows and set all cells to display: table-cell */
+        td,th, tbody th,tbody td,thead td,thead th {
+            display: table-cell;
+            margin: 0;
+        }
+    /* Hide the labels in each cell */
+        td .ui-table-cell-label,th .ui-table-cell-label {
+            display: none;
+        }
     }
 }

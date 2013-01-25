@@ -1,0 +1,49 @@
+<!--if not an admin, only include change team and leave team functionality-->
+<template name="teamView">
+    {{> topBar}}
+    <div id="team" class="page">
+        <label for="select-choice-0" class="select">Team:</label>
+        <select name="select-choice-0" id="select-choice-0">
+            <option value="newTeam">Add New</option>
+        </select>
+        <br />
+        <label>Name:</label>
+        <input type="text" class="name" />
+        <h2>Members</h2>
+
+        <label>Add New:</label>
+        <input type="text" class="newMember" />
+        <button>Invite</button>
+
+        {{> grid}}
+
+        <button>Leave this Team</button>
+        <button>Delete this Team</button>
+    </div>
+</template>
+
+<template name="grid">
+    <table data-role="table" data-mode="reflow" class="ui-responsive table-stroke ui-table ui-table-reflow">
+        <thead>
+            <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+            {{#each members}}
+                <tr>
+                    <td><span class="ui-table-cell-label">Name</span>{{Name}}</td>
+                    <td><span class="ui-table-cell-label">Email</span>{{Email}}</td>
+                    <td>
+                        <span class="ui-table-cell-label">Role</span>
+                        <label for="select-choice-1" class="select"></label>
+                        <select name="select-choice-1" id="select-choice-1">
+                            <option value="member">Member</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </td>
+                    <td><span class="ui-table-cell-label">Status</span>{{Status}}</td>
+                    <td><span class="ui-table-cell-label"></span><button>Remove</button></td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
