@@ -51,7 +51,7 @@ Meteor.startup(function () {
         }
     });
 
-    startTracking();
+    StartTracking();
 
     fixFirefoxCss();
 });

@@ -1,6 +1,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Tracking
 
+var StartTracking = function () {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(updateUserPosition, errorTracking);
+        Meteor.setInterval(function () {
+            navigator.geolocation.getCurrentPosition(updateUserPosition, errorTracking);
+        }, POS_UPDATE_HEARTBEAT);
+    }
+};
+
 var POS_UPDATE_HEARTBEAT = 5000; //milliseconds
 var MIN_ACCURACY = 75; //meters
 
@@ -47,10 +56,11 @@ var updateUserPosition = function (position) {
     }
 };
 
-function startTracking() {
-    if (navigator.geolocation) {
-        Meteor.setInterval(function () {
-            navigator.geolocation.getCurrentPosition(updateUserPosition);
-        }, POS_UPDATE_HEARTBEAT);
+var errorTracking = function (error) {
+    if (error.code === 1) {
+        //TODO prompt user for tracking
+        //alert("Enable tracking please");
+    } else {
+        //Issue collecting trackpoint ui here
     }
-}
+};
