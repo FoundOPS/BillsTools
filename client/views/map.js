@@ -136,7 +136,9 @@ var centerOnUsers = _.debounce(function (force) {
     var bounds = getIconBounds();
     //check if there are users
     if (bounds.length > 0) {
-        map.fitBounds([bounds]);
+        var latLngBounds = new L.LatLngBounds(bounds);
+        var zoom = map.getBoundsZoom(latLngBounds) - 1;
+        map.setView(latLngBounds.getCenter(), zoom);
     } else {
         //center on current user
         var user = Meteor.user();
