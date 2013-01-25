@@ -61,13 +61,14 @@ var addIcon = function (user) {
 
     //setup an empty popup
     marker.bindPopup("");
-
     //store the associated id
     marker.userId = user._id;
 
     map.addLayer(marker);
 
-    //TODO initialize popup to prevent delay in setting content
+    //initialize (open/close) popup to prevent delay in setting content
+    marker.openPopup();
+    marker.closePopup();
 
     //TODO opacity if inactive (10 minutes)
 };

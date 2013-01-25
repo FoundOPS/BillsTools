@@ -8,10 +8,9 @@
  * @constructor
  */
 var StartChat = function (recipient, popup) {
-    console.log("Chat started");
     //set the recipient
     var lastRecipient = Session.get("lastRecipient");
-    if(typeof lastRecipient !== "undefined" && lastRecipient!==recipient){
+    if (typeof lastRecipient !== "undefined" && lastRecipient !== recipient) {
         Session.set("chatInput", "");
     }
     Session.set("recipient", recipient);
@@ -24,15 +23,8 @@ var StartChat = function (recipient, popup) {
     Meteor.Router.to("/chat");
 
     //if not mobile size setup the popup
-    if (!isMobileSize) {
+    if (!isMobileSize)
         setupPopup(popup);
-
-        //TODO remove after initial popup setup
-        //show popup after a slight delay to let content be set first
-        Meteor.setTimeout(function () {
-            $(".leaflet-popup").addClass("show"); //(it will override hidden)
-        }, 250);
-    }
 };
 
 //when the chat is closed clear the recipient and route to map
@@ -68,8 +60,6 @@ var sendMessage = function (textArea) {
 //tracks enter key on text area and when the sender image is clicked (to send a message)
 //scrolls to the bottom of the popup
 var setupPopup = function (popup) {
-    console.log("setup popup");
-    //var textArea = $(popup._container).find("textarea");
     var textArea = $(".chatBox").find("textarea");
 
     //Note: Can't create delegated event listener due to leaflet limitation. Needs to be set on render.
@@ -83,7 +73,6 @@ var setupPopup = function (popup) {
     var objDiv = $(popup._container).find(".messages")[0];
     if (objDiv)
         objDiv.scrollTop = objDiv.scrollHeight;
-    textArea.focus();
 };
 
 var setupMobileChat = function () {
@@ -92,7 +81,7 @@ var setupMobileChat = function () {
 
     console.log("setup mobile chat");
     $(document).on("keyup", ".chatBox textarea", function (e) {
-        console.log("chatInput Set: "+$(this).val());
+        console.log("chatInput Set: " + $(this).val());
         Session.set("chatInput", $(this).val());
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
@@ -201,37 +190,32 @@ Template.chat.messageGroups = function () {
     return messageGroups;
 };
 
-//chat is rendered whenever there is a recipient which means a chat box or the chat view is open
-Template.chat.rendered = _.debounce(function () {
-    console.log("Chat rendered");
+//chat is rendered whenever there is a recipient
+//if it is a chat box: clone the chat and update the popup content
+Template.chat.rendered = function () {
     var isMobileSize = Session.get("isMobileSize");
-    if (isMobileSize)
-        return;
+    if (isMobileSize) return;
 
     var icon = findIcon(Session.get("recipient"));
-    if (!icon || !icon._popup) {
-        return;
-    }
+    if (!icon || !icon._popup) return;
 
+    //clone the chat
     var clonedChat = $($("#currentChat").clone().outerHTML()).attr("id", "").outerHTML();
     icon._popup.setContent(clonedChat);
 
+    //update the chat value
     var chatInput = Session.get("chatInput");
-    if (chatInput){
-        //NOTE: Focus is required to set cursor to end of textarea.
-        $(".chatBox textarea")
-            .focus()
-            .val(chatInput);
-    }
+    //focus first so the cursor is at the end of the value
+    $(".chatBox textarea").focus().val(chatInput);
 
-    //TODO remove
+    //re-setup the popup's event handlers
     setupPopup(icon._popup);
-}, 250);
+};
 
 Template.mobileChat.rendered = function () {
     console.log("Mobile chat rendered");
     var chatInput = Session.get("chatInput");
-    if (chatInput){
+    if (chatInput) {
         //NOTE: Focus is required to set cursor to end of textarea.
         //TODO: Fix jump on android 2.3
         $(".chatBox textarea").focus().val(chatInput);
