@@ -30,11 +30,6 @@ var setupPopup = function (popup) {
     //var textArea = $(popup._container).find("textarea");
     var textArea = $(".chatBox").find("textarea");
 
-    //whenever the sender image is clicked, send a message
-    $(popup._container).find(".senderImage").click(function () {
-        sendMessage(textArea[0]);
-    });
-
     //scrolls to the newest messages (at the bottom) on popup open
     var objDiv = $(popup._container).find(".messages")[0];
     if (objDiv)
@@ -47,8 +42,14 @@ var setupMobileChat = function () {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             sendMessage(this);
-            hideKeyboard($(this));
+            //hideKeyboard($(this));
         }
+    });
+
+    //whenever the sender image is clicked, send a message
+    $(document).on("click", ".chatBox .senderImage", function () {
+        sendMessage($(".chatBox textarea")[0]);
+        //hideKeyboard($(this));
     });
 
     $(document)
