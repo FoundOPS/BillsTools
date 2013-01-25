@@ -82,19 +82,6 @@ Meteor.methods({
     }
 });
 
-Accounts.onCreateUser(function (options, user) {
-    console.log(_.keys(user.services.facebook));
-
-//    console.log(user.services.google.verified_email);
-
-    // We still want the default hook's 'profile' behavior.
-    if (options.profile)
-        user.profile = options.profile;
-
-    return user;
-});
-
-
 //PUBLISH TODO comment out
 Meteor.startup(function () {
     if (Accounts.loginServiceConfiguration.find().count() > 0)
