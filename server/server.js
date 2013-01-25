@@ -82,20 +82,40 @@ Meteor.methods({
     }
 });
 
-//NOTE run once in console after reset
-//Accounts.loginServiceConfiguration.insert({
-//    service: "google",
-//    clientId: "960721914827.apps.googleusercontent.com",
-//    secret: "keUopZvvXrGBhnfU5kKY9aZ0"
-//});
-//
-//Accounts.loginServiceConfiguration.insert({
-//    service: "facebook",
-//    appId: "421885287896331",
-//    secret: "5a4ff7bedc49b8c071c2e198a04d6ec7"
-//});
-//Accounts.createUser({
-//    username: "Jonathan Perl",
-//    email : "ab@c.com",
-//    password: "123456"
-//});
+Accounts.onCreateUser(function (options, user) {
+    console.log(_.keys(user.services.facebook));
+
+//    console.log(user.services.google.verified_email);
+
+    // We still want the default hook's 'profile' behavior.
+    if (options.profile)
+        user.profile = options.profile;
+
+    return user;
+});
+
+
+//PUBLISH TODO comment out
+Meteor.startup(function () {
+    if (Accounts.loginServiceConfiguration.find().count() > 0)
+        return;
+
+    Accounts.loginServiceConfiguration.insert({
+        service: "google",
+        clientId: "960721914827.apps.googleusercontent.com",
+        secret: "keUopZvvXrGBhnfU5kKY9aZ0"
+    });
+
+    Accounts.loginServiceConfiguration.insert({
+        service: "facebook",
+        appId: "421885287896331",
+        secret: "5a4ff7bedc49b8c071c2e198a04d6ec7"
+    });
+
+    //Accounts.createUser({
+    //    username: "Jonathan Perl",
+    //    email : "ab@c.com",
+    //    password: "123456"
+    //});
+});
+

@@ -189,7 +189,6 @@ Template.chat.rendered = _.debounce(function () {
     var clonedChat = $($("#currentChat").clone().outerHTML()).attr("id", "").outerHTML();
     icon._popup.setContent(clonedChat);
 
-
     //TODO remove
     setupPopup(icon._popup);
 }, 250);

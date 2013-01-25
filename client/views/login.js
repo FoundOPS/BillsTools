@@ -36,7 +36,6 @@ Template.loginView.rendered = function () {
 
     $("#login-buttons-google").click(function () {
         Meteor.loginWithGoogle({
-            requestPermissions: ['profile', 'email'],
             requestOfflineToken: true
         });
     });
