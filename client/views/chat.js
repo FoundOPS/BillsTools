@@ -59,6 +59,14 @@ var setupPopup = function (popup) {
     //var textArea = $(popup._container).find("textarea");
     var textArea = $(".chatBox").find("textarea");
 
+    //TODO: Find out why senderImage listener in setupChat does not fire on this button.
+    //      Possibly leaflet bug/limitation
+    var senderImage = $(popup._container).find(".senderImage");
+    //whenever the sender image is clicked, send a message
+    senderImage.on("click", function () {
+        sendMessage(textArea[0]);
+    });
+
     //scrolls to the newest messages (at the bottom) on popup open
     var objDiv = $(popup._container).find(".messages")[0];
     if (objDiv)
