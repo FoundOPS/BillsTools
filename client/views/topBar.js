@@ -14,7 +14,7 @@ Template.topBar.rendered = function () {
     });
 
     $("img.logo").on("click", function () {
-        centerOnUsers(true);
+        CenterOnUsers(true);
     });
 };
 

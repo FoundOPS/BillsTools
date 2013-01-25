@@ -55,6 +55,8 @@ var setupMobileChat = function () {
     $(document)
         .on("click", "#closeChatMobile", function () {
             ChatClosed();
+            //need to recenter after the view reloads
+            CenterOnUsers(true, true, true);
         })
         //sets up hover on close chat mobile (for Android 2.3)
         .on('touchstart mousedown', '#closeChatMobile', function () {

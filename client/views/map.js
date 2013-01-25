@@ -8,6 +8,30 @@ var invalidateMapSize = _.debounce(function () {
         map.invalidateSize(false);
 }, 250);
 
+
+//centers map on all users, or current user location if no other users
+var CenterOnUsers = _.debounce(function () {
+    var map = getMap(), location;
+    if (!map) return;
+
+    var bounds = getIconBounds();
+    //check if there are users
+    if (bounds.length > 0) {
+        var latLngBounds = new L.LatLngBounds(bounds);
+        var zoom = map.getBoundsZoom(latLngBounds) - 1;
+        map.setView(latLngBounds.getCenter(), zoom);
+    } else {
+        //center on current user
+        var user = Meteor.user();
+        if (user.profile && user.profile.position) {
+            location = user.profile.position;
+            map.setView([location.lat, location.lng], 12);
+        }
+    }
+
+    invalidateMapSize();
+}, 500);
+
 //region Icons (Markers)
 
 //add a person icon to the map
@@ -124,33 +148,6 @@ var getIconBounds = function () {
     return bounds;
 };
 
-var mapCentered = false; //prevents map centered from being called twice
-//centers map on all users, or current user location if no other users
-var centerOnUsers = _.debounce(function (force) {
-    if (!force) {
-        if (mapCentered) return;
-        mapCentered = true;
-    }
-
-    var map = getMap(), location;
-    var bounds = getIconBounds();
-    //check if there are users
-    if (bounds.length > 0) {
-        var latLngBounds = new L.LatLngBounds(bounds);
-        var zoom = map.getBoundsZoom(latLngBounds) - 1;
-        map.setView(latLngBounds.getCenter(), zoom);
-    } else {
-        //center on current user
-        var user = Meteor.user();
-        if (user.profile && user.profile.position) {
-            location = user.profile.position;
-            map.setView([location.lat, location.lng], 12);
-        }
-    }
-
-    invalidateMapSize();
-}, 500);
-
 //endregion
 
 //when users are added: add the icon, center on the users (if its the first load)
@@ -163,7 +160,9 @@ var watchUserChanged = function () {
     observeUsersHandle = Meteor.users.find().observe({
         added: function (user) {
             addIcon(user);
-            centerOnUsers();
+            //center on the users
+            //it is on a de-bounce so it will only be called once
+            CenterOnUsers();
         },
         changed: function (newUser, atIndex, oldUser) {
             if (oldUser.profile && newUser.profile) {
