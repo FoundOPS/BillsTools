@@ -8,7 +8,6 @@ var invalidateMapSize = _.debounce(function () {
         map.invalidateSize(false);
 }, 250);
 
-
 //centers map on all users, or current user location if no other users
 var CenterOnUsers = _.debounce(function () {
     var map = getMap(), location;
@@ -215,32 +214,16 @@ Template.map.rendered = function () {
     }).addTo(map);
 
     map.on('popupopen', function (e) {
-        //set the recipient whenever one is chosen
-        //and mark the icon as stable since the messages are now read
         var recipient = e.popup._source.userId;
-        Session.set("recipient", recipient);
+
+        //mark the icon as stable since the messages are now read
         setIconStable(recipient);
 
-        //update isMobileSize before chat is rendered
-        var isMobileSize = IsMobileSize();
-        Session.set("isMobileSize", isMobileSize);
-
-        //route to chat, this will change the view to mobileChat if it is mobile size
-        Meteor.Router.to("/chat");
-
-        //if not mobile size setup the popup
-        if (!isMobileSize) {
-            setupPopup(e.popup);
-
-            //show popup after a slight delay to let content be set first
-            Meteor.setTimeout(function () {
-                $(".leaflet-popup").addClass("show"); //(it will override hidden)
-            }, 250);
-        }
+        StartChat(recipient, e.popup);
     });
 
     map.on('popupclose', function (e) {
-        ChatClosed();
+        CloseChat();
     });
 
     //store the map on the element so it can be retrieved elsewhere

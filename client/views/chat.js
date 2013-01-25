@@ -1,8 +1,37 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Chat
 
+/**
+ * Starts the chat
+ * @param recipient The id of the recipient
+ * @param popup The recipient icon popup
+ * @constructor
+ */
+var StartChat = function (recipient, popup) {
+    //set the recipient
+    Session.set("recipient", recipient);
+
+    //update isMobileSize before chat is rendered
+    var isMobileSize = IsMobileSize();
+    Session.set("isMobileSize", isMobileSize);
+
+    //route to chat, this will change the view to mobileChat if it is mobile size
+    Meteor.Router.to("/chat");
+
+    //TODO remove
+    //if not mobile size setup the popup
+    if (!isMobileSize) {
+        setupPopup(popup);
+
+        //show popup after a slight delay to let content be set first
+        Meteor.setTimeout(function () {
+            $(".leaflet-popup").addClass("show"); //(it will override hidden)
+        }, 250);
+    }
+};
+
 //when the chat is closed clear the recipient and route to map
-var ChatClosed = function () {
+var CloseChat = function () {
     Meteor.Router.to("/map");
     Session.set("recipient", null);
 };
@@ -54,7 +83,7 @@ var setupMobileChat = function () {
 
     $(document)
         .on("click", "#closeChatMobile", function () {
-            ChatClosed();
+            CloseChat();
             //need to recenter after the view reloads
             CenterOnUsers(true, true, true);
         })
@@ -146,27 +175,32 @@ Template.chat.messageGroups = function () {
     return messageGroups;
 };
 
-//wait for the map to render
-//Debounce immediate param set to true to immediately focus textarea and scroll to bottom of div. Required for mobile view.
+//chat is rendered whenever there is a recipient which means a chat box or the chat view is open
 Template.chat.rendered = _.debounce(function () {
     var isMobileSize = Session.get("isMobileSize");
-    if (isMobileSize) {
-        //setup jScrollPane
-        var jScrollPane = $(".chatBox .messages").jScrollPane({verticalDragMinHeight: 20}).data('jsp');
-        if (jScrollPane)
-            jScrollPane.scrollToBottom();
-        $(".chatBox textarea").focus();
-    } else {
-        var icon = findIcon(Session.get("recipient"));
-        if (!icon || !icon._popup) {
-            return;
-        }
+    if (isMobileSize)
+        return;
 
-        var clonedChat = $($("#currentChat").clone().outerHTML()).attr("id", "").outerHTML();
-        icon._popup.setContent(clonedChat);
-        setupPopup(icon._popup);
+    var icon = findIcon(Session.get("recipient"));
+    if (!icon || !icon._popup) {
+        return;
     }
-}, 200, true);
+
+    var clonedChat = $($("#currentChat").clone().outerHTML()).attr("id", "").outerHTML();
+    icon._popup.setContent(clonedChat);
+
+
+    //TODO remove
+    setupPopup(icon._popup);
+}, 250);
+
+Template.mobileChat.rendered = _.debounce(function () {
+    //setup jScrollPane
+    var jScrollPane = $(".chatBox .messages").jScrollPane({verticalDragMinHeight: 20}).data('jsp');
+    if (jScrollPane)
+        jScrollPane.scrollToBottom();
+    $(".chatBox textarea").focus();
+});
 
 //automatically scroll to the bottom of the jscroll pane when the page is resized
 $(window).resize(function () {
