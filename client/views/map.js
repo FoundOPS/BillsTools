@@ -2,6 +2,12 @@ var getMap = function () {
     return $("#map").data("map");
 };
 
+var invalidateMapSize = _.debounce(function () {
+    var map = getMap();
+    if (map)
+        map.invalidateSize(false);
+}, 250);
+
 //region Icons (Markers)
 
 //add a person icon to the map
@@ -139,6 +145,8 @@ var centerOnUsers = _.debounce(function (force) {
             map.setView([location.lat, location.lng], 12);
         }
     }
+
+    invalidateMapSize();
 }, 500);
 
 //endregion
@@ -258,9 +266,5 @@ Template.map.destroyed = function () {
 
 Meteor.startup(function () {
     //fix map rendering issue on resize
-    $(window).resize(_.debounce(function () {
-        var map = getMap();
-        if (map)
-            map.invalidateSize(false);
-    }, 250));
+    $(window).resize(invalidateMapSize);
 });
