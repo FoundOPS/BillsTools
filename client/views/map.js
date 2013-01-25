@@ -41,6 +41,7 @@ var addIcon = function (user) {
     //TODO opacity if inactive (10 minutes)
 };
 
+//return the associated icon for a person
 var findIcon = function (userId) {
     var map = getMap();
     if (!map)
@@ -102,8 +103,8 @@ var setIconStable = function (userId) {
     icon._icon.style.background = green;
 };
 
-
-var getMarkersBounds = function () {
+//returns the bounds of all of the icons on the map
+var getIconBounds = function () {
     var map = getMap();
     var layers = map._layers;
     var bounds = [];
@@ -117,8 +118,7 @@ var getMarkersBounds = function () {
     return bounds;
 };
 
-//prevents map centered from being called twice
-var mapCentered = false;
+var mapCentered = false; //prevents map centered from being called twice
 //centers map on all users, or current user location if no other users
 var centerOnUsers = _.debounce(function (force) {
     if (!force) {
@@ -127,7 +127,7 @@ var centerOnUsers = _.debounce(function (force) {
     }
 
     var map = getMap(), location;
-    var bounds = getMarkersBounds();
+    var bounds = getIconBounds();
     //check if there are users
     if (bounds.length > 0) {
         map.fitBounds([bounds]);
@@ -206,29 +206,32 @@ Template.map.rendered = function () {
     }).addTo(map);
 
     map.on('popupopen', function (e) {
-        //show popup after a slight delay to let content set (it will override hidden)
-        //it was there to prevent the popup from showing up before content is sent
-        Meteor.setTimeout(function () {
-            $(".leaflet-popup").addClass("show");
-        }, 250);
-
-        //recipient
+        //set the recipient whenever one is chosen
+        //and mark the icon as stable since the messages are now read
         var recipient = e.popup._source.userId;
         Session.set("recipient", recipient);
         setIconStable(recipient);
 
+        //update isMobileSize before chat is rendered
         var isMobileSize = IsMobileSize();
         Session.set("isMobileSize", isMobileSize);
 
+        //route to chat, this will change the view to mobileChat if it is mobile size
         Meteor.Router.to("/chat");
 
+        //if not mobile size setup the popup
         if (!isMobileSize) {
             setupPopup(e.popup);
+
+            //show popup after a slight delay to let content be set first
+            Meteor.setTimeout(function () {
+                $(".leaflet-popup").addClass("show"); //(it will override hidden)
+            }, 250);
         }
     });
 
     map.on('popupclose', function (e) {
-        chatClosed();
+        ChatClosed();
     });
 
     //store the map on the element so it can be retrieved elsewhere
@@ -253,14 +256,11 @@ Template.map.destroyed = function () {
     $("#map").data("map", null);
 };
 
-//fix map rendering issue on resize
-//update isMobileSize session variable
-var updateSize = _.debounce(function () {
-    var map = getMap();
-    if (map)
-        map.invalidateSize(false);
-}, 250);
-
 Meteor.startup(function () {
-    $(window).resize(updateSize);
+    //fix map rendering issue on resize
+    $(window).resize(_.debounce(function () {
+        var map = getMap();
+        if (map)
+            map.invalidateSize(false);
+    }, 250));
 });

@@ -1,14 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Chat
 
-//Creates a message in the collection. options should include: recipient, text
-var createMessage = function (text) {
-    var options = {recipient: Session.get("recipient"), text: text};
-    Meteor.call('createMessage', options, function (error, message) {
-        if (!error) {
-            //TODO update sent status of message?
-        }
-    });
+//when the chat is closed clear the recipient and route to map
+var ChatClosed = function () {
+    Meteor.Router.to("/map");
+    Session.set("recipient", null);
 };
 
 //sends a message from the text area, and refocuses
@@ -16,17 +12,25 @@ var sendMessage = function (textArea) {
     var text = textArea.value;
     //create message if it's not blank
     if (text != "\n") {
-        createMessage(text);
+        //Create a message in the collection. options should include: recipient, text
+        var options = {recipient: Session.get("recipient"), text: text};
+        Meteor.call('createMessage', options, function (error, message) {
+            if (!error) {
+                //TODO update sent status of message?
+            }
+        });
     }
     textArea.value = "";
     textArea.focus();
 };
 
-//track enter on text area & scroll to bottom
+//tracks enter key on text area and when the sender image is clicked (to send a message)
+//scrolls to the bottom of the popup
 var setupPopup = function (popup) {
     //var textArea = $(popup._container).find("textarea");
     var textArea = $(".chatBox").find("textarea");
 
+    //whenever the sender image is clicked, send a message
     $(popup._container).find(".senderImage").click(function () {
         sendMessage(textArea[0]);
     });
@@ -35,29 +39,21 @@ var setupPopup = function (popup) {
     var objDiv = $(popup._container).find(".messages")[0];
     if (objDiv)
         objDiv.scrollTop = objDiv.scrollHeight;
-
     textArea.focus();
 };
 
-//when the chat is closed clear the recipient and route to map
-var chatClosed = function () {
-    Meteor.Router.to("/map");
-    Session.set("recipient", null);
-};
-
-var setupChat = function () {
+var setupMobileChat = function () {
     $(document).on("keyup", ".chatBox textarea", function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             sendMessage(this);
-            $(".chatBox textarea").focus();
             hideKeyboard($(this));
         }
     });
 
     $(document)
         .on("click", "#closeChatMobile", function () {
-            chatClosed();
+            ChatClosed();
         })
         //sets up hover on close chat mobile (for Android 2.3)
         .on('touchstart mousedown', '#closeChatMobile', function () {
@@ -68,6 +64,9 @@ var setupChat = function () {
         }
     );
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Templates
 
 //recipient -> the user currently talking with
 Template.chat.recipient = function () {
@@ -181,3 +180,10 @@ Template.chat.destroyed = function () {
         messagesCursorHandle = null;
     }
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Initialization
+
+Meteor.startup(function () {
+    setupMobileChat();
+});

@@ -15,20 +15,28 @@ Meteor.Router.add({
         return "mapView";
     },
     '/chat': function () {
-//        var params = urlParameters();
-//        var recipient = params["recipient"];
-//        Session.set("recipient", recipient);
-
-        if(Session.get("isMobileSize")){
+        if (Session.get("isMobileSize")) {
             return "mobileChat";
         }
         return "mapView";
     }
 });
 
-Meteor.startup(function(){
-    setupChat();
-});
+///////////////////////////////////////////////////////////////////////////////
+// Initialization
+
+var fixFirefoxCss = function () {
+    if ($.browser.mozilla) {
+        //replace all encoded backslashes with nothing
+        $("link").each(function () {
+            var link = this;
+            if (link.href.indexOf(".css") !== -1) {
+                var newHref = link.href.replace(/%5C/g, '');
+                link.href = newHref;
+            }
+        });
+    }
+};
 
 Meteor.startup(function () {
     Meteor.autorun(function () {
@@ -47,22 +55,6 @@ Meteor.startup(function () {
 
     fixFirefoxCss();
 });
-
-var fixFirefoxCss = function () {
-    if ($.browser.mozilla) {
-        //replace all encoded backslashes with nothing
-        $("link").each(function () {
-            var link = this;
-            if (link.href.indexOf(".css") !== -1) {
-                var newHref = link.href.replace(/%5C/g, '');
-                link.href = newHref;
-            }
-        });
-    }
-};
-
-///////////////////////////////////////////////////////////////////////////////
-// Main page ui
 
 Meteor.autorun(function () {
     var currentUserId = Meteor.userId();
