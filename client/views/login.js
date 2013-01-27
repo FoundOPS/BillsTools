@@ -9,17 +9,17 @@ Accounts.ui.config({
 
 
 Template.loginView.rendered = function () {
-    $("#login-buttons-signup,#forgot-password-link").click(function () {
+    $("#login-buttons-signup,#forgot-password-link").on("vclick", function () {
         alert("Please use google or facebook login. Custom user sign up is not setup yet. ")
     });
-    $("#login-buttons-angies").click(function () {
+    $("#login-buttons-angies").on("vclick", function () {
         alert("Please use google or facebook login. Login with Angie's List not setup yet.")
     });
-    $("#login-buttons-quickbooks").click(function () {
+    $("#login-buttons-quickbooks").on("vclick", function () {
         alert("Please use google or facebook login. Login with Quickbooks is not setup yet.")
     });
 
-    $("#login-buttons-password").click(function () {
+    $("#login-buttons-password").on("vclick", function () {
         var userName = $("#login-email").val();
         var password = $("#login-password").val();
         Meteor.loginWithPassword(userName, password, function (error) {
@@ -28,13 +28,13 @@ Template.loginView.rendered = function () {
         });
     });
 
-    $("#login-buttons-facebook").click(function () {
+    $("#login-buttons-facebook").on("vclick", function () {
         Meteor.loginWithFacebook({
             requestPermissions: ['email']
         });
     });
 
-    $("#login-buttons-google").click(function () {
+    $("#login-buttons-google").on("vclick", function () {
         Meteor.loginWithGoogle({
             requestOfflineToken: true
         });
