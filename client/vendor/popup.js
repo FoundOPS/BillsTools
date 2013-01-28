@@ -24,6 +24,10 @@
                 popup.childToAppend = options.childToAppend;
             }
 
+            if(typeof(options.onCreate) !== 'undefined'){
+                popup._onCreate = options.onCreate;
+            }
+
             if(typeof(options.disableHeader) !== 'undefined'){
                 if(options.disableHeader === true){
                     popup.disableHeader();
@@ -145,8 +149,10 @@ Popup.prototype.keepData = function(bool){
     this.isDataKept = bool;
 };
 
-Popup.prototype.appendChild = function(child){
-    $("#popupContent").append(child);
+Popup.prototype.appendChild = function(){
+    if(!this.childToAppend) return;
+
+    $("#popupContent")[0].appendChild(this.childToAppend);
 };
 
 Popup.prototype.toggleVisible = function (e, clicked) {
@@ -221,6 +227,11 @@ Popup.prototype.toggleVisible = function (e, clicked) {
     $("#popupWrapper").css("visibility", "visible");
     $("#popup").promise().done(function () {});
     popupWrapperDiv.trigger("popup.visible");
+
+    if((this.isDataKept && !this.hasBeenOpened) || (!this.isDataKept)){
+        this.appendChild();
+    }
+    this.hasBeenOpened = true;
 
     //Update left, right and caret positions for popup.
     //NOTE: Must be called after popup.visible event, in order to trigger jspScrollPane update.
@@ -416,6 +427,7 @@ Popup.prototype.createPopup = function () {
         }
     });
     popupContentWrapperDiv.trigger("popup.created");
+    if(this._onCreate)this._onCreate();
 
     //Function also returns the popup div for ease of use.
     return popupWrapperDiv;
@@ -502,15 +514,6 @@ Popup.prototype.populateByMenu = function(menu){
 
     if(!this.isDataKept || !this.hasBeenOpened)this.setData(menu);
 
-    if(this.childToAppend &&
-        (
-            (this.isDataKept && !this.hasBeenOpened) ||
-            (!this.isDataKept)
-        )
-    ){
-        this.appendChild(this.childToAppend);
-    }
-
     this.currentContentHeight = Popup.getPopupContentHeight();
 
     if(Popup.above && popupDisplay!=="none"){
@@ -521,7 +524,6 @@ Popup.prototype.populateByMenu = function(menu){
         Popup.setCaretPosition(Popup.caretLeftOffset);
     }
 
-    this.hasBeenOpened = true;
     return true;
 };
 
