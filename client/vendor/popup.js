@@ -149,10 +149,8 @@ Popup.prototype.keepData = function(bool){
     this.isDataKept = bool;
 };
 
-Popup.prototype.appendChild = function(){
-    if(!this.childToAppend) return;
-
-    $("#popupContent")[0].appendChild(this.childToAppend);
+Popup.appendChild = function(child){
+    $("#popupContent")[0].appendChild(child);
 };
 
 Popup.prototype.toggleVisible = function (e, clicked) {
@@ -229,7 +227,10 @@ Popup.prototype.toggleVisible = function (e, clicked) {
     popupWrapperDiv.trigger("popup.visible");
 
     if((this.isDataKept && !this.hasBeenOpened) || (!this.isDataKept)){
-        this.appendChild();
+        var child = this.childToAppend;
+        if(child){
+            Popup.appendChild(child);
+        }
     }
     this.hasBeenOpened = true;
 

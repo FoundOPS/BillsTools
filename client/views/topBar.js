@@ -1,17 +1,14 @@
 // Top Bar
 ///////////////////////////////////////////////////////////////////////////////
 Template.topBar.rendered = function () {
-    var createdCallback = function (){
+    /*var createdCallback = function (){
         $(document).on("popup.visible", function(){
             var frag = Meteor.render(function () {
                 return "<p>Recepient: "+Session.get("recipient")+"</p>";
             });
-
             $("#popupContent")[0].appendChild(frag);
-
-            console.log("Frag: "+frag.innerHTML);
         });
-    };
+    };*/
 
     $("#menu").optionsPopup({
         id: "menu",
@@ -21,7 +18,6 @@ Template.topBar.rendered = function () {
         /*onCreate: createdCallback,*/
         disableHeader: true
     });
-
 
     $("#logout").live("click", function (e) {
         Meteor.logout();
@@ -35,3 +31,12 @@ Template.topBar.rendered = function () {
 Template.topBar.destroyed = function () {
     //TODO
 };
+
+/*Meteor.startup(function(){
+    $(document).on("popup.visible", function(){
+        var frag = Meteor.render(function () {
+            return "<p>Recepient: "+Session.get("recipient")+"</p>";
+        });
+        $("#popupContent")[0].appendChild(frag);
+    });
+});*/
