@@ -1,9 +1,6 @@
 Template.teamView.rendered = function () {
     $(".addName").on("click", function () {
-        console.log("add");var answer = confirm("Are you sure you want to delete the selected service?");
-        if (answer) {
-            console.log("delete");
-        }
+        console.log("add");
     });
 
     $("#leaveTeam").on("click", function () {
