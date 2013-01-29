@@ -36,7 +36,7 @@ var IsMobileDevice = function () {
         || window.cordova; //phonegap apps
 };
 
-var IsMobileSize = function(){
+var IsMobileSize = function () {
     var w = $(window).width();
     var h = $(window).height();
     var b = ((w < 540 && h < 960) || (h < 540 && w < 960));
@@ -44,13 +44,13 @@ var IsMobileSize = function(){
 };
 
 //From http://stackoverflow.com/questions/8335834/how-can-i-hide-the-android-keyboard-using-javascript
-var hideKeyboard = function(element) {
-    element.attr('readonly', 'readonly'); // Force keyboard to hide on input field.
-    element.attr('disabled', 'true'); // Force keyboard to hide on textarea field.
-    setTimeout(function() {
-        element.blur();  //actually close the keyboard
-        // Remove readonly attribute after keyboard is hidden.
-        element.removeAttr('readonly');
-        element.removeAttr('disabled');
-    }, 100);
-};
+//var HideKeyboard = function(element) {
+//    element.attr('readonly', 'readonly'); // Force keyboard to hide on input field.
+//    element.attr('disabled', 'true'); // Force keyboard to hide on textarea field.
+//    setTimeout(function() {
+//        element.blur();  //actually close the keyboard
+//        // Remove readonly attribute after keyboard is hidden.
+//        element.removeAttr('readonly');
+//        element.removeAttr('disabled');
+//    }, 100);
+//};

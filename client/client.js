@@ -38,12 +38,27 @@ var fixFirefoxCss = function () {
     }
 };
 
+/**
+ * Updates the title to the # of unread messages
+ */
+var updateTitle = function () {
+    Meteor.autorun(function () {
+        var currentUserId = Meteor.userId();
+        var unreadMessages = Messages.find({read: {$ne: true}, recipient: currentUserId}).count();
+
+        if (unreadMessages)
+            document.title = "(" + unreadMessages + ") Bills tools";
+        else
+            document.title = "Bills tools";
+    });
+};
+
 Meteor.startup(function () {
     Meteor.autorun(function () {
         //when the user is logged in: switch to the map and update their image
         if (Meteor.userId()) {
             Meteor.Router.to("/map");
-            updateUserProfile();
+            UpdateUserProfile();
         }
         //when logged out, switch to login
         else {
@@ -53,15 +68,8 @@ Meteor.startup(function () {
 
     StartTracking();
 
+    updateTitle();
+
     fixFirefoxCss();
 });
 
-Meteor.autorun(function () {
-    var currentUserId = Meteor.userId();
-    var unreadMessages = Messages.find({read: {$ne: true}, recipient: currentUserId}).count();
-
-    if (unreadMessages)
-        document.title = "(" + unreadMessages + ") Bills tools";
-    else
-        document.title = "Bills tools";
-});

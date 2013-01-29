@@ -1,14 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Users
-Meteor.autorun(function () {
-    var user = Meteor.user();
-    if (user)
-        Session.set("currentUser", user._id);
-    else
-        Session.set("currentUser", null);
-});
 
-var displayName = function (user) {
+var DisplayName = function (user) {
     if (!user)
         return "";
 
@@ -26,7 +19,7 @@ var displayName = function (user) {
 };
 
 //generates a users image, a users initials, or a blank image, based on the available data
-var userPictureElement = function (user, useBlankImage) {
+var UserPictureElement = function (user, useBlankImage) {
     var element = "";
     //check if a user and profile exist
     if (user && user.profile) {
@@ -47,6 +40,61 @@ var userPictureElement = function (user, useBlankImage) {
 
     return element;
 };
+
+//Update the current user's profile information from the provider (FB, Google)
+//currents updates name and picture (if available)
+//TODO remove, make this part of initial account sign up
+var UpdateUserProfile = _.debounce(function () {
+    var user = Meteor.user();
+    if (!user)
+        return;
+
+    loadUserProfile(user, function (name, picture) {
+        if (!name && !picture) {
+            return;
+        }
+
+        if (user.profile) {
+            var sets = {};
+            if (name)
+                sets["profile.name"] = name;
+            if (picture)
+                sets["profile.picture"] = picture;
+            Meteor.users.update(user, {$set: sets});
+        }
+        else {
+            var profile = {};
+            if (name)
+                profile.name = name;
+            if (picture)
+                profile.picture = picture;
+
+            Meteor.users.update(user, {"$set": {profile: profile }});
+        }
+    });
+}, 2000);
+
+/**
+ * @return The user's profile image
+ */
+Handlebars.registerHelper('currentUserPictureElement', function (useBlankImage) {
+    var user = Meteor.user();
+
+    return UserPictureElement(user, useBlankImage);
+});
+
+/**
+ * @param userId The user id
+ * @return The user's profile image
+ */
+Handlebars.registerHelper('userPictureElement', function (userId, useBlankImage) {
+    var user;
+    if (typeof userId === "string") {
+        user = Meteor.users.find(userId).fetch()[0];
+    }
+
+    return UserPictureElement(user, useBlankImage);
+});
 
 /**
  * Load the user image from their Facebook or Google
@@ -106,35 +154,3 @@ var loadUserProfile = function (user, callback) {
 
     //Meteor.http.get(url, options, processor);
 };
-
-//Update the current user's profile information from the provider (FB, Google)
-//currents updates name and picture (if available)
-var updateUserProfile = _.debounce(function () {
-    var user = Meteor.user();
-    if (!user)
-        return;
-
-    loadUserProfile(user, function (name, picture) {
-        if (!name && !picture) {
-            return;
-        }
-
-        if (user.profile) {
-            var sets = {};
-            if (name)
-                sets["profile.name"] = name;
-            if (picture)
-                sets["profile.picture"] = picture;
-            Meteor.users.update(user, {$set: sets});
-        }
-        else {
-            var profile = {};
-            if (name)
-                profile.name = name;
-            if (picture)
-                profile.picture = picture;
-
-            Meteor.users.update(user, {"$set": {profile: profile }});
-        }
-    });
-}, 2000);

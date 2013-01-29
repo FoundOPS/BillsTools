@@ -48,7 +48,7 @@ var addIcon = function (user) {
     if (!(location && location.lat && location.lng))
         return;
 
-    var div = userPictureElement(user, "false");
+    var div = UserPictureElement(user, "false");
     var icon = L.divIcon({
         iconAnchor: [11, 23],
         popupAnchor: [69.5, -40],
@@ -67,8 +67,10 @@ var addIcon = function (user) {
     map.addLayer(marker);
 
     //initialize (open/close) popup to prevent delay in setting content
+    popupInitializing = true;
     marker.openPopup();
     marker.closePopup();
+    popupInitializing = false;
 
     //TODO opacity if inactive (10 minutes)
 };
@@ -107,7 +109,7 @@ var moveIcon = function (user) {
 var updateIconPicture = function (user) {
     var icon = findIcon(user._id);
     if (icon) {
-        $(icon._icon).html(userPictureElement(user, "false"));
+        $(icon._icon).html(UserPictureElement(user, "false"));
     }
 };
 
@@ -148,6 +150,27 @@ var getIconBounds = function () {
         }
     }
     return bounds;
+};
+
+//endregion
+
+//region Popups
+
+//used when manually forcing a popup to open / close to prevent rendering issues
+var popupInitializing = false;
+
+var popupOpened = function (recipient, popup) {
+    if (popupInitializing) return;
+
+    //mark the icon as stable since the messages are now read
+    setIconStable(recipient);
+
+    StartChat(recipient, popup);
+};
+
+var popupClosed = function () {
+    if (popupInitializing) return;
+    CloseChat();
 };
 
 //endregion
@@ -218,16 +241,9 @@ Template.map.rendered = function () {
 
     map.on('popupopen', function (e) {
         var recipient = e.popup._source.userId;
-
-        //mark the icon as stable since the messages are now read
-        setIconStable(recipient);
-
-        StartChat(recipient, e.popup);
+        popupOpened(recipient, e.popup);
     });
-
-    map.on('popupclose', function (e) {
-        CloseChat();
-    });
+    map.on('popupclose', popupClosed);
 
     //store the map on the element so it can be retrieved elsewhere
     $("#map").data("map", map);

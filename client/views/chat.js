@@ -8,6 +8,8 @@
  * @constructor
  */
 var StartChat = function (recipient, popup) {
+    if (!recipient) return;
+
     //set the recipient
     var lastRecipient = Session.get("lastRecipient");
     if (typeof lastRecipient !== "undefined" && lastRecipient !== recipient) {
@@ -86,14 +88,12 @@ var setupMobileChat = function () {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             sendMessage(this);
-            //hideKeyboard($(this));
         }
     });
 
     //whenever the sender image is clicked, send a message
     $(document).on("click", ".chatBox .senderImage", function () {
         sendMessage($(".chatBox textarea")[0]);
-        //hideKeyboard($(this));
     });
 
     $(document)
@@ -123,7 +123,7 @@ Template.chat.recipient = function () {
 Template.chat.recipientName = function () {
     var recipient = Meteor.users.find({_id: Session.get("recipient")}).fetch();
     if (recipient[0])
-        return displayName(recipient[0]);
+        return DisplayName(recipient[0]);
     return "";
 };
 
@@ -133,7 +133,7 @@ Template.chat.isMobileSize = function () {
 
 //Returns if the userId is the current user
 Template.chat.iAm = function (userId) {
-    return Session.get("currentUser") === userId;
+    return Meteor.userId() === userId;
 };
 
 var messagesCursorHandle;
