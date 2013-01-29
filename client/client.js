@@ -19,6 +19,9 @@ Meteor.Router.add({
             return "mobileChat";
         }
         return "mapView";
+    },
+    '/team': function () {
+        return "teamView";
     }
 });
 
@@ -40,10 +43,13 @@ var fixFirefoxCss = function () {
 
 Meteor.startup(function () {
     Meteor.autorun(function () {
-        //when the user is logged in: switch to the map and update their image
+        //when the user is logged in: redirect from the login page to the map
+        //and update their image
         if (Meteor.userId()) {
-            Meteor.Router.to("/map");
-            updateUserProfile();
+            if (!Meteor.Router.page() || Meteor.Router.page() === "loginView") {
+                Meteor.Router.to("/map");
+                updateUserProfile();
+            }
         }
         //when logged out, switch to login
         else {
