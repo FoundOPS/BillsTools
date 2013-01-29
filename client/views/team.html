@@ -2,23 +2,31 @@
 <template name="teamView">
     {{> topBar}}
     <div id="team" class="page">
-        <label for="select-choice-0" class="select">Team:</label>
-        <select name="select-choice-0" id="select-choice-0">
+        <h1>Team Settings</h1>
+        <label for="teamSelect">Team:</label>
+        <select name="teamSelect" id="teamSelect">
             <option value="newTeam">Add New</option>
         </select>
+
         <br />
+
         <label>Name:</label>
-        <input type="text" class="name" />
+        <input type="text" class="teamName" />
         <h2>Members</h2>
 
         <label>Add New:</label>
-        <input type="text" class="newMember" />
-        <button>Invite</button>
+        <input type="text" class="addName" />
+        <button class="addName">Invite</button>
+
+        <br />
+        <br />
 
         {{> grid}}
 
-        <button>Leave this Team</button>
-        <button>Delete this Team</button>
+        <br />
+        <br />
+        <button id="leaveTeam">Leave this Team</button>
+        <button id="deleteTeam">Delete this Team</button>
     </div>
 </template>
 
@@ -34,14 +42,19 @@
                     <td><span class="ui-table-cell-label">Email</span>{{Email}}</td>
                     <td>
                         <span class="ui-table-cell-label">Role</span>
-                        <label for="select-choice-1" class="select"></label>
-                        <select name="select-choice-1" id="select-choice-1">
+                        <label for="memberRole" class="select"></label>
+                        <select name="memberRole" id="memberRole">
                             <option value="member">Member</option>
                             <option value="admin">Admin</option>
                         </select>
                     </td>
-                    <td><span class="ui-table-cell-label">Status</span>{{Status}}</td>
-                    <td><span class="ui-table-cell-label"></span><button>Remove</button></td>
+                    <td>
+                        <span class="ui-table-cell-label">Status</span>{{Status}}
+                        {{#if statusIs "Invited"}}
+                            <a href="#">(resend)</a>
+                        {{/if}}
+                    </td>
+                    <td><span class="ui-table-cell-label"></span><a href="#">Remove</a></td>
                 </tr>
             {{/each}}
         </tbody>

@@ -4,8 +4,8 @@ Template.topBar.rendered = function () {
     $("#menu").optionsPopup({
         id: "menu",
         contents: [
-            {name: "Logout", id: "logout"},
-            {name: "Team Settings", id: "teamSettings"}
+            {name: "Team Settings", id: "teamSettings"},
+            {name: "Logout", id: "logout"}
         ],
         disableHeader: true
     });
