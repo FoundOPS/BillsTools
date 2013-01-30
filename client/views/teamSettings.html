@@ -2,16 +2,15 @@
 <template name="teamSettingsView">
     {{> topBar}}
     <div id="teamWrapper">
-        <div id="team" class="page">
+        <div id="teamSettings" class="page">
             <h1>Team Settings</h1>
 
             <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
                 <label class="ui-input-text h2" for="teamSelect">Members</label>
-                <a id="openInviteMember" class="addMember green login-button">Invite New Member to Team</a>
+                <a id="openInviteMember" class="green login-button">Invite New Member to Team</a>
 
-                <div id="inviteMemberPopup">
-                    <input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text"
-                           placeholder="email"/>
+                <div id="inviteMemberPopup" class="ui-content">
+                    <input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" data-theme="a" type="text" placeholder="email"/>
                     <button id="inviteMember">Add</button>
                     <button id="closeInviteMember">Cancel</button>
                 </div>
@@ -27,10 +26,13 @@
 
             <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
                 <label class="ui-input-text h2" for="teamSelect">Team</label>
-                <a href="#teamPopup" data-rel="popup" class="addTeam green login-button">Add New</a>
-                <!--<div data-role="popup" id="teamPopup">-->
-                <!--<input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text" placeholder="email"/>-->
-                <!--</div>-->
+                <a id="openNewTeamPopup" data-rel="popup" class="green login-button">Add New</a>
+
+                <div id="newTeamPopup" class="ui-content">
+                    <input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text" placeholder="email"/>
+                    <button id="addTeam">Add</button>
+                    <button id="closeNewTeam">Cancel</button>
+                </div>
             </div>
 
             <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">

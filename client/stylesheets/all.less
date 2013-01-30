@@ -90,6 +90,7 @@ button, a.login-button{
         width: auto !important;
         min-width: 22%;
         margin-right: 0 !important;
+        vertical-align: middle !important;
     }
     input.ui-input-text{
         width: 73% !important;
@@ -574,12 +575,16 @@ button, a.login-button{
     background: @grey;
 }
 
-#team{
+#teamSettings{
     position: relative;
     width: 640px;
     margin: 0 auto;
     padding: 15px;
     color: #333;
+    h1{
+        width: 274px;
+        margin: 0 auto;
+    }
     .h2{
         font-size: 24px;
         font-weight: bold;
@@ -625,21 +630,27 @@ button, a.login-button{
     }
 }
 
+.ui-popup{
+    input.ui-input-text{
+        width: auto;
+    }
+}
+
 @media screen and (max-width: 640px) {
-    #team{
+    #teamSettings{
         width: 100%;
         td.name{
             font-weight: bold;
         }
-        button, #teamSelect, a.login-button{
+        button, a.login-button{
             width: 90% !important;
         }
-        #teamName{
-            width: 85% !important;
+        #teamName, #teamSelect{
+            width: 100% !important;
         }
     }
-    input.ui-input-text{
-        width: 85% !important;
+    .ui-field-contain{
+        width: 90%;
     }
     #loginBg {
         background: @green;
@@ -660,7 +671,7 @@ button, a.login-button{
 }
 
 @media ( min-width: 640px ) {
-    #team{
+    #teamSettings{
     /* Show the table header rows and set all cells to display: table-cell */
         td,th, tbody th,tbody td,thead td,thead th {
             display: table-cell;
@@ -669,6 +680,11 @@ button, a.login-button{
     /* Hide the labels in each cell */
         td .ui-table-cell-label,th .ui-table-cell-label {
             display: none;
+        }
+
+        .ui-field-contain .login-button{
+            position: relative;
+            top: 4px;
         }
     }
 }

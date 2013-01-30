@@ -14,9 +14,7 @@ Template.teamSettingsView.rendered = function () {
     });
 
     //setup invite member popup
-    $("#inviteMemberPopup").popup({
-        //dismissible: false
-    });
+    $("#inviteMemberPopup").popup({theme: "a", overlayTheme: "a"});
     $("#openInviteMember").on("vclick", function () {
         $("#inviteMemberPopup").popup("open");
     });
@@ -24,6 +22,18 @@ Template.teamSettingsView.rendered = function () {
         //TODO
     });
     $("#closeInviteMember").on("vclick", function () {
+        $("#inviteMemberPopup").popup("close");
+    });
+
+    //setup add new team popup
+    $("#newTeamPopup").popup({theme: "a", overlayTheme: "a"});
+    $("#openNewTeamPopup").on("vclick", function () {
+        $("#inviteMemberPopup").popup("open");
+    });
+    $("#addTeam").on("vclick", function () {
+        //TODO
+    });
+    $("#closeNewTeam").on("vclick", function () {
         $("#inviteMemberPopup").popup("close");
     });
 };
