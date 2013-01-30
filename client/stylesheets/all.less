@@ -78,7 +78,7 @@ a:active{
     border-bottom: none !important;
     label{
         width: auto !important;
-        min-width: 22%;
+        min-width: 15%;
         margin-right: 0 !important;
         vertical-align: middle !important;
     }
@@ -87,6 +87,14 @@ a:active{
         min-height: 1em !important;
         line-height: 1em !important;
     }
+}
+
+thead th, .ui-table-cell-label{
+    font-size: 16px;
+}
+
+.ui-table-reflow tbody th {
+    margin-top: 1em !important;
 }
 
 .ui-body-c, .ui-overlay-c{
@@ -591,12 +599,13 @@ table .ui-btn-inner{
 
 #teamSettings{
     position: relative;
+    max-width: 900px;
     margin: 0 auto;
     padding: 15px;
     color: #333;
     h1{
-        width: 274px;
-        margin: 0 auto;
+        width: 245px;
+        margin: 15px auto;
     }
     .h2{
         font-size: 24px;
@@ -615,8 +624,14 @@ table .ui-btn-inner{
         border: 1px solid #999;
         border-radius: 4px;
     }
-    #teamSelect{
-        margin-bottom: 5px;
+    #newMembersWrapper{
+        margin-bottom: 25px;
+    }
+    #currentTeamWrapper, #teamNameWrapper{
+        margin-top: 10px;
+        #currentTeam{
+            margin-bottom: 5px;
+        }
     }
     input[type="text"]{
         //border-radius: 0;
@@ -627,19 +642,44 @@ table .ui-btn-inner{
     .tableWrapper{
         background: @white;
         padding: 10px 5px 10px 10px;
-        //border-radius: 16px;
+        border-radius: 8px;
+        margin-top: 10px;
+        table{
+            font-size: 14px;
+            a{
+                text-decoration: none;
+            }
+            td{
+                vertical-align: middle;
+            }
+            label.ui-select{
+                margin-bottom: 0 !important;
+            }
+        }
     }
-    table{
-        font-size: 14px;
-        a{
-            text-decoration: none;
+    .ui-btn{
+        margin-bottom: 15px;
+    }
+    .ui-field-contain, table{
+        .ui-btn{
+            margin-bottom: 0;
         }
     }
 }
 
 .ui-popup{
+    h2{
+        text-align: center;
+    }
     input.ui-input-text{
         width: auto;
+    }
+    .ui-btn{
+        display: inline-block;
+        width: 45% !important;
+        &:last-child{
+            float: right;
+        }
     }
 }
 
@@ -649,21 +689,37 @@ table .ui-btn-inner{
         td.name{
             font-weight: bold;
         }
-        #teamName, #teamSelect{
-            width: 100% !important;
+        .tableWrapper{
+            width: 90%;
+            margin-top: 20px;
         }
-        table .ui-select {
+    }
+    table{
+        .ui-select {
             display: inline-block !important;
             left: -8px;
         }
+        tr{
+            border-bottom: 1px solid #e6e6e6;
+            &:last-child{
+                border-bottom: none;
+            }
+        }
     }
     .ui-btn:not(.ui-btn-icon-right){
-        width: 95%;
+        width: 93%;
     }
     .ui-field-contain{
-        width: 95%;
+        width: 93%;
         .ui-btn{
             width: 100%;
+        }
+        .ui-select, .ui-input-text{
+            width: 100% !important;
+        }
+
+        .ui-input-text{
+            padding: 0 .4em 0 .4em;
         }
     }
     #loginBg {
@@ -684,14 +740,37 @@ table .ui-btn-inner{
     }
 }
 
+@media screen and (max-width: 447px) {
+    .ui-field-contain .ui-input-text{
+        width: 97% !important;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #teamSettings{
+        .tableWrapper{
+             width: 87%;
+         }
+    }
+    .ui-btn:not(.ui-btn-icon-right){
+        width: 91%;
+    }
+    .ui-field-contain{
+        width: 91%;
+        .ui-btn{
+            width: 100%;
+        }
+    }
+}
+
 @media ( min-width: 640px ) {
     #teamSettings{
-    /* Show the table header rows and set all cells to display: table-cell */
+        /* Show the table header rows and set all cells to display: table-cell */
         td,th, tbody th,tbody td,thead td,thead th {
             display: table-cell;
             margin: 0;
         }
-    /* Hide the labels in each cell */
+        /* Hide the labels in each cell */
         td .ui-table-cell-label,th .ui-table-cell-label {
             display: none;
         }
@@ -699,9 +778,21 @@ table .ui-btn-inner{
             width: 200px;
         }
         .ui-field-contain{
-            .ui-btn:not(.ui-btn-icon-right), .ui-select, .ui-input-text{
+            .ui-btn:not(.ui-btn-icon-right), .ui-select:not(label), .ui-input-text{
                 width: 350px;
-                display: inline-block;
+                display: inline-table;
+                margin-top: 0;
+            }
+            .ui-select:not(label), .ui-input-text{
+                width: 200px;
+            }
+            .ui-btn:not(.ui-btn-icon-right){
+                float: right;
+            }
+        }
+        #newTeamWrapper{
+            .ui-btn{
+                width: 210px;
             }
         }
     }

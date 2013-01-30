@@ -5,18 +5,17 @@
         <div id="teamSettings" class="page">
             <h1>Team Settings</h1>
 
-            <div data-role="fieldcontain">
+            <div data-role="fieldcontain" id="newMembersWrapper">
                 <label class="h2" for="openInviteMember">Members</label>
-                <button id="openInviteMember" name="openInviteMember" data-theme="g">Invite a new Member to {{currentTeam}}</button>
+                <button id="openInviteMember" name="openInviteMember" data-theme="g">Invite a new member to {{currentTeam}}</button>
 
                 <div id="inviteMemberPopup"  class="ui-content">
+                    <h2>New Member</h2>
                     <input type="text" placeholder="email"/>
-                    <button id="inviteMember" data-theme="g">Invite</button>
                     <button id="closeInviteMember" data-theme="y">Cancel</button>
+                    <button id="inviteMember" data-theme="g">Invite</button>
                 </div>
             </div>
-
-            <br/>
 
             <div class="tableWrapper">
                 {{> membersGrid}}
@@ -24,32 +23,36 @@
 
             <br/>
 
-            <div data-role="fieldcontain">
+            <div data-role="fieldcontain" id="newTeamWrapper">
                 <label class="h2" for="openNewTeamPopup">Team</label>
-                <button id="openNewTeamPopup" name="openNewTeamPopup" data-theme="g">Start a new Team</button>
+                <button id="openNewTeamPopup" name="openNewTeamPopup" data-theme="g">Start a new team</button>
 
                 <div id="newTeamPopup"  class="ui-content">
+                    <h2>New Team</h2>
                     <input type="text" placeholder="name"/>
-                    <button id="addTeam" data-theme="g">Add</button>
                     <button id="closeNewTeam" data-theme="y">Cancel</button>
+                    <button id="addTeam" data-theme="g">Add</button>
                 </div>
             </div>
 
-            <div data-role="fieldcontain">
-                <label for="teamSelect">Current Team:</label>
-                <select name="teamSelect" id="teamSelect">
+            <div data-role="fieldcontain" id="currentTeamWrapper">
+                <label for="currentTeam">Current Team:</label>
+                <select name="currentTeam" id="currentTeam">
                     <option value="foundops">FoundOPS</option>
                     <option value="ateam">A-Team</option>
                 </select>
             </div>
 
-            <div data-role="fieldcontain">
-                <label for="teamName">Name:</label>
-                <input type="text" id="teamName"/>
+            <div data-role="fieldcontain" id="teamNameWrapper">
+                <label for="teamName">Team Name:</label>
+                <input type="text" name="teamName" id="teamName" />
             </div>
 
-            <button id="leaveTeam" data-theme="y">Leave This Team</button>
-            <button id="deleteTeam" data-theme="y">Delete This Team</button>
+            <br/>
+
+            <!--TODO: make team name dynamic. ex: Leave FoundOPS and Delete FoundOPS-->
+            <button id="leaveTeam" data-theme="y">Leave this team</button>
+            <button id="deleteTeam" data-theme="y">Delete this team</button>
         </div>
     </div>
 </template>
