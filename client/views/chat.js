@@ -31,7 +31,6 @@ var StartChat = function (recipient, popup) {
 
 //when the chat is closed clear the recipient and route to map
 var CloseChat = function () {
-    console.log("Chat closed");
     Meteor.Router.to("/map");
     Session.set("lastRecipient", Session.get("recipient"));
     Session.set("recipient", null);
@@ -39,10 +38,9 @@ var CloseChat = function () {
 
 //sends a message from the text area, and refocuses
 var sendMessage = function (textArea) {
-    console.log("Message sending");
     var text = textArea.value;
     //create message if it's not blank
-    if (text != "\n") {
+    if (text != "\n" && text.length > 0) {
         //Create a message in the collection. options should include: recipient, text
         var options = {recipient: Session.get("recipient"), text: text};
         Meteor.call('createMessage', options, function (error, message) {
@@ -53,7 +51,6 @@ var sendMessage = function (textArea) {
     }
     textArea.value = "";
 
-    console.log("chatInput Clear");
     Session.set("chatInput", "");
 
     textArea.focus();
@@ -78,12 +75,9 @@ var setupPopup = function (popup) {
 };
 
 var setupMobileChat = function () {
-    console.log("chatInput Clear");
     Session.set("chatInput", "");
 
-    console.log("setup mobile chat");
     $(document).on("keyup", ".chatBox textarea", function (e) {
-        console.log("chatInput Set: " + $(this).val());
         Session.set("chatInput", $(this).val());
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
@@ -213,7 +207,6 @@ Template.chat.rendered = function () {
 };
 
 Template.mobileChat.rendered = function () {
-    console.log("Mobile chat rendered");
     var chatInput = Session.get("chatInput");
     if (chatInput) {
         //NOTE: Focus is required to set cursor to end of textarea.

@@ -2,12 +2,6 @@ jQuery.fn.outerHTML = function () {
     return jQuery('<div />').append(this.eq(0).clone()).html();
 };
 
-var ContainsRequiredFields = function (object, fields) {
-    return _.every(fields, function (field) {
-        return _.has(object, field);
-    });
-};
-
 var UrlParameters = function () {
     var urlParams = {};
     (function () {
