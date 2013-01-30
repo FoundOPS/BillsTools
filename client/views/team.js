@@ -1,5 +1,5 @@
 Template.teamView.rendered = function () {
-    $(".addName").on("click", function () {
+    $("#addMember").on("click", function () {
         console.log("add");
     });
 

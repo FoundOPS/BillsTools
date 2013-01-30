@@ -1,6 +1,10 @@
 /*region variables*/
 @green: #7fbb00;
 @white: #ffffff;
+@yellow: #f3dc00;
+@darkYellow: #d9b002;
+@lightGreen: #7fdd00;
+@darkGreen: #669900;
 //@grey: #6A6E62;
 @grey: #e6e6e6;
 @blue: #1450C5;
@@ -17,6 +21,27 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.buttonGradient(@top, @bottom){
+    background-image: -moz-linear-gradient(top, @top, @bottom);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
+    background-image: -webkit-linear-gradient(top, @top, @bottom);
+    background-image: -o-linear-gradient(top, @top, @bottom);
+    background-image: linear-gradient(to bottom, @top, @bottom);
+}
+
+button.yellow, .login-button.yellow{
+    .buttonGradient(@yellow, @darkYellow);
+}
+
+button.green, .login-button.green{
+    color: @white;
+    .buttonGradient(@lightGreen, @darkGreen);
+}
+
+button.black, .login-button.black{
+    .buttonGradient(#777777, #111111);
 }
 
 /*endregion*/
@@ -42,6 +67,33 @@ a:hover{
 
 a:active{
     .hoverColor(@blue, 30%);
+}
+
+button, a.login-button{
+    min-height: 33px;
+    padding: 4px 10px;
+    font-weight: 600;
+    text-shadow: none;
+    border-radius: 6px;
+    border: none;
+    line-height: 1.5;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.ui-field-contain{
+    padding: 0 !important;
+    border-bottom: none !important;
+    label{
+        width: auto !important;
+        min-width: 22%;
+        margin-right: 0 !important;
+    }
+    input.ui-input-text{
+        width: 73% !important;
+        min-height: 1em !important;
+        line-height: 1em !important;
+    }
 }
 
 .page{
@@ -153,12 +205,6 @@ a:active{
         text-shadow: none;
         border-radius: 6px;
         border: none;
-        background-image: -moz-linear-gradient(top, #777, #111);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#777), to(#111));
-        background-image: -webkit-linear-gradient(top, #777, #111);
-        background-image: -o-linear-gradient(top, #777, #111);
-        background-image: linear-gradient(to bottom, #777, #111); //        box-shadow: none;
-    //        -webkit-box-shadow: none;
     }
     .login-button-form-submit, #login-buttons-signup {
         display: inline-block;
@@ -169,11 +215,6 @@ a:active{
         float: right;
         top: 8px;
         color: #000;
-        background-image: -moz-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f3dc00), to(#d9b002));
-        background-image: -webkit-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: -o-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: linear-gradient(to bottom, #f3dc00, #d9b002);
     }
     .orUse {
         width: 60px;
@@ -354,6 +395,9 @@ a:active{
         right: 0;
         bottom: 0;
     }
+    .leaflet-top, .leaflet-bottom{
+        z-index: 8;
+    }
 }
 
 .initials{
@@ -522,44 +566,48 @@ a:active{
 
 /*endregion*/
 
+#teamWrapper{
+    width: 100%;
+    height: 100%;
+    background: @grey;
+}
+
 #team{
     position: relative;
     width: 640px;
     margin: 0 auto;
     padding: 15px;
     color: #333;
-    label, .ui-table-cell-label{
+    .h2{
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .ui-table-cell-label{
         font-weight: bold;
     }
     select, select:focus{
-        height: 24px;
+        height: 30px;
         padding-right: 16px;
         -webkit-appearance: listbox;
         background-image: url("@{root}selectArrow.png");
         background-repeat: no-repeat;
         background-position: right;
         border: 1px solid #999;
+        border-radius: 4px;
     }
     #teamSelect{
         margin-bottom: 5px;
     }
     input[type="text"]{
-        border-radius: 0;
+        //border-radius: 0;
     }
     h2{
         font-size: 22px;
     }
-    button{
-        background: #e6e6e6;
-        border: 1px solid #666;
-        padding: 4px 10px;
-        &:hover{
-            background: #ccc;
-            cursor: pointer;
-        }
-        &:active{
-            background: #bbb;
-        }
+    .tableWrapper{
+        background: @white;
+        padding: 5px 0px 10px 10px;
+        border-radius: 6px;
     }
     table{
         font-size: 14px;
@@ -567,11 +615,29 @@ a:active{
             text-decoration: none;
         }
     }
+    #leaveTeam, #deleteTeam{
+        width: 140px;
+    }
+    #leaveTeam{
+        margin-bottom: 10px;
+    }
 }
 
 @media screen and (max-width: 640px) {
     #team{
         width: 100%;
+        td.name{
+            font-weight: bold;
+        }
+        button, #teamSelect, a.login-button{
+            width: 90% !important;
+        }
+        #teamName{
+            width: 85% !important;
+        }
+    }
+    input.ui-input-text{
+        width: 85% !important;
     }
     #loginBg {
         background: @green;
@@ -587,7 +653,6 @@ a:active{
     }
     select{
         margin-left: 0;
-        left: -4px;
         position: relative;
     }
 }
