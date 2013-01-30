@@ -1,0 +1,81 @@
+<!--if not an admin, only include change team and leave team functionality-->
+<template name="teamView">
+    {{> topBar}}
+    <div id="teamWrapper">
+        <div id="team" class="page">
+            <h1>Team Settings</h1>
+
+            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+                <label class="ui-input-text h2" for="teamSelect">Members</label>
+                <a href="#memberPopup" data-rel="popup" class="addMember green login-button">Invite New Member to Team</a>
+                <!--<div data-role="popup" id="memberPopup">-->
+                    <!--<input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text" placeholder="email"/>-->
+                <!--</div>-->
+            </div>
+
+            <br />
+
+            <div class="tableWrapper">
+                {{> grid}}
+            </div>
+
+            <br />
+
+            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+                <label class="ui-input-text h2" for="teamSelect">Team</label>
+                <a href="#teamPopup" data-rel="popup" class="addTeam green login-button">Add New</a>
+                <!--<div data-role="popup" id="teamPopup">-->
+                    <!--<input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text" placeholder="email"/>-->
+                <!--</div>-->
+            </div>
+
+            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+                <label class="ui-input-text" for="teamSelect">Current Team:</label>
+                <select name="teamSelect" id="teamSelect">
+                    <option value="foundops">FoundOPS</option>
+                    <option value="ateam">A-Team</option>
+                </select>
+            </div>
+
+            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+                <label class="ui-input-text" for="teamName">Name:</label>
+                <input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text" id="teamName" />
+            </div>
+
+            <button id="leaveTeam" class="yellow">Leave This Team</button>
+            <br />
+            <button id="deleteTeam" class="yellow">Delete This Team</button>
+        </div>
+    </div>
+</template>
+
+<template name="grid">
+    <table data-role="table" data-mode="reflow" class="ui-responsive table-stroke ui-table ui-table-reflow">
+        <thead>
+            <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+            {{#each members}}
+                <tr>
+                    <td class="name"><span class="ui-table-cell-label">Name</span>{{Name}}</td>
+                    <td><span class="ui-table-cell-label">Email</span>{{Email}}</td>
+                    <td>
+                        <span class="ui-table-cell-label">Role</span>
+                        <label for="memberRole" class="select"></label>
+                        <select name="memberRole" id="memberRole">
+                            <option value="member">Member</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </td>
+                    <td>
+                        <span class="ui-table-cell-label">Status</span>{{Status}}
+                        {{#if statusIs "Invited"}}
+                            <a href="#">(resend)</a>
+                        {{/if}}
+                    </td>
+                    <td><span class="ui-table-cell-label"></span><a href="#">Remove</a></td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>

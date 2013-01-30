@@ -1,6 +1,10 @@
 /*region variables*/
 @green: #7fbb00;
 @white: #ffffff;
+@yellow: #f3dc00;
+@darkYellow: #d9b002;
+@lightGreen: #7fdd00;
+@darkGreen: #669900;
 //@grey: #6A6E62;
 @grey: #e6e6e6;
 @blue: #1450C5;
@@ -19,6 +23,27 @@
     box-sizing: border-box;
 }
 
+.buttonGradient(@top, @bottom){
+    background-image: -moz-linear-gradient(top, @top, @bottom);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
+    background-image: -webkit-linear-gradient(top, @top, @bottom);
+    background-image: -o-linear-gradient(top, @top, @bottom);
+    background-image: linear-gradient(to bottom, @top, @bottom);
+}
+
+button.yellow, .login-button.yellow{
+    .buttonGradient(@yellow, @darkYellow);
+}
+
+button.green, .login-button.green{
+    color: @white;
+    .buttonGradient(@lightGreen, @darkGreen);
+}
+
+button.black, .login-button.black{
+    .buttonGradient(#777777, #111111);
+}
+
 /*endregion*/
 body {
     padding: 0;
@@ -32,6 +57,50 @@ html, body {
     width: 100%;
     //fixes rendering bug with jquery mobile's .ui-mobile-rendering
     visibility: visible !important;
+}
+
+a, a:visited{
+    color: @blue;
+}
+
+a:hover{
+    .hoverColor(@blue, 15%);
+}
+
+a:active{
+    .hoverColor(@blue, 30%);
+}
+
+button, a.login-button{
+    min-height: 33px;
+    padding: 4px 10px;
+    font-weight: 600;
+    text-shadow: none;
+    border-radius: 6px;
+    border: none;
+    line-height: 1.5;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.ui-field-contain{
+    padding: 0 !important;
+    border-bottom: none !important;
+    label{
+        width: auto !important;
+        min-width: 22%;
+        margin-right: 0 !important;
+    }
+    input.ui-input-text{
+        width: 73% !important;
+        min-height: 1em !important;
+        line-height: 1em !important;
+    }
+}
+
+.page{
+    position: absolute;
+    top: 40px;
 }
 
 .profileImageMedium img{
@@ -138,12 +207,6 @@ html, body {
         text-shadow: none;
         border-radius: 6px;
         border: none;
-        background-image: -moz-linear-gradient(top, #777, #111);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#777), to(#111));
-        background-image: -webkit-linear-gradient(top, #777, #111);
-        background-image: -o-linear-gradient(top, #777, #111);
-        background-image: linear-gradient(to bottom, #777, #111); //        box-shadow: none;
-    //        -webkit-box-shadow: none;
     }
     .login-button-form-submit, #login-buttons-signup {
         display: inline-block;
@@ -154,11 +217,6 @@ html, body {
         float: right;
         top: 8px;
         color: #000;
-        background-image: -moz-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f3dc00), to(#d9b002));
-        background-image: -webkit-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: -o-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: linear-gradient(to bottom, #f3dc00, #d9b002);
     }
     .orUse {
         width: 60px;
@@ -193,83 +251,74 @@ html, body {
     .borderBox;
     width: 100%;
     height: 100%;
-}
+    .chatTop{
+        position: absolute;
+        top: 40px;
+        height: 38px;
+        left: 0;
+        width: 100%;
+        //Why is this behind??
+        z-index: 1;
+        background: #5F9B00;
+        border: none;
+    }
+    .chatArea{
+        .borderBox;
+        padding-bottom: 72px;
+        position: absolute;
+        padding-top: 79px;
+        height: 100%;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+    }
+    .chatBottom{
+        overflow: hidden;
+        width: 100%;
+        height: 61px;
+        bottom: 0;
+        right: 0;
+        padding-left: 8px;
+        padding-right: 50px;
+        padding-bottom: 8px;
+        .borderBox;
+    }
+    .chatBottom textarea{
+        position: static;
+        .borderBox;
 
-#currentChat.fullScreen .chatTop{
-    position: absolute;
-    top: 40px;
-    height: 38px;
-    left: 0;
-    width: 100%;
-//Why is this behind??
-    z-index: 1;
-    background: #5F9B00;
-    border: none;
-}
-
-#currentChat.fullScreen .chatArea{
-    .borderBox;
-    padding-bottom: 72px;
-    position: absolute;
-    padding-top: 79px;
-    height: 100%;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-}
-
-#currentChat.fullScreen .chatBottom{
-    overflow: hidden;
-    width: 100%;
-    height: 61px;
-    bottom: 0;
-    right: 0;
-    padding-left: 8px;
-    padding-right: 50px;
-    padding-bottom: 8px;
-    .borderBox;
-}
-#currentChat.fullScreen .chatBottom textarea{
-    position: static;
-    .borderBox;
-
-    width: 100%;
-    height: 100%;
-}
-
-#currentChat.fullScreen .messages{
-    max-height: 100%;
-    height: 100%;
-}
-
-#currentChat.fullScreen .senderImage{
-    position: absolute;
-    right: 10px;
-}
-
-#currentChat.fullScreen .textAreaArrow{
-    left: auto;
-    right: 35px;
-    position: absolute;
-}
-
-#currentChat.fullScreen #closeChatMobile{
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    font-size: 22px;
-    right: 0;
-    padding: 6px 18px;
-    cursor: pointer;
-    .borderBox;
-}
-
-#currentChat.fullScreen .profileImageSmall {
-    top: 8px;
-}
-
-#currentChat.fullScreen .recepientName {
-    top: 2px;
+        width: 100%;
+        height: 100%;
+    }
+    .messages{
+        max-height: 100%;
+        height: 100%;
+    }
+    .senderImage{
+        position: absolute;
+        right: 10px;
+    }
+    .textAreaArrow{
+        left: auto;
+        right: 35px;
+        position: absolute;
+    }
+    #closeChatMobile{
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        font-size: 22px;
+        right: 0;
+        padding: 6px 18px;
+        cursor: pointer;
+        .borderBox;
+    }
+    .profileImageSmall {
+        top: 8px;
+    }
+    .recepientName {
+        top: 2px;
+    }
 }
 
 #closeChatMobile{
@@ -348,6 +397,9 @@ html, body {
         right: 0;
         bottom: 0;
     }
+    .leaflet-top, .leaflet-bottom{
+        z-index: 8;
+    }
 }
 
 .initials{
@@ -379,6 +431,11 @@ html, body {
         .recepientName {
             position: relative;
             top: -3px;
+            width: 77%;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             font-family: verdana, arial, sans-serif;
         }
     }
@@ -511,7 +568,79 @@ html, body {
 
 /*endregion*/
 
+#teamWrapper{
+    width: 100%;
+    height: 100%;
+    background: @grey;
+}
+
+#team{
+    position: relative;
+    width: 640px;
+    margin: 0 auto;
+    padding: 15px;
+    color: #333;
+    .h2{
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .ui-table-cell-label{
+        font-weight: bold;
+    }
+    select, select:focus{
+        height: 30px;
+        padding-right: 16px;
+        -webkit-appearance: listbox;
+        background-image: url("@{root}selectArrow.png");
+        background-repeat: no-repeat;
+        background-position: right;
+        border: 1px solid #999;
+        border-radius: 4px;
+    }
+    #teamSelect{
+        margin-bottom: 5px;
+    }
+    input[type="text"]{
+        //border-radius: 0;
+    }
+    h2{
+        font-size: 22px;
+    }
+    .tableWrapper{
+        background: @white;
+        padding: 5px 0px 10px 10px;
+        border-radius: 6px;
+    }
+    table{
+        font-size: 14px;
+        a{
+            text-decoration: none;
+        }
+    }
+    #leaveTeam, #deleteTeam{
+        width: 140px;
+    }
+    #leaveTeam{
+        margin-bottom: 10px;
+    }
+}
+
 @media screen and (max-width: 640px) {
+    #team{
+        width: 100%;
+        td.name{
+            font-weight: bold;
+        }
+        button, #teamSelect, a.login-button{
+            width: 90% !important;
+        }
+        #teamName{
+            width: 85% !important;
+        }
+    }
+    input.ui-input-text{
+        width: 85% !important;
+    }
     #loginBg {
         background: @green;
     }
@@ -520,5 +649,26 @@ html, body {
         box-shadow: none;
         -webkit-box-shadow: none;
         border-radius: 0;
+    }
+    td:first-child{
+        border-top: 1px solid #aaa;
+    }
+    select{
+        margin-left: 0;
+        position: relative;
+    }
+}
+
+@media ( min-width: 640px ) {
+    #team{
+    /* Show the table header rows and set all cells to display: table-cell */
+        td,th, tbody th,tbody td,thead td,thead th {
+            display: table-cell;
+            margin: 0;
+        }
+    /* Hide the labels in each cell */
+        td .ui-table-cell-label,th .ui-table-cell-label {
+            display: none;
+        }
     }
 }

@@ -4,6 +4,9 @@
     ////////////////////////////////////////////////////////////
     var methods = {
         init: function(options, popup) {
+            if (!options) {
+                options = {};
+            }
             if(typeof(options.backgroundColor) !== 'undefined'){
                 Popup.setBackgroundColor(options.backgroundColor);
             }
