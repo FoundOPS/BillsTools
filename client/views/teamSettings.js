@@ -1,4 +1,6 @@
 Template.teamSettingsView.rendered = function () {
+    $.mobile.changePage($("#teamWrapper"));
+
     $("#leaveTeam").on("vclick", function () {
         var answer = confirm("Are you sure you want to leave this team?");
         if (answer) {
@@ -42,11 +44,11 @@ Template.teamSettingsView.destroyed = function () {
     //TODO
 };
 
-Template.grid.statusIs = function (status) {
+Template.membersGrid.statusIs = function (status) {
     return this.Status === status;
 };
 
-Template.grid.members = [
+Template.membersGrid.members = [
     {
         Name: "Bob Brown",
         Email: "bbrown@gmail.com",

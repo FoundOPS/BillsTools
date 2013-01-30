@@ -1,16 +1,16 @@
 <!--if not an admin, only include change team and leave team functionality-->
 <template name="teamSettingsView">
     {{> topBar}}
-    <div id="teamWrapper">
+    <div id="teamWrapper" data-role="page">
         <div id="teamSettings" class="page">
             <h1>Team Settings</h1>
 
-            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
-                <label class="ui-input-text h2" for="teamSelect">Members</label>
+            <div data-role="fieldcontain">
+                <label class="h2" for="teamSelect">Members</label>
                 <a id="openInviteMember" class="green login-button">Invite New Member to Team</a>
 
-                <div id="inviteMemberPopup" class="ui-content">
-                    <input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" data-theme="a" type="text" placeholder="email"/>
+                <div id="inviteMemberPopup">
+                    <input type="text" placeholder="email"/>
                     <button id="inviteMember">Add</button>
                     <button id="closeInviteMember">Cancel</button>
                 </div>
@@ -19,33 +19,33 @@
             <br/>
 
             <div class="tableWrapper">
-                {{> grid}}
+                {{> membersGrid}}
             </div>
 
             <br/>
 
-            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
-                <label class="ui-input-text h2" for="teamSelect">Team</label>
+            <div data-role="fieldcontain">
+                <label class="h2" for="teamSelect">Team</label>
                 <a id="openNewTeamPopup" data-rel="popup" class="green login-button">Add New</a>
 
-                <div id="newTeamPopup" class="ui-content">
-                    <input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text" placeholder="email"/>
+                <div id="newTeamPopup">
+                    <input type="text" placeholder="email"/>
                     <button id="addTeam">Add</button>
                     <button id="closeNewTeam">Cancel</button>
                 </div>
             </div>
 
-            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
-                <label class="ui-input-text" for="teamSelect">Current Team:</label>
+            <div data-role="fieldcontain">
+                <label for="teamSelect">Current Team:</label>
                 <select name="teamSelect" id="teamSelect">
                     <option value="foundops">FoundOPS</option>
                     <option value="ateam">A-Team</option>
                 </select>
             </div>
 
-            <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
-                <label class="ui-input-text" for="teamName">Name:</label>
-                <input class="ui-input-text ui-shadow-inset ui-corner-all ui-body-c" type="text" id="teamName"/>
+            <div data-role="fieldcontain">
+                <label for="teamName">Name:</label>
+                <input type="text" id="teamName"/>
             </div>
 
             <button id="leaveTeam" class="yellow">Leave This Team</button>
@@ -55,8 +55,8 @@
     </div>
 </template>
 
-<template name="grid">
-    <table data-role="table" data-mode="reflow" class="ui-responsive table-stroke ui-table ui-table-reflow">
+<template name="membersGrid">
+    <table id="membersTable" data-role="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -69,10 +69,9 @@
         <tbody>
         {{#each members}}
         <tr>
-            <td class="name"><span class="ui-table-cell-label">Name</span>{{Name}}</td>
-            <td><span class="ui-table-cell-label">Email</span>{{Email}}</td>
+            <th class="name">{{Name}}</th>
+            <td>{{Email}}</td>
             <td>
-                <span class="ui-table-cell-label">Role</span>
                 <label for="memberRole" class="select"></label>
                 <select name="memberRole" id="memberRole">
                     <option value="member">Member</option>
@@ -80,12 +79,12 @@
                 </select>
             </td>
             <td>
-                <span class="ui-table-cell-label">Status</span>{{Status}}
+                {{Status}}
                 {{#if statusIs "Invited"}}
-                <a href="#">(resend)</a>
+                <a href="">(resend)</a>
                 {{/if}}
             </td>
-            <td><span class="ui-table-cell-label"></span><a href="#">Remove</a></td>
+            <td><span></span><a href="">Remove</a></td>
         </tr>
         {{/each}}
         </tbody>
