@@ -1,21 +1,35 @@
-Template.teamView.rendered = function () {
-    $("#addMember").on("click", function () {
-        console.log("add");
-    });
-
-    $("#leaveTeam").on("click", function () {
+Template.teamSettingsView.rendered = function () {
+    $("#leaveTeam").on("vclick", function () {
         var answer = confirm("Are you sure you want to leave this team?");
         if (answer) {
             console.log("leave");
         }
     });
 
-    $("#deleteTeam").on("click", function () {
+    $("#deleteTeam").on("vclick", function () {
         var answer = confirm("Are you sure you want to delete this team?");
         if (answer) {
             console.log("delete");
         }
     });
+
+    //setup invite member popup
+    $("#inviteMemberPopup").popup({
+        //dismissible: false
+    });
+    $("#openInviteMember").on("vclick", function () {
+        $("#inviteMemberPopup").popup("open");
+    });
+    $("#inviteMember").on("vclick", function () {
+        //TODO
+    });
+    $("#closeInviteMember").on("vclick", function () {
+        $("#inviteMemberPopup").popup("close");
+    });
+};
+
+Template.teamSettingsView.destroyed = function () {
+    //TODO
 };
 
 Template.grid.statusIs = function (status) {

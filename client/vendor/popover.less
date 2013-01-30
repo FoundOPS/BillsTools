@@ -13,9 +13,9 @@
 @blue: #488FCD;
 @red: #d06268;
 
-@popupHeaderHeight: 45px;
-@popupCarrotHeight: 14px;
-@popupCarrotWidth: 28px;
+@popoverHeaderHeight: 45px;
+@popoverCarrotHeight: 14px;
+@popoverCarrotWidth: 28px;
 
 @hoverOpacity: .5;
 
@@ -39,23 +39,23 @@ html{
      }
  }
 
-#popupWrapper {
+#popoverWrapper {
     font-family: verdana, sans-serif;
     position: fixed;
     height: 100%;
     width: 305px;
-    padding-top: @popupCarrotHeight - 4;
+    padding-top: @popoverCarrotHeight - 4;
     visibility: hidden;
     top: 0;
     left: 0;
     .borderBox;
     z-index: 10;
-    //pointer-events allows click-throughs to popup. Possibly find better fix in the future.
+    //pointer-events allows click-throughs to popover. Possibly find better fix in the future.
     pointer-events: none;
     -webkit-transform: translateZ(0);
 }
 
-#popup {
+#popover {
     position: relative;
     .borderBox;
     height: 100%;
@@ -71,14 +71,14 @@ html{
     }
 }
 
-#popupHeader {
+#popoverHeader {
     position: absolute;
     z-index:1;
     .borderBox;
     width: 100%;
     overflow: hidden;
     //border-bottom: 1px solid @charcoal;
-    line-height: @popupHeaderHeight;
+    line-height: @popoverHeaderHeight;
     font-size: 16/18em;
     background: @white;
     border-bottom: 1px solid @darkGrey;
@@ -89,17 +89,17 @@ html{
     pointer-events: auto;
 }
 
-#popupArrow {
+#popoverArrow {
     position: absolute;
     float: left;
-    margin-top: -1* @popupCarrotHeight;
-    margin-left: -1 * (@popupCarrotWidth / 2)-2; /* Half width */
+    margin-top: -1* @popoverCarrotHeight;
+    margin-left: -1 * (@popoverCarrotWidth / 2)-2; /* Half width */
     visibility: visible;
     left: 50%;
     z-index: 2;
 
-    height: @popupCarrotHeight;
-    width: @popupCarrotWidth;
+    height: @popoverCarrotHeight;
+    width: @popoverCarrotWidth;
 
     background: url('../../popupSprite1.png') no-repeat 0px 0px;
 }
@@ -117,7 +117,7 @@ html{
     }
 }
 
-#popupBack, #popupClose{
+#popoverBack, #popoverClose{
     position: absolute;
     cursor: pointer;
     height: 22px;
@@ -126,17 +126,17 @@ html{
     .hover;
 }
 
-#popupBack {
+#popoverBack {
     left: 14px;
     background: url('../../popupSprite1.png') no-repeat -9px -116px;
 }
 
-#popupClose {
+#popoverClose {
     right: 14px;
     background: url('../../popupSprite1.png') no-repeat -5px -89px;
 }
 
-#popupTitle{
+#popoverTitle{
     white-space: nowrap;
     text-align: center;
     max-width: 225px;
@@ -147,7 +147,7 @@ html{
     .borderBox;
 }
 
-#popupContentWrapper {
+#popoverContentWrapper {
     position: relative;
     overflow: visible !important;
     padding-top: 0px;
@@ -156,7 +156,7 @@ html{
     .borderBox;
 }
 
-#popupContent {
+#popoverContent {
     visibility: visible;
     position: relative;
     overflow: auto;
@@ -176,19 +176,19 @@ html{
     }
 }
 
-.popupContentRow {
+.popoverContentRow {
     display: block;
     cursor: pointer;
     padding: 12px 23px;
     border-bottom: 1px solid @lightGrey;
 }
 
-.popupContentRow:hover{
+.popoverContentRow:hover{
     background: @grey;
 }
 
 @media only screen and (max-width:390px) {
-    #popupWrapper {
+    #popoverWrapper {
         //width: 90%;
     }
 }
@@ -196,34 +196,34 @@ html{
 // ========================================================================
 //                        jScrollPane Specific Css
 // ========================================================================
-#popupContentWrapper .jspPane{
+#popoverContentWrapper .jspPane{
     width: 100% !important;
     //border-radius: 8px;
     -webkit-box-shadow: 0 0 10px @lightCharcoal;
     box-shadow: 0 0 10px @lightCharcoal;
 }
 
-#popupContentWrapper .jspContainer {
+#popoverContentWrapper .jspContainer {
     //TODO: Find better fix.
     //overflow: visible;
 }
-#popupContentWrapper .jspDrag {
+#popoverContentWrapper .jspDrag {
     background: @lightCharcoal;
 }
 
-#popupContentWrapper .jspCapTop {
+#popoverContentWrapper .jspCapTop {
     display: block;
-    height: @popupHeaderHeight+4;
+    height: @popoverHeaderHeight+4;
 }
-#popupContentWrapper .jspCapBottom {
+#popoverContentWrapper .jspCapBottom {
     display: block;
     height: 2px;
 }
 
-#popupWrapper, #popup, #popupContentWrapper .jspContainer{
+#popoverWrapper, #popover, #popoverContentWrapper .jspContainer{
     pointer-events: none;
 }
 
-#popupWrapper .jspPane, #popupWrapper .jspVerticalBar, #popupHeader, #popupContent{
+#popoverWrapper .jspPane, #popoverWrapper .jspVerticalBar, #popoverHeader, #popoverContent{
     pointer-events: auto;
 }

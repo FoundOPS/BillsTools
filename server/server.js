@@ -3,14 +3,10 @@ Meteor.publish("directory", function () {
     return Meteor.users.find();
 });
 
-// Messages -- data model
-// Loaded on both the client and the server
-
 ///////////////////////////////////////////////////////////////////////////////
 // Messages
 
 /*
- Each message is represented by a document in the Messages collection:
  created: Date when it was created
  author: the id of the user who wrote the message
  recipient: the id of the user the message is written to
@@ -34,7 +30,7 @@ var MAX_AGE = 60 * 24 * 7; //in minutes. (7 days)
 var oldestMessage = new Date(new Date() - MAX_AGE * 60000);
 
 Meteor.publish("messages", function () {
-    //TODO filter by < 7 days ago
+    //only send messages < 7 days old and where the user is either the author or recipient
     return Messages.find({
         created: {$gte: oldestMessage},
         $or: [
@@ -44,16 +40,18 @@ Meteor.publish("messages", function () {
     });
 });
 
-Meteor.methods({
-    //options should include: created, recipient, text
+var messageMethods = {
+    //options should include: recipient, text
     createMessage: function (options) {
         options = options || {};
-        if (!(options.recipient &&
-            typeof options.text === "string" && options.text.length))
+
+        if (!ContainsRequiredFields(options, ['recipient', 'text']) ||
+            typeof options.text !== "string" || !options.text.length)
             throw new Meteor.Error(400, "Required parameter missing");
 
         if (options.text.length > 5000)
             throw new Meteor.Error(413, "Text too long");
+
         if (!this.userId)
             throw new Meteor.Error(403, "You must be logged in");
 
@@ -71,7 +69,7 @@ Meteor.methods({
         });
     },
     readMessage: function (id) {
-        var message = Messages.find(id).fetch()[0];
+        var message = Messages.findOne(id);
         if (!message)
             throw new Meteor.Error(400, "Message does not exist");
 
@@ -80,24 +78,98 @@ Meteor.methods({
 
         return Messages.update({_id: id}, {$set: {read: true}});
     }
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Teams
+
+/*
+ created: Date when it was created
+ author: the id of the user who wrote the message
+ recipient: the id of the user the message is written to
+ text: the message text
+ */
+Teams = new Meteor.Collection("teams");
+
+Teams.allow({
+    insert: function (userId, team) {
+        //make sure the user is an administrator
+        return _.contains(team.administrators, userId);
+    },
+    update: function (userId, messages, fields, modifier) {
+        return false; // no updates
+    },
+    remove: function (userId, messages) {
+        //TODO
+        return false; // no deletes
+    }
 });
+
+var teamMethods = {
+    //options should include: role (0 = administrator, 1 = member), team (id), member (id)
+    addTeamMember: function (options) {
+        options = options || {};
+
+        if (!ContainsRequiredFields(options, ['role', 'team', 'member']))
+            throw new Meteor.Error(400, "Required parameter missing");
+
+        var team = Teams.findOne(options.team);
+        if (!team)
+            throw new Meteor.Error(400, "Team does not exist");
+
+        if (!this.userId)
+            throw new Meteor.Error(403, "You must be logged in");
+
+        if (!_.contains(team.administrators, this.userId))
+            throw new Meteor.Error(403, "You must be an administrator to this team");
+
+        //TODO setup new
+        var member = Meteor.users.find(options.member);
+        if (!member)
+            throw new Meteor.Error(400, "User does not exist");
+
+        if (options.role === 0)
+            Teams.update({_id: team._id}, {$push: {administrators: options.member}});
+        else if (options.role === 1)
+            Teams.update({_id: team._id}, {$push: {members: options.member}});
+        else
+            throw new Meteor.Error(400, "Need to define the user's role in the team");
+    }
+};
+
+Meteor.publish("teams", function () {
+    return Teams.find({
+        $or: [
+            {administrators: this.userId},
+            {members: this.userId}
+        ]
+    });
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// Initialization
+
+var allMethods = {};
+_.extend(allMethods, messageMethods);
+_.extend(allMethods, teamMethods);
+
+Meteor.methods(allMethods);
 
 //PUBLISH TODO comment out
 Meteor.startup(function () {
-    if (Accounts.loginServiceConfiguration.find().count() > 0)
-        return;
+    if (Accounts.loginServiceConfiguration.find().count() < 1) {
+        Accounts.loginServiceConfiguration.insert({
+            service: "google",
+            clientId: "960721914827.apps.googleusercontent.com",
+            secret: "keUopZvvXrGBhnfU5kKY9aZ0"
+        });
 
-    Accounts.loginServiceConfiguration.insert({
-        service: "google",
-        clientId: "960721914827.apps.googleusercontent.com",
-        secret: "keUopZvvXrGBhnfU5kKY9aZ0"
-    });
-
-    Accounts.loginServiceConfiguration.insert({
-        service: "facebook",
-        appId: "421885287896331",
-        secret: "5a4ff7bedc49b8c071c2e198a04d6ec7"
-    });
+        Accounts.loginServiceConfiguration.insert({
+            service: "facebook",
+            appId: "421885287896331",
+            secret: "5a4ff7bedc49b8c071c2e198a04d6ec7"
+        });
+    }
 
     //Accounts.createUser({
     //    username: "Jonathan Perl",

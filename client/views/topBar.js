@@ -1,7 +1,7 @@
 // Top Bar
 ///////////////////////////////////////////////////////////////////////////////
 Template.topBar.rendered = function () {
-    $("#menu").optionsPopup({
+    $("#menu").optionsPopover({
         id: "menu",
         contents: [
             {name: "Team Settings", id: "teamSettings"},
@@ -15,7 +15,7 @@ Template.topBar.rendered = function () {
     });
 
     $("#teamSettings").live("click", function () {
-        Meteor.Router.to("/team");
+        Meteor.Router.to("/teamSettings");
     });
 
     $("img.logo").on("click", function () {

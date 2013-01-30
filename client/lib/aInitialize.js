@@ -6,4 +6,8 @@ $(document).on("mobileinit", function () {
     $.mobile.ajaxEnabled = false;
     $.mobile.autoInitializePage = false;
     $.mobile.pushStateEnabled = false;
+
+    //required for many listeners (popup closing when you click outside of it)
+    //if not set and there is not a first page, there will be errors
+    $.mobile.pageContainer = $(document.body).addClass("ui-mobile-viewport");
 });

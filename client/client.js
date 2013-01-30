@@ -20,8 +20,8 @@ Meteor.Router.add({
         }
         return "mapView";
     },
-    '/team': function () {
-        return "teamView";
+    '/teamSettings': function () {
+        return "teamSettingsView";
     }
 });
 
