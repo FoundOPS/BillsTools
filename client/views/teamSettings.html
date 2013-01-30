@@ -6,13 +6,13 @@
             <h1>Team Settings</h1>
 
             <div data-role="fieldcontain">
-                <label class="h2" for="teamSelect">Members</label>
-                <a id="openInviteMember" class="green login-button">Invite New Member to Team</a>
+                <label class="h2" for="openInviteMember">Members</label>
+                <button id="openInviteMember" name="openInviteMember" data-theme="g">Invite a new Member to {{currentTeam}}</button>
 
-                <div id="inviteMemberPopup">
+                <div id="inviteMemberPopup"  class="ui-content">
                     <input type="text" placeholder="email"/>
-                    <button id="inviteMember">Add</button>
-                    <button id="closeInviteMember">Cancel</button>
+                    <button id="inviteMember" data-theme="g">Invite</button>
+                    <button id="closeInviteMember" data-theme="y">Cancel</button>
                 </div>
             </div>
 
@@ -25,13 +25,13 @@
             <br/>
 
             <div data-role="fieldcontain">
-                <label class="h2" for="teamSelect">Team</label>
-                <a id="openNewTeamPopup" data-rel="popup" class="green login-button">Add New</a>
+                <label class="h2" for="openNewTeamPopup">Team</label>
+                <button id="openNewTeamPopup" name="openNewTeamPopup" data-theme="g">Start a new Team</button>
 
-                <div id="newTeamPopup">
-                    <input type="text" placeholder="email"/>
-                    <button id="addTeam">Add</button>
-                    <button id="closeNewTeam">Cancel</button>
+                <div id="newTeamPopup"  class="ui-content">
+                    <input type="text" placeholder="name"/>
+                    <button id="addTeam" data-theme="g">Add</button>
+                    <button id="closeNewTeam" data-theme="y">Cancel</button>
                 </div>
             </div>
 
@@ -48,9 +48,8 @@
                 <input type="text" id="teamName"/>
             </div>
 
-            <button id="leaveTeam" class="yellow">Leave This Team</button>
-            <br/>
-            <button id="deleteTeam" class="yellow">Delete This Team</button>
+            <button id="leaveTeam" data-theme="y">Leave This Team</button>
+            <button id="deleteTeam" data-theme="y">Delete This Team</button>
         </div>
     </div>
 </template>
@@ -63,7 +62,7 @@
             <th>Email</th>
             <th>Role</th>
             <th>Status</th>
-            <th></th>
+            <th> </th>
         </tr>
         </thead>
         <tbody>
@@ -84,7 +83,7 @@
                 <a href="">(resend)</a>
                 {{/if}}
             </td>
-            <td><span></span><a href="">Remove</a></td>
+            <td><a href="">Remove</a></td>
         </tr>
         {{/each}}
         </tbody>

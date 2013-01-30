@@ -36,7 +36,7 @@ button.yellow, .login-button.yellow{
 }
 
 button.green, .login-button.green{
-    color: @white;
+    color: @white !important;
     .buttonGradient(@lightGreen, @darkGreen);
 }
 
@@ -71,17 +71,7 @@ a:active{
     .hoverColor(@blue, 30%);
 }
 
-button, a.login-button{
-    min-height: 33px;
-    padding: 4px 10px;
-    font-weight: 600;
-    text-shadow: none;
-    border-radius: 6px;
-    border: none;
-    line-height: 1.5;
-    cursor: pointer;
-    text-decoration: none;
-}
+/*region jquery mobile overrides*/
 
 .ui-field-contain{
     padding: 0 !important;
@@ -97,6 +87,30 @@ button, a.login-button{
         min-height: 1em !important;
         line-height: 1em !important;
     }
+}
+
+.ui-body-c, .ui-overlay-c{
+    text-shadow: none !important;
+}
+
+.ui-btn-inner{
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+}
+
+.ui-icon{
+    background-image: url("@{root}icons-18-white.png") !important;
+}
+
+/*endregion*/
+
+table .ui-btn-icon-right{
+    margin-top: 0;
+}
+
+table .ui-btn-inner{
+    padding-top: 0.4em !important;
+    padding-bottom: 0.4em !important;
 }
 
 .page{
@@ -577,7 +591,6 @@ button, a.login-button{
 
 #teamSettings{
     position: relative;
-    width: 640px;
     margin: 0 auto;
     padding: 15px;
     color: #333;
@@ -613,20 +626,14 @@ button, a.login-button{
     }
     .tableWrapper{
         background: @white;
-        padding: 5px 0px 10px 10px;
-        border-radius: 6px;
+        padding: 10px 5px 10px 10px;
+        //border-radius: 16px;
     }
     table{
         font-size: 14px;
         a{
             text-decoration: none;
         }
-    }
-    #leaveTeam, #deleteTeam{
-        width: 140px;
-    }
-    #leaveTeam{
-        margin-bottom: 10px;
     }
 }
 
@@ -642,15 +649,22 @@ button, a.login-button{
         td.name{
             font-weight: bold;
         }
-        button, a.login-button{
-            width: 90% !important;
-        }
         #teamName, #teamSelect{
             width: 100% !important;
         }
+        table .ui-select {
+            display: inline-block !important;
+            left: -8px;
+        }
+    }
+    .ui-btn:not(.ui-btn-icon-right){
+        width: 95%;
     }
     .ui-field-contain{
-        width: 90%;
+        width: 95%;
+        .ui-btn{
+            width: 100%;
+        }
     }
     #loginBg {
         background: @green;
@@ -681,10 +695,14 @@ button, a.login-button{
         td .ui-table-cell-label,th .ui-table-cell-label {
             display: none;
         }
-
-        .ui-field-contain .login-button{
-            position: relative;
-            top: 4px;
+        .ui-btn:not(.ui-btn-icon-right){
+            width: 200px;
+        }
+        .ui-field-contain{
+            .ui-btn:not(.ui-btn-icon-right), .ui-select, .ui-input-text{
+                width: 350px;
+                display: inline-block;
+            }
         }
     }
 }

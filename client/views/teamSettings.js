@@ -30,18 +30,23 @@ Template.teamSettingsView.rendered = function () {
     //setup add new team popup
     $("#newTeamPopup").popup({theme: "a", overlayTheme: "a"});
     $("#openNewTeamPopup").on("vclick", function () {
-        $("#inviteMemberPopup").popup("open");
+        $("#newTeamPopup").popup("open");
     });
     $("#addTeam").on("vclick", function () {
         //TODO
     });
     $("#closeNewTeam").on("vclick", function () {
-        $("#inviteMemberPopup").popup("close");
+        $("#newTeamPopup").popup("close");
     });
 };
 
 Template.teamSettingsView.destroyed = function () {
     //TODO
+};
+
+Template.teamSettingsView.currentTeam =  function () {
+    //TODO: make dynamic with value of team dropdown
+    return "FoundOPS";
 };
 
 Template.membersGrid.statusIs = function (status) {
