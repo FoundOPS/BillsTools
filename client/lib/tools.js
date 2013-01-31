@@ -2,6 +2,13 @@ jQuery.fn.outerHTML = function () {
     return jQuery('<div />').append(this.eq(0).clone()).html();
 };
 
+//initializes jQuery mobile page manually
+var SetupMobilePage = function (selector) {
+    selector.page();
+    selector.addClass("ui-page-active");
+    $.mobile.document.trigger("pageshow");
+};
+
 var UrlParameters = function () {
     var urlParams = {};
     (function () {

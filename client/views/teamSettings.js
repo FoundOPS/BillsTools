@@ -1,5 +1,5 @@
 Template.teamSettingsView.rendered = function () {
-    $.mobile.changePage($("#teamWrapper"));
+    SetupMobilePage($("#teamWrapper"));
 
     $("#leaveTeam").on("vclick", function () {
         var answer = confirm("Are you sure you want to leave this team?");
@@ -44,7 +44,7 @@ Template.teamSettingsView.destroyed = function () {
     //TODO
 };
 
-Template.teamSettingsView.currentTeam =  function () {
+Template.teamSettingsView.currentTeam = function () {
     //TODO: make dynamic with value of team dropdown
     return "FoundOPS";
 };
