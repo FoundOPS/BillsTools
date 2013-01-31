@@ -2,7 +2,7 @@
 <template name="teamSettingsView">
     {{> topBar}}
     <div id="teamWrapper" data-role="page">
-        <div id="teamSettings" class="page">
+        <div id="teamSettings">
             <h1>Team Settings</h1>
 
             <div data-role="fieldcontain" id="newMembersWrapper">
@@ -50,10 +50,10 @@
 
             <br/>
 
-            <!--TODO: make team name dynamic. ex: Leave FoundOPS and Delete FoundOPS-->
-            <!--leave button only if member-->
+            <!--TODO: make team name dynamic. ex: "Leave FoundOPS" and "Delete FoundOPS"-->
+            <!--TODO: show leave button only if member-->
             <button id="leaveTeam" data-theme="y">Leave this team</button>
-            <!--delete button only if admin-->
+            <!--TODO: show delete button only if admin-->
             <button id="deleteTeam" data-theme="y">Delete this team</button>
         </div>
     </div>
