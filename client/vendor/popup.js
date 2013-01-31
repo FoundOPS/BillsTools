@@ -16,6 +16,18 @@
                 Popup.setBorderColor(options.borderColor);
             }
 
+            if(typeof(options.keepData) !== 'undefined'){
+                popup.keepData(options.keepData);
+            }
+
+            if(typeof(options.childToAppend) !== 'undefined'){
+                popup.childToAppend = options.childToAppend;
+            }
+
+            if(typeof(options.onCreate) !== 'undefined'){
+                popup._onCreate = options.onCreate;
+            }
+
             if(typeof(options.disableHeader) !== 'undefined'){
                 if(options.disableHeader === true){
                     popup.disableHeader();
@@ -102,6 +114,8 @@ function Popup(popupListener) {
     //Class added to detect clicks on primary buttons triggering popups.
     this.popupListenerID = "popupListener"+this.popupNumber;
     this.isHeaderDisabled = true;
+    this.isDataKept = false;
+    this.hasBeenOpened = false;
 
     var thisPopup = this;
     var listenerElements = $(popupListener);
@@ -129,6 +143,14 @@ Popup.prototype.disablePopup = function() {
 Popup.prototype.enablePopup = function() {
     this.isDisabled = false;
     //console.log("Popup not disabled.");
+};
+
+Popup.prototype.keepData = function(bool){
+    this.isDataKept = bool;
+};
+
+Popup.appendChild = function(child){
+    $("#popupContent")[0].appendChild(child);
 };
 
 Popup.prototype.toggleVisible = function (e, clicked) {
@@ -203,6 +225,14 @@ Popup.prototype.toggleVisible = function (e, clicked) {
     $("#popupWrapper").css("visibility", "visible");
     $("#popup").promise().done(function () {});
     popupWrapperDiv.trigger("popup.visible");
+
+    if((this.isDataKept && !this.hasBeenOpened) || (!this.isDataKept)){
+        var child = this.childToAppend;
+        if(child){
+            Popup.appendChild(child);
+        }
+    }
+    this.hasBeenOpened = true;
 
     //Update left, right and caret positions for popup.
     //NOTE: Must be called after popup.visible event, in order to trigger jspScrollPane update.
@@ -398,6 +428,7 @@ Popup.prototype.createPopup = function () {
         }
     });
     popupContentWrapperDiv.trigger("popup.created");
+    if(this._onCreate)this._onCreate();
 
     //Function also returns the popup div for ease of use.
     return popupWrapperDiv;
@@ -469,15 +500,21 @@ Popup.prototype.populateByMenu = function(menu){
 
     this.lastContentHeight = Popup.getPopupContentHeight();
 
-    this.clearData();
-    if(!this.isHeaderDisabled) {
+    if(!this.isDataKept){
+        this.clearData();
+    }
+
+    //If data is kept, header and other content will still be in dom, so don't do either.
+    if(!this.isHeaderDisabled && !this.isDataKept) {
         this.insertHeader();
     }else{
         this.removeHeader();
     }
 
     var popupDisplay = $("#popup").css("display");
-    this.setData(menu);
+
+    if(!this.isDataKept || !this.hasBeenOpened)this.setData(menu);
+
     this.currentContentHeight = Popup.getPopupContentHeight();
 
     if(Popup.above && popupDisplay!=="none"){
@@ -487,6 +524,7 @@ Popup.prototype.populateByMenu = function(menu){
         $("#popupWrapper").css("padding-top", popupTop + "px");
         Popup.setCaretPosition(Popup.caretLeftOffset);
     }
+
     return true;
 };
 

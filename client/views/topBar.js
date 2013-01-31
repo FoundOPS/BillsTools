@@ -1,11 +1,21 @@
 // Top Bar
 ///////////////////////////////////////////////////////////////////////////////
 Template.topBar.rendered = function () {
+    /*var createdCallback = function (){
+        $(document).on("popup.visible", function(){
+            var frag = Meteor.render(function () {
+                return "<p>Recepient: "+Session.get("recipient")+"</p>";
+            });
+            $("#popupContent")[0].appendChild(frag);
+        });
+    };*/
+
     $("#menu").optionsPopup({
         id: "menu",
         contents: [
             {name: "Logout", id: "logout"}
         ],
+        /*onCreate: createdCallback,*/
         disableHeader: true
     });
 
@@ -21,3 +31,12 @@ Template.topBar.rendered = function () {
 Template.topBar.destroyed = function () {
     //TODO
 };
+
+/*Meteor.startup(function(){
+    $(document).on("popup.visible", function(){
+        var frag = Meteor.render(function () {
+            return "<p>Recepient: "+Session.get("recipient")+"</p>";
+        });
+        $("#popupContent")[0].appendChild(frag);
+    });
+});*/
