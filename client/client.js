@@ -1,8 +1,11 @@
-//subscribe to the messages / users
+//subscribe to the messages / users / teams
 Meteor.subscribe("directory");
 Meteor.subscribe("messages");
+Meteor.subscribe("teams");
 
 Messages = new Meteor.Collection("messages");
+
+Teams = new Meteor.Collection("teams");
 
 ///////////////////////////////////////////////////////////////////////////////
 // General
@@ -78,4 +81,13 @@ Meteor.startup(function () {
 
     fixFirefoxCss();
 });
+
+//TODO for creating an account / initial team
+//Accounts.createUser({
+//    username: "Jonathan Perl",
+//    email: "ab@c.com",
+//    password: "123456"
+//});
+//
+//Teams.insert({name: "Team Awesome", administrators: [Meteor.userId()]});
 

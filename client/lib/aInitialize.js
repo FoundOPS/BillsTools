@@ -2,9 +2,8 @@
 //http://stackoverflow.com/questions/10693113/dependencies-between-javascript-files-in-meteor
 
 $(document).on("pagebeforechange", function (e, data) {
-    //prevent navigating to nothing (weird jquery mobile bug)
-    if (_.isString(data.toPage))
-        e.preventDefault();
+    //do not allow any navigation
+    e.preventDefault();
 });
 
 $(document).on("mobileinit", function () {
@@ -13,7 +12,10 @@ $(document).on("mobileinit", function () {
     $.mobile.hashListeningEnabled = false;
 
     //disable auto initialize page (creates unnecessary blank page)
-    //when rendering a jquery mobile page, need to call SetupMobilePage
+    //need to manually instantiate jquery widgets
     $.mobile.autoInitializePage = false;
-    $.mobile.pageContainer = $(document.body).addClass("ui-mobile-viewport");
+    //need to use document, because document.body might not yet be initialized
+    $.mobile.pageContainer = $(document).addClass("ui-mobile-viewport");
+
+    $.mobile.changePage.defaults.showLoadMsg = false;
 });

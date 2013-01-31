@@ -170,11 +170,5 @@ Meteor.startup(function () {
             secret: "5a4ff7bedc49b8c071c2e198a04d6ec7"
         });
     }
-
-    //Accounts.createUser({
-    //    username: "Jonathan Perl",
-    //    email : "ab@c.com",
-    //    password: "123456"
-    //});
 });
 
