@@ -72,26 +72,18 @@ var setupAddTeam = function () {
     });
 };
 
-
-//initializes jQuery mobile page manually
-var SetupMobilePage = function (selector) {
-    //TODO call refresh on existing
-    //TODO call create on new
-
-    selector.trigger("create");
-//    selector.trigger("refresh");
-
-
-//
-//    selector.page();
-//    selector.addClass("ui-page-active");
-    //sets correct min height on the page
-    $.mobile.document.trigger("pageshow");
+//remove remnant popups
+var removePopups = function () {
+    $("#inviteMemberPopup-screen").empty().remove();
+    $("#inviteMemberPopup-popup").empty().remove();
+    $("#newTeamPopup-screen").empty().remove();
+    $("#newTeamPopup-popup").empty().remove();
 };
 
 Template.teamSettingsView.rendered = function () {
-    //TODO why rendering twice?
-    SetupMobilePage($("#teamWrapper"));
+    removePopups();
+    $("#teamWrapper").trigger("create")
+    $.mobile.document.trigger("pageshow");
 
     setupInviteMember();
     setupAddTeam();
@@ -112,7 +104,8 @@ Template.teamSettingsView.rendered = function () {
 };
 
 Template.teamSettingsView.destroyed = function () {
-    //TODO
+    //delay fixes spark flush error
+    _.delay(removePopups, 250);
 };
 
 Template.teamSettingsView.currentTeam = function () {
