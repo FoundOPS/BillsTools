@@ -10,15 +10,15 @@ Template.topBar.rendered = function () {
         disableHeader: true
     });
 
-    $("#logout").live("click", function () {
+    $("#logout").live("vclick", function () {
         Meteor.logout();
     });
 
-    $("#teamSettings").live("click", function () {
+    $("#teamSettings").live("vclick", function () {
         Meteor.Router.to("/teamSettings");
     });
 
-    $("img.logo").on("click", function () {
+    $("img.logo").on("vclick", function () {
         //if already on map view, center on users. Otherwise, got to map view.
         if (Meteor.Router.page() === "mapView") {
             CenterOnUsers(true);

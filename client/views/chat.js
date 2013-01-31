@@ -64,7 +64,7 @@ var setupPopup = function (popup) {
     //Note: Can't create delegated event listener due to leaflet limitation. Needs to be set on render.
     var senderImage = $(popup._container).find(".senderImage");
     //whenever the sender image is clicked, send a message
-    senderImage.on("click", function () {
+    senderImage.on("vclick", function () {
         sendMessage(textArea[0]);
     });
 
@@ -86,12 +86,12 @@ var setupMobileChat = function () {
     });
 
     //whenever the sender image is clicked, send a message
-    $(document).on("click", ".chatBox .senderImage", function () {
+    $(document).on("vclick", ".chatBox .senderImage", function () {
         sendMessage($(".chatBox textarea")[0]);
     });
 
     $(document)
-        .on("click", "#closeChatMobile", function () {
+        .on("vclick", "#closeChatMobile", function () {
             CloseChat();
             //need to recenter after the view reloads
             CenterOnUsers(true, true, true);
