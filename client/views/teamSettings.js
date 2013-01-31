@@ -22,9 +22,35 @@ Template.teamSettingsView.rendered = function () {
     });
     $("#inviteMember").on("vclick", function () {
         //TODO
+
+        $("#inviteMemberPopup").popup("close");
+        //clear input
+        $("#inviteMemberPopup input").val("");
     });
     $("#closeInviteMember").on("vclick", function () {
         $("#inviteMemberPopup").popup("close");
+        //clear input
+        $("#inviteMemberPopup input").val("");
+    });
+
+    var checkEmail = _.debounce(function () {
+        $(this).mailcheck({
+            suggested: function (element, suggestion) {
+                $("#memberEmailSuggestion span")[0].innerText = suggestion.full;
+                $("#memberEmailSuggestion").attr("style", "display:block");
+            },
+            empty: function (element) {
+                $("#memberEmailSuggestion").attr("style", "display:none");
+                $("#memberEmailSuggestion span")[0].innerText = "";
+            }
+        });
+    }, 300);
+
+    $("input.email").keyup(checkEmail);
+
+    $("#memberEmailSuggestion span").on("vclick", function () {
+        $("#inviteMemberPopup .email").val($(this)[0].innerText);
+        $("#memberEmailSuggestion").attr("style", "display:none");
     });
 
     //setup add new team popup
@@ -34,9 +60,15 @@ Template.teamSettingsView.rendered = function () {
     });
     $("#addTeam").on("vclick", function () {
         //TODO
+
+        $("#newTeamPopup").popup("close");
+        //clear input
+        $("#newTeamPopup input").val("");
     });
     $("#closeNewTeam").on("vclick", function () {
         $("#newTeamPopup").popup("close");
+        //clear input
+        $("#newTeamPopup input").val("");
     });
 };
 
@@ -44,7 +76,7 @@ Template.teamSettingsView.destroyed = function () {
     //TODO
 };
 
-Template.teamSettingsView.currentTeam =  function () {
+Template.teamSettingsView.currentTeam = function () {
     //TODO: make dynamic with value of team dropdown
     return "FoundOPS";
 };
