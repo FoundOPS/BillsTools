@@ -78,6 +78,10 @@ var UpdateUserProfile = _.debounce(function () {
     });
 }, 2000);
 
+var UpdateCurrentTeam = function (selectedTeam) {
+    Meteor.users.update(Meteor.user(), {"$set": {"profile.currentTeam": selectedTeam }});
+};
+
 /**
  * @return The user's profile image
  */

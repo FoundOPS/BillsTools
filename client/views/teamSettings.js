@@ -57,7 +57,7 @@ var setupAddTeam = function () {
 
         Teams.insert({name: teamName, administrators: [Meteor.userId()]}, function (error, teamId) {
             if (!error) {
-                setCurrentTeam(teamId);
+                UpdateCurrentTeam(teamId);
             }
         });
         //TODO switch team
@@ -71,14 +71,6 @@ var setupAddTeam = function () {
     });
 };
 
-var setCurrentTeam = function (selectedTeam) {
-    //TODO remove after confirming
-    if (!selectedTeam)
-        alert("need to fix this. should not be possible");
-
-    Meteor.users.update(Meteor.user(), {"$set": {"profile.currentTeam": selectedTeam }});
-};
-
 //remove remnant popups
 var removePopups = function () {
     $("#inviteMemberPopup-screen").empty().remove();
@@ -90,7 +82,7 @@ var removePopups = function () {
 Template.teamSettingsView.events = {
     'click #currentTeam': function (event) {
         var selectedTeam = $(event.currentTarget).find(':selected').val();
-        setCurrentTeam(selectedTeam);
+        UpdateCurrentTeam(selectedTeam);
     },
     'click #memberRole': function (event) {
         var select = $(event.currentTarget);

@@ -172,3 +172,13 @@ Meteor.startup(function () {
     }
 });
 
+//below run once on the client
+//Accounts.createUser({
+//    username: "Jonathan Perl",
+//    email: "ab@c.com",
+//    password: "123456"
+//});
+
+//sets up a new team for the current user
+//UpdateCurrentTeam(Teams.insert({name: "Team Awesome", administrators: [Meteor.userId()]}));
+

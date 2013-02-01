@@ -95,12 +95,3 @@ Meteor.startup(function () {
     fixFirefoxCss();
 });
 
-//TODO for creating an account / initial team
-//Accounts.createUser({
-//    username: "Jonathan Perl",
-//    email: "ab@c.com",
-//    password: "123456"
-//});
-
-//Teams.insert({name: "Team Awesome", administrators: [Meteor.userId()]});
-
