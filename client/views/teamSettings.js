@@ -172,13 +172,10 @@ Handlebars.registerHelper('isCurrentTeamSelected', function (id) {
 });
 
 Template.teamSettingsView.currentTeamName = function () {
-    var teamId = Session.get("currentTeam");
-    if (!teamId) return; //TODO choose current team (there must be one)
-
-    var team = Teams.findOne(teamId);
+    var team = currentTeam();
     if (!team || !team.name) return "";
 
-    return team.name
+    return team.name;
 };
 
 Template.membersGrid.statusIs = function (status) {
@@ -186,17 +183,14 @@ Template.membersGrid.statusIs = function (status) {
 };
 
 Template.membersGrid.members = function () {
-    var teamId = Session.get("currentTeam");
-    if (!teamId) return;
-
-    var team = Teams.findOne(teamId);
+    var team = currentTeam();
     if (!team) return;
 
     var users = Meteor.users.find({_id: {$in: team.administrators}}).fetch();
 
+    //TODO status (and role)
 //role: "member",
 //status: "Last Login: 11:42am"
-
     var members = _.map(users, function (user) {
         return {id: user._id, name: DisplayName(user), email: Email(user), role: "admin", status: "Invited"};
     });

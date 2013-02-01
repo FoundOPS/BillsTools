@@ -11,10 +11,10 @@
                     {{currentTeamName}}
                 </button>
 
-                {{#inputPopup id='inviteMemberPopup' title='New Member' acceptText='Invite'}}
+                {{#template template='inputPopup' id='inviteMemberPopup' title='New Member' acceptId='inviteMember' acceptText='Invite'}}
                 <input type="text" placeholder="email" class="email"/>
                 <div id="memberEmailSuggestion" class="emailSuggestion">Did you mean: <span></span></div>
-                {{/inputPopup}}
+                {{/template}}
             </div>
 
             <div class="tableWrapper">
@@ -28,7 +28,9 @@
                 <button id="openNewTeamPopup" name="openNewTeamPopup" data-theme="g">Start a new team</button>
             </div>
 
-            {{{inputPopup id='newTeamPopup' title='New Team' acceptText='Add'}}}
+            {{#template template='inputPopup' id='newTeamPopup' title='New Team' acceptId='addTeam' acceptText='Add'}}
+            <input type="text" placeholder="name"/>
+            {{/template}}
 
             <div data-role="fieldcontain" id="currentTeamWrapper">
                 <label for="currentTeam">Current Team:</label>
@@ -36,8 +38,9 @@
                 <button id="openRenameTeamPopup" name="openRenameTeamPopup" data-theme="g">Rename</button>
             </div>
 
-            {{{inputPopup id='renameTeamPopup' title='Rename Team' acceptText='Rename'}}}
-
+            {{#template template='inputPopup' id='renameTeamPopup' title='Rename Team' acceptId='renameTeam' acceptText='Rename'}}
+            <input type="text" placeholder="name"/>
+            {{/template}}`
             <br/>
 
             <!--TODO: make team name dynamic. ex: "Leave FoundOPS" and "Delete FoundOPS"-->
