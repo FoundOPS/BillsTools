@@ -4,6 +4,12 @@
     {{> chat}}
 </template>
 
+<template name="urlTemplate">
+    {{#each array}}
+        {{before}}{{{url}}}{{after}}
+    {{/each}}
+</template>
+
 <template name="chat">
     {{#if currentUser}}
     <div id="currentChat" class='chatBox{{#if isMobileSize}} fullScreen{{/if}}'>
@@ -19,7 +25,7 @@
                     <span class="triangle"></span>
                     {{#each messages}}
                     <div class="message">
-                        {{convertUrls text}}
+                        {{{convertUrls text}}}
                     </div>
                     {{/each}}
                     <span class='time'>{{calendarTime last}}</span>

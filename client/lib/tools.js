@@ -57,20 +57,5 @@ var IsMobileSize = function () {
 
 var StringToURL = function(str) {
     var urlPattern = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
-    var match = str.match(urlPattern);
-    if(!match)return;
-    var startIndex = str.indexOf(match[0]);
-    var endIndex = startIndex + match[0].length-1;
-    //console.log(match[0]);
-    //console.log("start: "+startIndex+" endIndex: "+endIndex);
-    //console.log("string: "+str.substr(startIndex, endIndex-1));
-    var beginning = str.substr(0, startIndex);
-    //beginning = encodeURIComponent(beginning);
-    console.log(beginning);
-    var end = str.substr(endIndex+1);
-    //end = encodeURIComponent(end);
-    console.log(end);
-    var url = str.replace(match[0], match[0].link(match[0]));
-    console.log(url);
-    return beginning+url+end;
+    return str.match(urlPattern);
 };

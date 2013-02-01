@@ -6,14 +6,36 @@ Handlebars.registerHelper('timeago', function (date) {
 });
 
 Handlebars.registerHelper('convertUrls', function (text) {
-    if (text) {
-        var output = StringToURL(text);
-        if(output){
-            return new Handlebars.SafeString(output);
-        }
-        return text;
+    if (!text) return '';
+
+    var match = StringToURL(text);
+    var array = [];
+
+    //No matches found in StringToURL. The default message is pushed into an object the urlTemplate can take.
+    //TODO: Possibly make a defaultMessageTemplate.
+    if(!match){
+        array.push({before: text});
+        return Template.urlTemplate({array: array});
     }
-    return '';
+
+    var i=0;                                                    //Index for match iteration
+    var offset = 0;                                             //Offset after each ending index of matches
+    for(i in match){
+        var url = match[i].link(match[i]);                      //Url converted to html form
+        var urlIndex = text.indexOf(match[i]);
+        var before = text.substr(offset, urlIndex);
+        if(offset == urlIndex) before = undefined;              //If nothing before, set to undefined
+        var after = undefined;
+        var last = (match.length-1);
+        if(i == last){                                          //If last match, get text after url.
+            var urlEnd = urlIndex + match[i].length - 1;
+            after = text.substr(urlEnd+1);
+            if((urlEnd+1)>=text.length-1)after = undefined;     //If nothing after, set to undefined
+        }
+        array.push({before: before, url: url, after: after});   //Pushes another template object
+        offset = (urlIndex + match[i].length);
+    }
+    return Template.urlTemplate({array: array});                //Send array of template objects to template
 });
 
 
