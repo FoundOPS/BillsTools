@@ -5,20 +5,16 @@
         <div id="teamSettings">
             <h1>Team Settings</h1>
 
-            <div data-role="fieldcontain" id="newMembersWrapper">
+            <div id="newMembersWrapper" data-role="fieldcontain">
                 <label class="h2" for="openInviteMember">Members</label>
                 <button id="openInviteMember" name="openInviteMember" data-theme="g">Invite a new member to
                     {{currentTeamName}}
                 </button>
 
-                <div id="inviteMemberPopup" class="ui-content">
-                    <h2>New Member</h2>
-                    <input type="text" placeholder="email" class="email"/>
-
-                    <div id="memberEmailSuggestion" class="emailSuggestion">Did you mean: <span></span></div>
-                    <button id="closeInviteMember" data-theme="y">Cancel</button>
-                    <button id="inviteMember" data-theme="g">Invite</button>
-                </div>
+                {{#inputPopup id='inviteMemberPopup' title='New Member' acceptText='Invite'}}
+                <input type="text" placeholder="email" class="email"/>
+                <div id="memberEmailSuggestion" class="emailSuggestion">Did you mean: <span></span></div>
+                {{/inputPopup}}
             </div>
 
             <div class="tableWrapper">
@@ -30,24 +26,17 @@
             <div data-role="fieldcontain" id="newTeamWrapper">
                 <label class="h2" for="openNewTeamPopup">Team</label>
                 <button id="openNewTeamPopup" name="openNewTeamPopup" data-theme="g">Start a new team</button>
-
-                <div id="newTeamPopup" class="ui-content">
-                    <h2>New Team</h2>
-                    <input type="text" placeholder="name"/>
-                    <button id="closeNewTeam" data-theme="y">Cancel</button>
-                    <button id="addTeam" data-theme="g">Add</button>
-                </div>
             </div>
+
+            {{{inputPopup id='newTeamPopup' title='New Team' acceptText='Add'}}}
 
             <div data-role="fieldcontain" id="currentTeamWrapper">
                 <label for="currentTeam">Current Team:</label>
                 {{> currentTeamSelect }}
+                <button id="openRenameTeamPopup" name="openRenameTeamPopup" data-theme="g">Rename</button>
             </div>
 
-            <div data-role="fieldcontain" id="teamNameWrapper">
-                <label for="teamName">Team Name:</label>
-                <input type="text" name="teamName" id="teamName" value="{{currentTeamName}}"/>
-            </div>
+            {{{inputPopup id='renameTeamPopup' title='Rename Team' acceptText='Rename'}}}
 
             <br/>
 
@@ -63,7 +52,8 @@
 <template name="currentTeamSelect">
     <select name="currentTeam" id="currentTeam">
         {{#each teams}}
-        <option value="{{_id}}" {{isCurrentTeamSelected _id}}>{{name}}</option>
+        <option value="{{_id}}"
+        {{isCurrentTeamSelected _id}}>{{name}}</option>
         {{/each}}
     </select>
 </template>

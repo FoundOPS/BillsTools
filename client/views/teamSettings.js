@@ -10,20 +10,17 @@ var setupInviteMember = function () {
     inviteMemberPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
 
     $("#openInviteMember").on("vclick", function () {
+        inviteMemberPopup.find("input").val("");
         inviteMemberPopup.popup("open");
     });
 
     $("#inviteMember").on("click", function () {
         //TODO
-
-        inviteMemberPopup.popup("close");
         //clear input
-        inviteMemberPopup.find("input").val("");
-    });
-    $("#closeInviteMember").on("click", function () {
         inviteMemberPopup.popup("close");
         inviteMemberPopup.find("input").val("");
     });
+
 
     //create email suggestions as they type
     var checkEmail = _.debounce(function () {
@@ -49,8 +46,10 @@ var setupAddTeam = function () {
     var newTeamPopup = $("#newTeamPopup");
     newTeamPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
     $("#openNewTeamPopup").on("vclick", function () {
+        newTeamPopup.find("input").val("");
         newTeamPopup.popup("open");
     });
+
     $("#addTeam").on("click", function () {
         var input = newTeamPopup.find("input");
         var teamName = input.val();
@@ -62,19 +61,29 @@ var setupAddTeam = function () {
         });
 
         newTeamPopup.popup("close");
-        input.val("");
-    });
-    $("#closeNewTeam").on("click", function () {
-        newTeamPopup.popup("close");
-        newTeamPopup.find("input").val("");
     });
 };
 
-//used to refocus on the teamName input after rerender
-var updatingName = true;
-var updateTeamName = _.debounce(function (name) {
+var setupRenameTeam = function () {
+    var renameTeamPopup = $("#renameTeamPopup");
+    renameTeamPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
+    $("#openRenameTeamPopup").on("vclick", function () {
+        var input = renameTeamPopup.find("input");
+        input.val(currentTeam().name);
+        renameTeamPopup.popup("open");
+    });
+    $("#renameTeam").on("click", function () {
+        var input = renameTeamPopup.find("input");
+        var name = input.val();
+        //TODO some validation
+        updateTeamName(name);
+        renameTeamPopup.popup("close");
+        input.val("");
+    });
+};
+
+var updateTeamName = function (name) {
     var team = currentTeam();
-    updatingName = true;
     if (name.length && team && team.name !== name) {
         Meteor.call('updateName', team._id, name, function (error) {
             if (error) {
@@ -83,19 +92,25 @@ var updateTeamName = _.debounce(function (name) {
             }
         });
     }
-}, 400);
+};
+
+var teamSettings = {
+    popups: ["#inviteMemberPopup", "#newTeamPopup", "#renameTeamPopup"]
+};
 
 //remove remnant popups
 var removePopups = function () {
-    $("#inviteMemberPopup-screen").empty().remove();
-    $("#inviteMemberPopup-popup").empty().remove();
-    $("#newTeamPopup-screen").empty().remove();
-    $("#newTeamPopup-popup").empty().remove();
+    var elementsToRemove = _.map(teamSettings.popups, function (id) {
+        return id + "-popup, " + id + "-screen";
+    });
+
+    $(elementsToRemove.join(", ")).empty().remove();
 };
 
 Template.teamSettingsView.events = {
     'click #currentTeam': function (event) {
         var selectedTeam = $(event.currentTarget).find(':selected').val();
+        if (!selectedTeam) return;
         UpdateCurrentTeam(selectedTeam);
     },
     'click #memberRole': function (event) {
@@ -106,11 +121,11 @@ Template.teamSettingsView.events = {
 
         //TODO
         console.log("member " + member + " change role to " + selectedRole);
-    },
-    'keyup #teamName': function (event) {
-        var name = $(event.currentTarget).val();
-        updateTeamName(name);
     }
+//    'keyup #teamName': function (event) {
+//        var name = $(event.currentTarget).val();
+//        updateTeamName(name);
+//    }
 };
 
 Template.teamSettingsView.rendered = function () {
@@ -119,6 +134,7 @@ Template.teamSettingsView.rendered = function () {
 
     setupInviteMember();
     setupAddTeam();
+    setupRenameTeam();
 
     $("#leaveTeam").on("vclick", function () {
         var answer = confirm("Are you sure you want to leave this team?");
@@ -133,14 +149,6 @@ Template.teamSettingsView.rendered = function () {
             console.log("delete");
         }
     });
-
-    if (updatingName) {
-        updatingName = false;
-        var team = currentTeam();
-        //refocus on the name text area
-        if (team)
-            $("#teamName").focus().val(team.name);
-    }
 };
 
 Template.teamSettingsView.destroyed = function () {
