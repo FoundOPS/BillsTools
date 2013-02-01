@@ -21,7 +21,7 @@ Handlebars.registerHelper('convertUrls', function (text) {
     var i=0;                                                    //Index for match iteration
     var offset = 0;                                             //Offset after each ending index of matches
     for(i in match){
-        var url = match[i].link(match[i]);                      //Url converted to html form
+        var url = CreateLink(match[i]);                         //Url converted to html form
         var urlIndex = text.indexOf(match[i]);
         var before = text.substr(offset, urlIndex);
         if(offset == urlIndex) before = undefined;              //If nothing before, set to undefined
