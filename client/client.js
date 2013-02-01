@@ -59,6 +59,17 @@ var updateTitle = function () {
     });
 };
 
+//store the user's current team in session data
+var syncCurrentTeam = function () {
+    Meteor.autorun(function () {
+        var user = Meteor.user();
+        if (user && user.profile && user.profile.currentTeam)
+            Session.set("currentTeam", user.profile.currentTeam);
+        else
+            Session.set("currentTeam", null);
+    });
+};
+
 Meteor.startup(function () {
     Meteor.autorun(function () {
         //when the user is logged in: redirect from the login page to the map
@@ -75,6 +86,8 @@ Meteor.startup(function () {
         }
     });
 
+    syncCurrentTeam();
+
     StartTracking();
 
     updateTitle();
@@ -88,6 +101,6 @@ Meteor.startup(function () {
 //    email: "ab@c.com",
 //    password: "123456"
 //});
-//
+
 //Teams.insert({name: "Team Awesome", administrators: [Meteor.userId()]});
 

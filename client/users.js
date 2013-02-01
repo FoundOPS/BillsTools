@@ -8,6 +8,10 @@ var DisplayName = function (user) {
     if (user.profile && user.profile.name)
         return user.profile.name;
 
+    return Email(user);
+};
+
+var Email = function (user) {
     if (user.emails && user.emails[0])
         return user.emails[0].address;
 
@@ -27,12 +31,12 @@ var UserPictureElement = function (user, useBlankImage) {
         //if there's a picture, use it
         if (profile.picture) {
             element = "<img src='" + profile.picture + "'/>";
-        //if there's a name, display their initials
+            //if there's a name, display their initials
         } else if (profile.name && useBlankImage == "false") {
             var splitName = profile.name.split(" ");
             var initials = splitName[0].charAt(0) + splitName[1].charAt(0);
             element = "<div class='initials'>" + initials + "</div>";
-        //display the default image
+            //display the default image
         } else {
             element = "<img src='emptyPerson3.png'/>";
         }

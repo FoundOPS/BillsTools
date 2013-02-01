@@ -1,5 +1,4 @@
-Template.teamSettingsView.rendered = function () {
-};
+//TODO when first load choose current team, set users current team
 
 Template.currentTeamSelect.teams = function () {
     return Teams.find().fetch();
@@ -14,14 +13,14 @@ var setupInviteMember = function () {
         inviteMemberPopup.popup("open");
     });
 
-    $("#inviteMember").on("vclick", function () {
+    $("#inviteMember").on("click", function () {
         //TODO
 
         inviteMemberPopup.popup("close");
         //clear input
         inviteMemberPopup.find("input").val("");
     });
-    $("#closeInviteMember").on("vclick", function () {
+    $("#closeInviteMember").on("click", function () {
         inviteMemberPopup.popup("close");
         inviteMemberPopup.find("input").val("");
     });
@@ -52,13 +51,13 @@ var setupAddTeam = function () {
     $("#openNewTeamPopup").on("vclick", function () {
         newTeamPopup.popup("open");
     });
-    $("#addTeam").on("vclick", function () {
+    $("#addTeam").on("click", function () {
         var input = newTeamPopup.find("input");
         var teamName = input.val();
 
         Teams.insert({name: teamName, administrators: [Meteor.userId()]}, function (error, teamId) {
             if (!error) {
-                Session.set("currentTeam", teamId);
+                setCurrentTeam(teamId);
             }
         });
         //TODO switch team
@@ -66,10 +65,18 @@ var setupAddTeam = function () {
         newTeamPopup.popup("close");
         input.val("");
     });
-    $("#closeNewTeam").on("vclick", function () {
+    $("#closeNewTeam").on("click", function () {
         newTeamPopup.popup("close");
         newTeamPopup.find("input").val("");
     });
+};
+
+var setCurrentTeam = function (selectedTeam) {
+    //TODO remove after confirming
+    if (!selectedTeam)
+        alert("need to fix this. should not be possible");
+
+    Meteor.users.update(Meteor.user(), {"$set": {"profile.currentTeam": selectedTeam }});
 };
 
 //remove remnant popups
@@ -80,10 +87,25 @@ var removePopups = function () {
     $("#newTeamPopup-popup").empty().remove();
 };
 
+Template.teamSettingsView.events = {
+    'click #currentTeam': function (event) {
+        var selectedTeam = $(event.currentTarget).find(':selected').val();
+        setCurrentTeam(selectedTeam);
+    },
+    'click #memberRole': function (event) {
+        var select = $(event.currentTarget);
+
+        var selectedRole = select.find(':selected').val();
+        var member = select.data("id");
+
+        //TODO
+        console.log("member " + member + " change role to " + selectedRole);
+    }
+};
+
 Template.teamSettingsView.rendered = function () {
     removePopups();
-    $("#teamWrapper").trigger("create")
-    $.mobile.document.trigger("pageshow");
+    $("#teamWrapper").trigger("create");
 
     setupInviteMember();
     setupAddTeam();
@@ -108,14 +130,24 @@ Template.teamSettingsView.destroyed = function () {
     _.delay(removePopups, 250);
 };
 
-Template.teamSettingsView.currentTeam = function () {
+var currentTeam = function () {
     var teamId = Session.get("currentTeam");
     if (!teamId) return; //TODO choose current team (there must be one)
 
     var team = Teams.findOne(teamId);
     if (!team) return;
 
-    return team.name;
+    return team;
+};
+
+Handlebars.registerHelper('isCurrentTeamSelected', function (id) {
+    if (Session.get("currentTeam") === id)
+        return "selected";
+});
+
+Template.teamSettingsView.currentTeam = function () {
+    var team = currentTeam();
+    if (team) return team.name;
 };
 
 Template.membersGrid.statusIs = function (status) {
@@ -123,22 +155,18 @@ Template.membersGrid.statusIs = function (status) {
 };
 
 Template.membersGrid.members = function () {
-    var teamId = Session.get("currentTeam");
-//    if (!teamId) return;
+    var team = currentTeam();
+    if (!team) return;
 
-    var team = Teams.findOne(teamId);
-    return team ? [
-        {
-            Name: "Bob Brown",
-            Email: "bbrown@gmail.com",
-            Role: "member",
-            Status: "Invited"
-        },
-        {
-            Name: "James Peach",
-            Email: "peachyclean@gmail.com",
-            Role: "admin",
-            Status: "Last Login: 11:42am"
-        }
-    ] : null;
+    var users = Meteor.users.find({_id: {$in: team.administrators}}).fetch();
+
+//role: "member",
+//status: "Last Login: 11:42am"
+
+    var members = _.map(users, function (user) {
+        return {id: user._id, name: DisplayName(user), email: Email(user), role: "admin", status: "Invited"};
+    });
+
+    return members;
 };
+

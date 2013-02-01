@@ -63,7 +63,7 @@
 <template name="currentTeamSelect">
     <select name="currentTeam" id="currentTeam">
         {{#each teams}}
-        <option value="{{_id}}">{{name}}</option>
+        <option value="{{_id}}" {{isCurrentTeamSelected _id}}>{{name}}</option>
         {{/each}}
     </select>
 </template>
@@ -82,17 +82,17 @@
         <tbody>
         {{#each members}}
         <tr>
-            <th class="name">{{Name}}</th>
-            <td>{{Email}}</td>
+            <th class="name">{{name}}</th>
+            <td>{{email}}</td>
             <td>
                 <label for="memberRole" class="select"></label>
-                <select name="memberRole" id="memberRole">
-                    <option value="member">Member</option>
-                    <option value="admin">Admin</option>
+                <select name="memberRole" id="memberRole" data-id="{{id}}">
+                    <option value="0">Admin</option>
+                    <option value="1">Member</option>
                 </select>
             </td>
             <td>
-                {{Status}}
+                {{status}}
                 {{#if statusIs "Invited"}}
                 <a href="">(resend)</a>
                 {{/if}}
