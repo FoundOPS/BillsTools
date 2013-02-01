@@ -193,6 +193,7 @@ Template.chat.messageGroups = function () {
 //chat is rendered whenever there is a recipient
 //if it is a chat box: clone the chat and update the popup content
 Template.chat.rendered = function () {
+    console.log("Rendering");
     var isMobileSize = Session.get("isMobileSize");
     if (isMobileSize) return;
 
@@ -210,10 +211,11 @@ Template.chat.rendered = function () {
 
     //re-setup the popup's event handlers
     setupPopup(icon._popup);
+    console.log("Done Rendering.");
 };
 
 Template.mobileChat.rendered = function () {
-    console.log("Mobile chat rendered");
+    console.log("Mobile chat rendering");
     var chatInput = Session.get("chatInput");
     if (chatInput) {
         //NOTE: Focus is required to set cursor to end of textarea.
@@ -226,6 +228,7 @@ Template.mobileChat.rendered = function () {
     if (jScrollPane)
         jScrollPane.scrollToBottom();
     $(".chatBox textarea").focus();
+    console.log("Mobile chat Rendered");
 };
 
 //automatically scroll to the bottom of the jscroll pane when the page is resized
@@ -238,6 +241,7 @@ $(window).resize(function () {
 });
 
 Template.chat.destroyed = function () {
+    console.log("Chat destroying");
     if (messagesCursorHandle) {
         messagesCursorHandle.stop();
         messagesCursorHandle = null;
