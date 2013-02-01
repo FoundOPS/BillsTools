@@ -8,7 +8,7 @@
             <div data-role="fieldcontain" id="newMembersWrapper">
                 <label class="h2" for="openInviteMember">Members</label>
                 <button id="openInviteMember" name="openInviteMember" data-theme="g">Invite a new member to
-                    {{currentTeam}}
+                    {{currentTeamName}}
                 </button>
 
                 <div id="inviteMemberPopup" class="ui-content">
@@ -46,7 +46,7 @@
 
             <div data-role="fieldcontain" id="teamNameWrapper">
                 <label for="teamName">Team Name:</label>
-                <input type="text" name="teamName" id="teamName"/>
+                <input type="text" name="teamName" id="teamName" value="{{currentTeamName}}"/>
             </div>
 
             <br/>

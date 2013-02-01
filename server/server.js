@@ -93,11 +93,12 @@ Teams = new Meteor.Collection("teams");
 
 Teams.allow({
     insert: function (userId, team) {
+        //TODO make sure the team is correctly inserted / switch to method instead
         //make sure the user is an administrator
         return _.contains(team.administrators, userId);
     },
-    update: function (userId, messages, fields, modifier) {
-        return false; // no updates
+    update: function (userId, team, fields, modifier) {
+        return false; // no updates - use changeName instead
     },
     remove: function (userId, messages) {
         //TODO
@@ -134,6 +135,19 @@ var teamMethods = {
             Teams.update({_id: team._id}, {$push: {members: options.member}});
         else
             throw new Meteor.Error(400, "Need to define the user's role in the team");
+    },
+    updateName: function (id, name) {
+        var team = Teams.findOne(id);
+        if (!team)
+            throw new Meteor.Error(400, "Team does not exist");
+
+        if (!_.contains(team.administrators, this.userId))
+            throw new Meteor.Error(403, "Need to be an administrator to change a team");
+
+        if (typeof name !== "string" || !name.length)
+            throw new Meteor.Error(400, "Team name must be at least 1 letter");
+
+        return Teams.update({_id: id}, {$set: {name: name}});
     }
 };
 

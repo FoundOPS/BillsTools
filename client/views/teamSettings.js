@@ -1,4 +1,4 @@
-//TODO when first load choose current team, set users current team
+//TODO CODE CLEANUP
 
 Template.currentTeamSelect.teams = function () {
     return Teams.find().fetch();
@@ -60,7 +60,6 @@ var setupAddTeam = function () {
                 UpdateCurrentTeam(teamId);
             }
         });
-        //TODO switch team
 
         newTeamPopup.popup("close");
         input.val("");
@@ -70,6 +69,21 @@ var setupAddTeam = function () {
         newTeamPopup.find("input").val("");
     });
 };
+
+//used to refocus on the teamName input after rerender
+var updatingName = true;
+var updateTeamName = _.debounce(function (name) {
+    var team = currentTeam();
+    updatingName = true;
+    if (name.length && team && team.name !== name) {
+        Meteor.call('updateName', team._id, name, function (error) {
+            if (error) {
+                //TODO error handling
+                console.log(error);
+            }
+        });
+    }
+}, 400);
 
 //remove remnant popups
 var removePopups = function () {
@@ -92,6 +106,10 @@ Template.teamSettingsView.events = {
 
         //TODO
         console.log("member " + member + " change role to " + selectedRole);
+    },
+    'keyup #teamName': function (event) {
+        var name = $(event.currentTarget).val();
+        updateTeamName(name);
     }
 };
 
@@ -115,6 +133,14 @@ Template.teamSettingsView.rendered = function () {
             console.log("delete");
         }
     });
+
+    if (updatingName) {
+        updatingName = false;
+        var team = currentTeam();
+        //refocus on the name text area
+        if (team)
+            $("#teamName").focus().val(team.name);
+    }
 };
 
 Template.teamSettingsView.destroyed = function () {
@@ -137,9 +163,14 @@ Handlebars.registerHelper('isCurrentTeamSelected', function (id) {
         return "selected";
 });
 
-Template.teamSettingsView.currentTeam = function () {
-    var team = currentTeam();
-    if (team) return team.name;
+Template.teamSettingsView.currentTeamName = function () {
+    var teamId = Session.get("currentTeam");
+    if (!teamId) return; //TODO choose current team (there must be one)
+
+    var team = Teams.findOne(teamId);
+    if (!team || !team.name) return "";
+
+    return team.name
 };
 
 Template.membersGrid.statusIs = function (status) {
@@ -147,7 +178,10 @@ Template.membersGrid.statusIs = function (status) {
 };
 
 Template.membersGrid.members = function () {
-    var team = currentTeam();
+    var teamId = Session.get("currentTeam");
+    if (!teamId) return;
+
+    var team = Teams.findOne(teamId);
     if (!team) return;
 
     var users = Meteor.users.find({_id: {$in: team.administrators}}).fetch();
