@@ -1,0 +1,158 @@
+/*region variables*/
+@green: #7fbb00;
+@white: #ffffff;
+@yellow: #f3dc00;
+@darkYellow: #d9b002;
+@lightGreen: #7fdd00;
+@darkGreen: #669900;
+//@grey: #6A6E62;
+@grey: #e6e6e6;
+@blue: #1450C5;
+@root: "../../";
+.hoverBgColor(@color: @white, @strength: 10%) {
+    background-color: darken(@color, @strength);
+}
+
+.hoverColor(@color: @white, @strength: 10%) {
+    color: darken(@color, @strength);
+}
+
+.borderBox{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.buttonGradient(@top, @bottom){
+    background-image: -moz-linear-gradient(top, @top, @bottom);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
+    background-image: -webkit-linear-gradient(top, @top, @bottom);
+    background-image: -o-linear-gradient(top, @top, @bottom);
+    background-image: linear-gradient(to bottom, @top, @bottom);
+}
+
+button.yellow, .login-button.yellow{
+    .buttonGradient(@yellow, @darkYellow);
+}
+
+button.green, .login-button.green{
+    color: @white !important;
+    .buttonGradient(@lightGreen, @darkGreen);
+}
+
+button.black, .login-button.black{
+    .buttonGradient(#777777, #111111);
+}
+
+/*endregion*/
+
+/*region login page*/
+#loginBg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background: url("@{root}loginBg.jpg") no-repeat center center fixed;
+
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#loginWrapper {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+}
+
+#login-dropdown-list {
+    position: relative;
+    width: 320px;
+    margin: 0 auto;
+    padding: 16px 12px 40px 12px;
+    border: none;
+    background: @green;
+    box-shadow: 0px 4px 15px #666;
+    -webkit-box-shadow: 0px 4px 15px #666;
+    border-radius: 20px;
+    margin-top: -183px;
+
+    .loginPanel {
+        width: 220px;
+        margin: 0 auto;
+    }
+    .logo {
+        position: relative;
+        display: block;
+        margin: 20px auto 25px auto;
+    }
+    #login-email, #login-password {
+        height: 32px;
+        border-radius: 6px;
+    }
+    #login-email {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom: none;
+    }
+    #login-password {
+        margin-bottom: 8px;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+    }
+    .additional-link-container {
+        display: block;
+        margin-bottom: 5px;
+        text-align: center;
+        color: @white;
+    }
+    .login-button {
+        font-weight: 600;
+        text-shadow: none;
+        border-radius: 6px;
+        border: none;
+    }
+    .login-button-form-submit, #login-buttons-signup {
+        display: inline-block;
+        width: 39%;
+    }
+    #login-buttons-signup {
+        position: relative;
+        float: right;
+        top: 8px;
+        color: #000;
+    }
+    .orUse {
+        width: 60px;
+        margin: 0 auto;
+        margin: 0 auto 8px auto;
+        font-size: 12px;
+    }
+    .socialBtn {
+        display: inline-block;
+        width: 25%;
+        height: 40px;
+        margin-right: -6px;
+        border-right: 1px solid #999;
+        text-align: center;
+        cursor: pointer;
+        &:last-child {
+            border-right: none;
+        }
+        &:hover {
+            background: #666;
+        }
+        .socialImage {
+            font-size: 22px;
+            position: relative;
+            top: 7px;
+            color: @white;
+        }
+    }
+}
+/*endregion*/

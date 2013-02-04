@@ -1,0 +1,122 @@
+/*region variables*/
+@green: #7fbb00;
+@white: #ffffff;
+@yellow: #f3dc00;
+@darkYellow: #d9b002;
+@lightGreen: #7fdd00;
+@darkGreen: #669900;
+//@grey: #6A6E62;
+@grey: #e6e6e6;
+@blue: #1450C5;
+@root: "../../";
+.hoverBgColor(@color: @white, @strength: 10%) {
+    background-color: darken(@color, @strength);
+}
+
+.hoverColor(@color: @white, @strength: 10%) {
+    color: darken(@color, @strength);
+}
+
+.borderBox{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.buttonGradient(@top, @bottom){
+    background-image: -moz-linear-gradient(top, @top, @bottom);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
+    background-image: -webkit-linear-gradient(top, @top, @bottom);
+    background-image: -o-linear-gradient(top, @top, @bottom);
+    background-image: linear-gradient(to bottom, @top, @bottom);
+}
+
+button.yellow, .login-button.yellow{
+    .buttonGradient(@yellow, @darkYellow);
+}
+
+button.green, .login-button.green{
+    color: @white !important;
+    .buttonGradient(@lightGreen, @darkGreen);
+}
+
+button.black, .login-button.black{
+    .buttonGradient(#777777, #111111);
+}
+
+/*endregion*/
+
+
+#teamWrapper{
+    height: 100%;
+    background: @grey;
+    #teamSettings{
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 15px;
+        color: #333;
+        h1{
+            width: 270px;
+            margin: 55px auto 15px auto;
+        }
+        .h2{
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .ui-table-cell-label{
+            font-weight: bold;
+        }
+        select, select:focus{
+            height: 30px;
+            padding-right: 16px;
+            -webkit-appearance: listbox;
+            background-image: url("@{root}selectArrow.png");
+            background-repeat: no-repeat;
+            background-position: right;
+            border: 1px solid #999;
+            border-radius: 4px;
+        }
+        #newMembersWrapper{
+            margin-bottom: 25px;
+        }
+        #currentTeamWrapper, #teamNameWrapper{
+            margin-top: 10px;
+            #currentTeam{
+                margin-bottom: 5px;
+            }
+        }
+        input[type="text"]{
+        //border-radius: 0;
+        }
+        h2{
+            font-size: 22px;
+        }
+        .tableWrapper{
+            background: @white;
+            padding: 10px 5px 10px 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            table{
+                font-size: 14px;
+                a{
+                    text-decoration: none;
+                }
+                td, tbody th{
+                    vertical-align: middle;
+                }
+                label.ui-select{
+                    margin-bottom: 0 !important;
+                }
+            }
+        }
+        .ui-btn{
+            margin-bottom: 15px;
+        }
+        .ui-field-contain, table{
+            .ui-btn{
+                margin-bottom: 0;
+            }
+        }
+    }
+}
