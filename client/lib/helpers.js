@@ -9,7 +9,7 @@
 Handlebars.registerHelper('convertUrls', function (text) {
     if (!text) return '';
 
-    var match = StringToURL(text);
+    var match = TOOLS.StringToURL(text);
     var array = [];
 
     //No matches found in StringToURL. The default message is pushed into an object the urlTemplate can take.
@@ -22,7 +22,7 @@ Handlebars.registerHelper('convertUrls', function (text) {
     var i=0;                                                    //Index for match iteration
     var offset = 0;                                             //Offset after each ending index of matches
     for(i in match){
-        var url = CreateLink(match[i]);                         //Url converted to html form
+        var url = TOOLS.CreateLink(match[i]);                         //Url converted to html form
         var urlIndex = text.indexOf(match[i]);
         var before = text.substr(offset, urlIndex);
         if(offset == urlIndex) before = undefined;              //If nothing before, set to undefined
