@@ -1,3 +1,48 @@
+<template name="currentTeamSelect">
+    <select name="currentTeam" id="currentTeam">
+        {{#each teams}}
+            <option value="{{_id}}"
+            {{isCurrentTeamSelected _id}}>{{name}}</option>
+        {{/each}}
+    </select>
+</template>
+
+<template name="membersGrid">
+    <table id="membersTable" data-role="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each members}}
+        <tr>
+            <th class="name">{{name}}</th>
+            <td>{{email}}</td>
+            <td>
+                <label for="memberRole" class="select"></label>
+                <select name="memberRole" id="memberRole" data-id="{{id}}">
+                    <option value="0">Admin</option>
+                    <option value="1">Member</option>
+                </select>
+            </td>
+            <td>
+                {{status}}
+                {{#if statusIs "Invited"}}
+                <a href="">(resend)</a>
+                {{/if}}
+            </td>
+            <td><button>Remove</button></td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
 <!--if not an admin, only include change team and leave team functionality-->
 <template name="teamSettingsView">
     {{> topBar}}
@@ -50,49 +95,4 @@
             <button id="deleteTeam" data-theme="y">Delete this team</button>
         </div>
     </div>
-</template>
-
-<template name="currentTeamSelect">
-    <select name="currentTeam" id="currentTeam">
-        {{#each teams}}
-            <option value="{{_id}}"
-            {{isCurrentTeamSelected _id}}>{{name}}</option>
-        {{/each}}
-    </select>
-</template>
-
-<template name="membersGrid">
-    <table id="membersTable" data-role="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each members}}
-        <tr>
-            <th class="name">{{name}}</th>
-            <td>{{email}}</td>
-            <td>
-                <label for="memberRole" class="select"></label>
-                <select name="memberRole" id="memberRole" data-id="{{id}}">
-                    <option value="0">Admin</option>
-                    <option value="1">Member</option>
-                </select>
-            </td>
-            <td>
-                {{status}}
-                {{#if statusIs "Invited"}}
-                <a href="">(resend)</a>
-                {{/if}}
-            </td>
-            <td><button>Remove</button></td>
-        </tr>
-        {{/each}}
-        </tbody>
-    </table>
 </template>

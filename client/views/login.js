@@ -1,13 +1,3 @@
-Accounts.ui.config({
-    requestPermissions: {
-        gmail: ["profile", "email"]
-    },
-    requestOfflineToken: {
-        google: true
-    }
-});
-
-
 Template.loginView.rendered = function () {
     $("#login-buttons-signup,#forgot-password-link").on("vclick", function () {
         alert("Please use google or facebook login. Custom user sign up is not setup yet. ")
@@ -40,3 +30,12 @@ Template.loginView.rendered = function () {
         });
     });
 };
+
+Accounts.ui.config({
+    requestPermissions: {
+        gmail: ["profile", "email"]
+    },
+    requestOfflineToken: {
+        google: true
+    }
+});
