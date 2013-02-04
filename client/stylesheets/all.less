@@ -1,6 +1,10 @@
 /*region variables*/
 @green: #7fbb00;
 @white: #ffffff;
+@yellow: #f3dc00;
+@darkYellow: #d9b002;
+@lightGreen: #7fdd00;
+@darkGreen: #669900;
 //@grey: #6A6E62;
 @grey: #e6e6e6;
 @blue: #1450C5;
@@ -19,7 +23,30 @@
     box-sizing: border-box;
 }
 
+.buttonGradient(@top, @bottom){
+    background-image: -moz-linear-gradient(top, @top, @bottom);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
+    background-image: -webkit-linear-gradient(top, @top, @bottom);
+    background-image: -o-linear-gradient(top, @top, @bottom);
+    background-image: linear-gradient(to bottom, @top, @bottom);
+}
+
+button.yellow, .login-button.yellow{
+    .buttonGradient(@yellow, @darkYellow);
+}
+
+button.green, .login-button.green{
+    color: @white !important;
+    .buttonGradient(@lightGreen, @darkGreen);
+}
+
+button.black, .login-button.black{
+    .buttonGradient(#777777, #111111);
+}
+
 /*endregion*/
+
+/*region general*/
 body {
     padding: 0;
     margin: 0;
@@ -34,12 +61,39 @@ html, body {
     visibility: visible !important;
 }
 
+a, a:visited{
+    color: @blue;
+}
+
+a:hover{
+    .hoverColor(@blue, 15%);
+}
+
+a:active{
+    .hoverColor(@blue, 30%);
+}
+
+.cancel{
+    text-decoration: none;
+    .ui-btn-text{
+        color: #000;
+        text-shadow: 0 1px 0 @white;
+    }
+}
+
 .profileImageMedium img{
     height: 32px;
 }
 
 .profileImageSmall img {
     height: 24px;
+}
+
+.initials{
+    padding: 3px 0 0 5px;
+    font-size: 15px;
+    font-weight: bold;
+    color: @white;
 }
 
 .top {
@@ -69,6 +123,68 @@ html, body {
     }
 }
 
+.emailSuggestion{
+    display: none;
+    font-size: 12px;
+    span{
+        color: @yellow;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+/*endregion*/
+
+/*region jquery mobile overrides*/
+
+.ui-field-contain{
+    padding: 0 !important;
+    border-bottom: none !important;
+    label{
+        width: auto !important;
+        min-width: 15%;
+        margin-right: 0 !important;
+        vertical-align: middle !important;
+    }
+    input.ui-input-text{
+        width: 73% !important;
+        min-height: 1em !important;
+        line-height: 1em !important;
+    }
+}
+
+thead th, .ui-table-cell-label{
+    font-size: 16px;
+}
+
+.ui-table-reflow tbody th {
+    margin-top: 1em !important;
+}
+
+.ui-body-c, .ui-overlay-c{
+    text-shadow: none !important;
+}
+
+.ui-btn-inner{
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+}
+
+.ui-icon{
+    background-image: url("@{root}icons-18-white.png") !important;
+}
+
+table .ui-btn-icon-right{
+    margin-top: 0;
+}
+
+table .ui-btn-inner{
+    padding-top: 0.4em !important;
+    padding-bottom: 0.4em !important;
+}
+/*endregion*/
+
+/*region login page*/
 #loginBg {
     position: absolute;
     width: 100%;
@@ -138,12 +254,6 @@ html, body {
         text-shadow: none;
         border-radius: 6px;
         border: none;
-        background-image: -moz-linear-gradient(top, #777, #111);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#777), to(#111));
-        background-image: -webkit-linear-gradient(top, #777, #111);
-        background-image: -o-linear-gradient(top, #777, #111);
-        background-image: linear-gradient(to bottom, #777, #111); //        box-shadow: none;
-    //        -webkit-box-shadow: none;
     }
     .login-button-form-submit, #login-buttons-signup {
         display: inline-block;
@@ -154,11 +264,6 @@ html, body {
         float: right;
         top: 8px;
         color: #000;
-        background-image: -moz-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f3dc00), to(#d9b002));
-        background-image: -webkit-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: -o-linear-gradient(top, #f3dc00, #d9b002);
-        background-image: linear-gradient(to bottom, #f3dc00, #d9b002);
     }
     .orUse {
         width: 60px;
@@ -188,89 +293,9 @@ html, body {
         }
     }
 }
+/*endregion*/
 
-.mapWrapper {
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    padding-top: 40px;
-}
-
-.map {
-    height: 100%;
-    .leaflet-popup-content-wrapper {
-        border: 6px solid #7fbb00;
-        background: @grey;
-        padding: 0;
-        .leaflet-popup-content {
-            margin: 0 -1px 0 0;
-        }
-    }
-    .leaflet-marker-pane img {
-        height: 24px;
-        margin-left: 2px;
-        margin-top: 2px;
-        border-radius: 12px;
-    }
-    .leaflet-marker-icon {
-        width: 28px !important;
-        height: 28px !important;
-        border: none;
-        background: @green;
-        border-radius: 14px;
-    }
-    a.leaflet-popup-close-button {
-        top: 9px !important;
-        right: 9px!important;
-        font-size: 16px!important;
-        color: @white!important;
         z-index: 2;
-        &:hover {
-            .hoverColor(@white);
-        }
-    }
-    .leaflet-popup-tip-container {
-        width: 100%;
-        height: 50px;
-        margin-top: -7px;
-        .leaflet-popup-tip {
-            margin: 0 0 0 50px;
-            width: 30px;
-            height: 50px;
-            padding: 0;
-            background: url("@{root}popupArrow5.png") no-repeat;
-            -webkit-transform: none;
-            -moz-transform: none;
-            -ms-transform: none;
-            -o-transform: none;
-            transform: none;
-            box-shadow: none;
-        }
-    }
-    .leaflet-control-container, .leaflet-bottom.leaflet-right {
-        height: 100%;
-        width: 100%;
-    }
-    .leaflet-control-attribution {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-    }
-}
-
-.initials{
-    padding: 3px 0 0 5px;
-    font-size: 15px;
-    font-weight: bold;
-    color: @white;
-}
-
 
 .chatBox.fullScreen{
     width:      100%;
@@ -353,6 +378,11 @@ html, body {
 
         .recepientName {
             position:       relative;
+            width: 77%;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             font-family:    verdana, arial, sans-serif;
         }
     }
@@ -470,6 +500,86 @@ html, body {
         }
     }
 }
+/*endregion*/
+
+/*region map*/
+.mapWrapper {
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding-top: 40px;
+}
+
+.map {
+    height: 100%;
+    .leaflet-popup-content-wrapper {
+        border: 6px solid #7fbb00;
+        background: @grey;
+        padding: 0;
+        .leaflet-popup-content {
+            margin: 0 -1px 0 0;
+        }
+    }
+    .leaflet-marker-pane img {
+        height: 24px;
+        margin-left: 2px;
+        margin-top: 2px;
+        border-radius: 12px;
+    }
+    .leaflet-marker-icon {
+        width: 28px !important;
+        height: 28px !important;
+        border: none;
+        background: @green;
+        border-radius: 14px;
+    }
+    a.leaflet-popup-close-button {
+        top: 9px !important;
+        right: 9px!important;
+        font-size: 16px!important;
+        color: @white!important;
+        &:hover {
+            .hoverColor(@white);
+        }
+    }
+    .leaflet-popup-tip-container {
+        width: 100%;
+        height: 50px;
+        margin-top: -7px;
+        .leaflet-popup-tip {
+            margin: 0 0 0 50px;
+            width: 30px;
+            height: 50px;
+            padding: 0;
+            background: url("@{root}popupArrow5.png") no-repeat;
+            -webkit-transform: none;
+            -moz-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+            box-shadow: none;
+        }
+    }
+    .leaflet-control-container, .leaflet-bottom.leaflet-right {
+        height: 100%;
+        width: 100%;
+    }
+    .leaflet-control-attribution {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+    .leaflet-top, .leaflet-bottom{
+        z-index: 8;
+    }
+}
+/*endregion*/
 
 /*region scrollbar*/
 ::-webkit-scrollbar {
@@ -506,7 +616,133 @@ html, body {
 
 /*endregion*/
 
+#teamWrapper{
+    height: 100%;
+    background: @grey;
+    #teamSettings{
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 15px;
+        color: #333;
+        h1{
+            width: 270px;
+            margin: 55px auto 15px auto;
+        }
+        .h2{
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .ui-table-cell-label{
+            font-weight: bold;
+        }
+        select, select:focus{
+            height: 30px;
+            padding-right: 16px;
+            -webkit-appearance: listbox;
+            background-image: url("@{root}selectArrow.png");
+            background-repeat: no-repeat;
+            background-position: right;
+            border: 1px solid #999;
+            border-radius: 4px;
+        }
+        #newMembersWrapper{
+            margin-bottom: 25px;
+        }
+        #currentTeamWrapper, #teamNameWrapper{
+            margin-top: 10px;
+            #currentTeam{
+                margin-bottom: 5px;
+            }
+        }
+        input[type="text"]{
+        //border-radius: 0;
+        }
+        h2{
+            font-size: 22px;
+        }
+        .tableWrapper{
+            background: @white;
+            padding: 10px 5px 10px 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            table{
+                font-size: 14px;
+                a{
+                    text-decoration: none;
+                }
+                td, tbody th{
+                    vertical-align: middle;
+                }
+                label.ui-select{
+                    margin-bottom: 0 !important;
+                }
+            }
+        }
+        .ui-btn{
+            margin-bottom: 15px;
+        }
+        .ui-field-contain, table{
+            .ui-btn{
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.ui-popup{
+    h2{
+        text-align: center;
+    }
+    input.ui-input-text{
+        width: auto;
+    }
+    .ui-btn{
+        display: inline-block;
+        width: 45% !important;
+        &:last-child{
+            float: right;
+        }
+    }
+}
+
+/*region media queries*/
 @media screen and (max-width: 640px) {
+    #teamSettings{
+        td.name{
+            font-weight: bold;
+        }
+        .tableWrapper{
+            margin-top: 20px;
+        }
+    }
+    table{
+        .ui-select {
+            display: inline-block !important;
+            left: -8px;
+        }
+        tr{
+            border-bottom: 1px solid #e6e6e6;
+            &:last-child{
+                border-bottom: none;
+            }
+        }
+        .ui-btn{
+            width: auto;
+        }
+    }
+    .ui-field-contain{
+        .ui-btn{
+            width: 100%;
+        }
+        .ui-select, .ui-input-text{
+            width: 100% !important;
+        }
+
+        .ui-input-text{
+            padding: 0 .4em 0 .4em;
+        }
+    }
     #loginBg {
         background: @green;
     }
@@ -516,4 +752,57 @@ html, body {
         -webkit-box-shadow: none;
         border-radius: 0;
     }
+    td:first-child{
+        border-top: 1px solid #aaa;
+    }
+    select{
+        margin-left: 0;
+        position: relative;
+    }
 }
+
+@media screen and (max-width: 447px) {
+    .ui-field-contain .ui-input-text{
+        width: 96% !important;
+    }
+}
+
+@media ( min-width: 640px ) {
+    #teamSettings{
+        /* Show the table header rows and set all cells to display: table-cell */
+        td,th, tbody th,tbody td,thead td,thead th {
+            display: table-cell;
+            margin: 0;
+        }
+        /* Hide the labels in each cell */
+        td .ui-table-cell-label,th .ui-table-cell-label {
+            display: none;
+        }
+        .ui-btn:not(.ui-btn-icon-right){
+            width: 200px;
+        }
+        table .ui-btn:not(.ui-btn-icon-right){
+            width: auto;
+        }
+
+        .ui-field-contain{
+            .ui-btn:not(.ui-btn-icon-right), .ui-select:not(label), .ui-input-text{
+                width: 350px;
+                display: inline-table;
+                margin-top: 0;
+            }
+            .ui-select:not(label), .ui-input-text{
+                width: 200px;
+            }
+            .ui-btn:not(.ui-btn-icon-right){
+                float: right;
+            }
+        }
+        #newTeamWrapper, #currentTeamWrapper{
+            .ui-btn{
+                width: 210px;
+            }
+        }
+    }
+}
+/*endregion*/
