@@ -122,7 +122,7 @@ var setIconFlashing = _.debounce(function (userId) {
     //animate the icon from green to white to green...etc
     icon.flashingId = Meteor.setInterval(function () {
         var currentColor = $(icon._icon).css('background-color');
-        currentColor = currentColor === HexToRGB(green) ? yellow : green;
+        currentColor = currentColor === TOOLS.HexToRGB(green) ? yellow : green;
         $(icon._icon).css('background-color', currentColor);
     }, 500);
 }, 250);

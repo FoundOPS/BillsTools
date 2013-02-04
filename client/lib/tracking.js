@@ -31,7 +31,7 @@ var updateUserPosition = function (position) {
     if (!position || !position.coords) return;
 
     //require a min accuracy on mobile devices
-    if (IsMobileDevice() && position.coords.accuracy > MIN_ACCURACY) return;
+    if (TOOLS.IsMobileDevice() && position.coords.accuracy > MIN_ACCURACY) return;
 
     var user = Meteor.user();
     if (!user) return;

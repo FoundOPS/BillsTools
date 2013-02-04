@@ -18,7 +18,7 @@ var StartChat = function (recipient, popup) {
     Session.set("recipient", recipient);
 
     //update isMobileSize before chat is rendered
-    var isMobileSize = IsMobileSize();
+    var isMobileSize = TOOLS.IsMobileSize();
     Session.set("isMobileSize", isMobileSize);
 
     //route to chat, this will change the view to mobileChat if it is mobile size
