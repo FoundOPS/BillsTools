@@ -1,6 +1,12 @@
-var green = "#7fbb00";
-var yellow = "#F12A06";
+var UI = (function () {
+    var my = {};
 
-Meteor.startup(function () {
-    moment.calendar.sameDay = 'LT';
-});
+    my.Green = "#7fbb00";
+    my.Yellow = "#F12A06";
+
+    Meteor.startup(function () {
+        moment.calendar.sameDay = 'LT';
+    });
+
+    return my;
+}());

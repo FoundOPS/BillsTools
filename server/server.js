@@ -194,5 +194,5 @@ Meteor.startup(function () {
 //});
 
 //sets up a new team for the current user
-//UpdateCurrentTeam(Teams.insert({name: "Team Awesome", administrators: [Meteor.userId()]}));
+//USERS.UpdateCurrentTeam(Teams.insert({name: "Team Awesome", administrators: [Meteor.userId()]}));
 

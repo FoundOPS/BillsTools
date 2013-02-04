@@ -84,7 +84,7 @@
 
             Teams.insert({name: teamName, administrators: [Meteor.userId()]}, function (error, teamId) {
                 if (!error) {
-                    UpdateCurrentTeam(teamId);
+                    USERS.UpdateCurrentTeam(teamId);
                 }
             });
 
@@ -131,7 +131,7 @@
 //role: "member",
 //status: "Last Login: 11:42am"
         var members = _.map(users, function (user) {
-            return {id: user._id, name: DisplayName(user), email: Email(user), role: "admin", status: "Invited"};
+            return {id: user._id, name: USERS.DisplayName(user), email: USERS.Email(user), role: "admin", status: "Invited"};
         });
 
         return members;
@@ -151,7 +151,7 @@
     Template.teamSettingsView.events = {
         'click #currentTeam': function (event) {
             var selectedTeam = $(event.currentTarget).find(':selected').val();
-            UpdateCurrentTeam(selectedTeam);
+            USERS.UpdateCurrentTeam(selectedTeam);
         },
         'click #memberRole': function (event) {
             var select = $(event.currentTarget);
