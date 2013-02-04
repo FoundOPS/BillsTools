@@ -107,35 +107,6 @@ Teams.allow({
 });
 
 var teamMethods = {
-    //options should include: role (0 = administrator, 1 = member), team (id), member (id)
-    addTeamMember: function (options) {
-        options = options || {};
-
-        if (!ContainsRequiredFields(options, ['role', 'team', 'member']))
-            throw new Meteor.Error(400, "Required parameter missing");
-
-        var team = Teams.findOne(options.team);
-        if (!team)
-            throw new Meteor.Error(400, "Team does not exist");
-
-        if (!this.userId)
-            throw new Meteor.Error(403, "You must be logged in");
-
-        if (!_.contains(team.administrators, this.userId))
-            throw new Meteor.Error(403, "You must be an administrator to this team");
-
-        //TODO setup new
-        var member = Meteor.users.find(options.member);
-        if (!member)
-            throw new Meteor.Error(400, "User does not exist");
-
-        if (options.role === 0)
-            Teams.update({_id: team._id}, {$push: {administrators: options.member}});
-        else if (options.role === 1)
-            Teams.update({_id: team._id}, {$push: {members: options.member}});
-        else
-            throw new Meteor.Error(400, "Need to define the user's role in the team");
-    },
     updateName: function (id, name) {
         var team = Teams.findOne(id);
         if (!team)
@@ -159,6 +130,31 @@ Meteor.publish("teams", function () {
         ]
     });
 });
+
+///////////////////////////////////////////////////////////////////////////////
+// Invitations
+
+//TODO
+//options should include: team (id), member (email)
+//inviteMember: function (options) {
+//    options = options || {};
+//
+//    if (!ContainsRequiredFields(options, ['team', 'member']))
+//        throw new Meteor.Error(400, "Required parameter missing");
+//
+//    var team = Teams.findOne(options.team);
+//    if (!team)
+//        throw new Meteor.Error(400, "Team does not exist");
+//
+//    if (!this.userId)
+//        throw new Meteor.Error(403, "You must be logged in");
+//
+//    if (!_.contains(team.administrators, this.userId))
+//        throw new Meteor.Error(403, "You must be an administrator to this team");
+//
+//    //TODO invite member, add new Invite. unique key, set expiration 7 days from now
+//    Teams.update({_id: team._id}, {$push: {memberInvitations: NOTE (invitation._id)}});
+//},
 
 ///////////////////////////////////////////////////////////////////////////////
 // Initialization
