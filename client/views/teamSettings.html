@@ -40,7 +40,7 @@
 
             {{#template template='inputPopup' id='renameTeamPopup' title='Rename Team' acceptId='renameTeam' acceptText='Rename'}}
             <input type="text" placeholder="name"/>
-            {{/template}}`
+            {{/template}}
             <br/>
 
             <!--TODO: make team name dynamic. ex: "Leave FoundOPS" and "Delete FoundOPS"-->
@@ -55,8 +55,8 @@
 <template name="currentTeamSelect">
     <select name="currentTeam" id="currentTeam">
         {{#each teams}}
-        <option value="{{_id}}"
-        {{isCurrentTeamSelected _id}}>{{name}}</option>
+            <option value="{{_id}}"
+            {{isCurrentTeamSelected _id}}>{{name}}</option>
         {{/each}}
     </select>
 </template>
@@ -90,7 +90,7 @@
                 <a href="">(resend)</a>
                 {{/if}}
             </td>
-            <td><a href="">Remove</a></td>
+            <td><button>Remove</button></td>
         </tr>
         {{/each}}
         </tbody>

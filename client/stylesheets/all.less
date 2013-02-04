@@ -614,6 +614,7 @@ table .ui-btn-inner{
 /*endregion*/
 
 #teamWrapper{
+    height: 100%;
     background: @grey;
     #teamSettings{
         position: relative;
@@ -622,7 +623,7 @@ table .ui-btn-inner{
         padding: 15px;
         color: #333;
         h1{
-            width: 245px;
+            width: 270px;
             margin: 55px auto 15px auto;
         }
         .h2{
@@ -723,6 +724,9 @@ table .ui-btn-inner{
                 border-bottom: none;
             }
         }
+        .ui-btn{
+            width: auto;
+        }
     }
     .ui-field-contain{
         .ui-btn{
@@ -774,6 +778,10 @@ table .ui-btn-inner{
         .ui-btn:not(.ui-btn-icon-right){
             width: 200px;
         }
+        table .ui-btn:not(.ui-btn-icon-right){
+            width: auto;
+        }
+
         .ui-field-contain{
             .ui-btn:not(.ui-btn-icon-right), .ui-select:not(label), .ui-input-text{
                 width: 350px;
@@ -787,7 +795,7 @@ table .ui-btn-inner{
                 float: right;
             }
         }
-        #newTeamWrapper{
+        #newTeamWrapper, #currentTeamWrapper{
             .ui-btn{
                 width: 210px;
             }
