@@ -27,11 +27,11 @@ var TRACKING = (function () {
      * @param [z] placeholder
      * @return {Number} distance
      */
-    function distanceCalculator (a, b, c, d, e, z) {
+    function distanceCalculator(a, b, c, d, e, z) {
         with (Math)return z = PI / 360, e * atan2(sqrt(z = pow(sin((c - a) * z), 2) + cos(a * z * 2) * cos(c * z * 2) * pow(sin((d - b) * z), 2)), sqrt(1 - z))
     }
 
-    function updateUserPosition (position) {
+    function updateUserPosition(position) {
         if (!position || !position.coords) return;
 
         //require a min accuracy on mobile devices
@@ -55,7 +55,7 @@ var TRACKING = (function () {
         Meteor.users.update(user, {"$set": {"profile.position": now }});
     }
 
-    function errorTracking (error) {
+    function errorTracking(error) {
         if (error.code === 1) {
             //TODO prompt user for tracking
             //alert("Enable tracking please");

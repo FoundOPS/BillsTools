@@ -106,7 +106,7 @@ var USERS = (function () {
      * @param user The user to load
      * @param callback Returns the name and image as parameters (if it was successful)
      */
-    function loadUserProfile (user, callback) {
+    function loadUserProfile(user, callback) {
         if (!user)
             return;
 

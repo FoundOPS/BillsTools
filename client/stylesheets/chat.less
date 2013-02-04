@@ -17,13 +17,13 @@
     color: darken(@color, @strength);
 }
 
-.borderBox{
+.borderBox {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.buttonGradient(@top, @bottom){
+.buttonGradient(@top, @bottom) {
     background-image: -moz-linear-gradient(top, @top, @bottom);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
     background-image: -webkit-linear-gradient(top, @top, @bottom);
@@ -31,144 +31,142 @@
     background-image: linear-gradient(to bottom, @top, @bottom);
 }
 
-button.yellow, .login-button.yellow{
+button.yellow, .login-button.yellow {
     .buttonGradient(@yellow, @darkYellow);
 }
 
-button.green, .login-button.green{
+button.green, .login-button.green {
     color: @white !important;
     .buttonGradient(@lightGreen, @darkGreen);
 }
 
-button.black, .login-button.black{
+button.black, .login-button.black {
     .buttonGradient(#777777, #111111);
 }
 
 /*endregion*/
 
 /*region chat*/
-.chatBox.fullScreen{
-    width:      100%;
-    height:     100%;
-    padding:    0;
+.chatBox.fullScreen {
+    width: 100%;
+    height: 100%;
+    padding: 0;
 
-    .chatTop{
-        top:        40px;
-        left:       0;
-        height:     38px;
+    .chatTop {
+        top: 40px;
+        left: 0;
+        height: 38px;
         background: #5F9B00;
 
         .profileImageSmall {
-            top:    8px;
+            top: 8px;
         }
     }
 
-    .chatArea{
+    .chatArea {
         padding-bottom: 72px;
-        padding-top:    79px;
-
-    //Note: For jscrollpane scroller.
-        padding-right:  6px;
+        padding-top: 79px; //Note: For jscrollpane scroller.
+        padding-right: 6px;
     }
 
-    .chatBottom{
-        height:     61px;
+    .chatBottom {
+        height: 61px;
     }
 
     .textAreaArrow {
         top: 23px;
     }
 
-    .senderImage{
+    .senderImage {
         top: 15px;
     }
 
-    #closeChatMobile{
+    #closeChatMobile {
         .borderBox;
-        position:   absolute;
-        display:    inline-block;
-        top:        0;
-        right:      0;
-        padding:    6px 18px;
-        font-size:  22px;
-        cursor:     pointer;
+        position: absolute;
+        display: inline-block;
+        top: 0;
+        right: 0;
+        padding: 6px 18px;
+        font-size: 22px;
+        cursor: pointer;
     }
 }
 
-#closeChatMobile{
-    display:    none;
+#closeChatMobile {
+    display: none;
 }
 
 .chatBox {
     .borderBox;
-    position:   relative;
-    width:      250px;
-    height:     320px;
-    padding:    4px;
+    position: relative;
+    width: 250px;
+    height: 320px;
+    padding: 4px;
 
     .chatTop {
-        position:       absolute;
-        height:         32px;
-        top:            0;
-        left:           1px;
-        z-index:        1;
-        width:          100%;
-        background:     @green;
-        color:          @white;
-        font-size:      16px;
-        font-weight:    bold;
+        position: absolute;
+        height: 32px;
+        top: 0;
+        left: 1px;
+        z-index: 1;
+        width: 100%;
+        background: @green;
+        color: @white;
+        font-size: 16px;
+        font-weight: bold;
 
         .profileImageSmall {
-            position:       relative;
-            display:        inline-block;
-            top:            3px;
-            left:           5px;
-            margin-right:   8px;
+            position: relative;
+            display: inline-block;
+            top: 3px;
+            left: 5px;
+            margin-right: 8px;
         }
 
         .recepientName {
-            position:       relative;
+            position: relative;
             width: 77%;
             display: inline-block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-family:    verdana, arial, sans-serif;
+            font-family: verdana, arial, sans-serif;
         }
     }
     .chatArea {
         .borderBox;
-        position:       relative;
-        background:     @grey;
-        height:         100%;
-        width:          100%;
+        position: relative;
+        background: @grey;
+        height: 100%;
+        width: 100%;
         padding-bottom: 46px;
-        padding-top:    32px;
+        padding-top: 32px;
     }
 
     .messages { //TODO: 100%
         .borderBox;
-        height:         100%;
-        padding-left:   3px;
-        padding-right:  2px;
-        padding-top:    3px;
-        margin:         0 0 0 0;
-        background:     @grey;
-        overflow:       auto;
+        height: 100%;
+        padding-left: 3px;
+        padding-right: 2px;
+        padding-top: 3px;
+        margin: 0 0 0 0;
+        background: @grey;
+        overflow: auto;
 
         .messageGroup {
             .borderBox;
-            float:          left;
-            width:          95%;
-            padding:        4px 8px;
-            border-bottom:  2px solid @grey;
-            list-style:     none;
-            word-wrap:      break-word;
+            float: left;
+            width: 95%;
+            padding: 4px 8px;
+            border-bottom: 2px solid @grey;
+            list-style: none;
+            word-wrap: break-word;
 
             .triangle {
-                position:   relative;
-                width:      0;
-                height:     0;
+                position: relative;
+                width: 0;
+                height: 0;
             }
 
             .message {
@@ -180,11 +178,11 @@ button.black, .login-button.black{
             }
 
             .time {
-                position:       relative;
-                display:        block;
-                top:            -5px;
-                margin-bottom:  -5px;
-                color:          #999;
+                position: relative;
+                display: block;
+                top: -5px;
+                margin-bottom: -5px;
+                color: #999;
             }
         }
 
@@ -206,48 +204,49 @@ button.black, .login-button.black{
 
     .chatBottom {
         .borderBox;
-        position:       absolute;
-        right:          0;
-        bottom:         0;
-        height:         45px;
-        width:          100%;
-        padding-left:   8px;
-        padding-right:  40px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 45px;
+        width: 100%;
+        padding-left: 8px;
+        padding-right: 40px;
         padding-bottom: 6px;
-        overflow:       hidden;
+        overflow: hidden;
     }
 
     textarea {
         .borderBox;
-        position:       static;
-        width:          100%;
-        height:         100%;
-        resize:         none;
-        border:         none;
-        font-family:    verdana, arial, sans-serif;
+        position: static;
+        width: 100%;
+        height: 100%;
+        resize: none;
+        border: none;
+        font-family: verdana, arial, sans-serif;
 
         &:focus {
-            outline:    none;
+            outline: none;
         }
     }
 
     .textAreaArrow {
-        position:   absolute;
-        right:      25px;
-        top:        15px;
-        width:      15px;
-        height:     15px;
+        position: absolute;
+        right: 25px;
+        top: 15px;
+        width: 15px;
+        height: 15px;
         background: url("@{root}textAreaArrow.png") no-repeat;
     }
 
-    .senderImage{
-        position:   absolute;
-        top:        8px;
-        right:      8px;
-        img{
-            width:  24px;
+    .senderImage {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        img {
+            width: 24px;
             height: 24px;
         }
     }
 }
+
 /*endregion*/

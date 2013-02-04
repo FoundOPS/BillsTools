@@ -17,13 +17,13 @@
     color: darken(@color, @strength);
 }
 
-.borderBox{
+.borderBox {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.buttonGradient(@top, @bottom){
+.buttonGradient(@top, @bottom) {
     background-image: -moz-linear-gradient(top, @top, @bottom);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
     background-image: -webkit-linear-gradient(top, @top, @bottom);
@@ -31,43 +31,42 @@
     background-image: linear-gradient(to bottom, @top, @bottom);
 }
 
-button.yellow, .login-button.yellow{
+button.yellow, .login-button.yellow {
     .buttonGradient(@yellow, @darkYellow);
 }
 
-button.green, .login-button.green{
+button.green, .login-button.green {
     color: @white !important;
     .buttonGradient(@lightGreen, @darkGreen);
 }
 
-button.black, .login-button.black{
+button.black, .login-button.black {
     .buttonGradient(#777777, #111111);
 }
 
 /*endregion*/
 
-
-#teamWrapper{
+#teamWrapper {
     height: 100%;
     background: @grey;
-    #teamSettings{
+    #teamSettings {
         position: relative;
         max-width: 900px;
         margin: 0 auto;
         padding: 15px;
         color: #333;
-        h1{
+        h1 {
             width: 270px;
             margin: 55px auto 15px auto;
         }
-        .h2{
+        .h2 {
             font-size: 24px;
             font-weight: bold;
         }
-        .ui-table-cell-label{
+        .ui-table-cell-label {
             font-weight: bold;
         }
-        select, select:focus{
+        select, select:focus {
             height: 30px;
             padding-right: 16px;
             -webkit-appearance: listbox;
@@ -77,44 +76,43 @@ button.black, .login-button.black{
             border: 1px solid #999;
             border-radius: 4px;
         }
-        #newMembersWrapper{
+        #newMembersWrapper {
             margin-bottom: 25px;
         }
-        #currentTeamWrapper, #teamNameWrapper{
+        #currentTeamWrapper, #teamNameWrapper {
             margin-top: 10px;
-            #currentTeam{
+            #currentTeam {
                 margin-bottom: 5px;
             }
         }
-        input[type="text"]{
-        //border-radius: 0;
+        input[type="text"] { //border-radius: 0;
         }
-        h2{
+        h2 {
             font-size: 22px;
         }
-        .tableWrapper{
+        .tableWrapper {
             background: @white;
             padding: 10px 5px 10px 10px;
             border-radius: 8px;
             margin-top: 10px;
-            table{
+            table {
                 font-size: 14px;
-                a{
+                a {
                     text-decoration: none;
                 }
-                td, tbody th{
+                td, tbody th {
                     vertical-align: middle;
                 }
-                label.ui-select{
+                label.ui-select {
                     margin-bottom: 0 !important;
                 }
             }
         }
-        .ui-btn{
+        .ui-btn {
             margin-bottom: 15px;
         }
-        .ui-field-contain, table{
-            .ui-btn{
+        .ui-field-contain, table {
+            .ui-btn {
                 margin-bottom: 0;
             }
         }

@@ -17,13 +17,13 @@
     color: darken(@color, @strength);
 }
 
-.borderBox{
+.borderBox {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.buttonGradient(@top, @bottom){
+.buttonGradient(@top, @bottom) {
     background-image: -moz-linear-gradient(top, @top, @bottom);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
     background-image: -webkit-linear-gradient(top, @top, @bottom);
@@ -31,16 +31,16 @@
     background-image: linear-gradient(to bottom, @top, @bottom);
 }
 
-button.yellow, .login-button.yellow{
+button.yellow, .login-button.yellow {
     .buttonGradient(@yellow, @darkYellow);
 }
 
-button.green, .login-button.green{
+button.green, .login-button.green {
     color: @white !important;
     .buttonGradient(@lightGreen, @darkGreen);
 }
 
-button.black, .login-button.black{
+button.black, .login-button.black {
     .buttonGradient(#777777, #111111);
 }
 
@@ -155,4 +155,5 @@ button.black, .login-button.black{
         }
     }
 }
+
 /*endregion*/

@@ -33,7 +33,7 @@
     ///////////////////////////////////////////////////////////////////////////////
     // Initialization
 
-    function fixFirefoxCss () {
+    function fixFirefoxCss() {
         if ($.browser.mozilla) {
             //replace all encoded backslashes with nothing
             $("link").each(function () {
@@ -49,7 +49,7 @@
     /**
      * Updates the title to the # of unread messages
      */
-    function updateTitle () {
+    function updateTitle() {
         Meteor.autorun(function () {
             var currentUserId = Meteor.userId();
             var unreadMessages = Messages.find({read: {$ne: true}, recipient: currentUserId}).count();
@@ -62,7 +62,7 @@
     }
 
     //store the user's current team in session data
-    function syncCurrentTeam () {
+    function syncCurrentTeam() {
         Meteor.autorun(function () {
             var user = Meteor.user();
             if (user && user.profile && user.profile.currentTeam) {

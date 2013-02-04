@@ -17,13 +17,13 @@
     color: darken(@color, @strength);
 }
 
-.borderBox{
+.borderBox {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.buttonGradient(@top, @bottom){
+.buttonGradient(@top, @bottom) {
     background-image: -moz-linear-gradient(top, @top, @bottom);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
     background-image: -webkit-linear-gradient(top, @top, @bottom);
@@ -31,16 +31,16 @@
     background-image: linear-gradient(to bottom, @top, @bottom);
 }
 
-button.yellow, .login-button.yellow{
+button.yellow, .login-button.yellow {
     .buttonGradient(@yellow, @darkYellow);
 }
 
-button.green, .login-button.green{
+button.green, .login-button.green {
     color: @white !important;
     .buttonGradient(@lightGreen, @darkGreen);
 }
 
-button.black, .login-button.black{
+button.black, .login-button.black {
     .buttonGradient(#777777, #111111);
 }
 
@@ -49,8 +49,7 @@ button.black, .login-button.black{
 /*region general*/
 html, body {
     height: 100%;
-    width: 100%;
-    //fixes rendering bug with jquery mobile's .ui-mobile-rendering
+    width: 100%; //fixes rendering bug with jquery mobile's .ui-mobile-rendering
     visibility: visible !important;
 }
 
@@ -61,27 +60,27 @@ body {
     font-family: verdana, arial, sans-serif;
 }
 
-a, a:visited{
+a, a:visited {
     color: @blue;
 }
 
-a:hover{
+a:hover {
     .hoverColor(@blue, 15%);
 }
 
-a:active{
+a:active {
     .hoverColor(@blue, 30%);
 }
 
-.cancel{
+.cancel {
     text-decoration: none;
-    .ui-btn-text{
+    .ui-btn-text {
         color: #000;
         text-shadow: 0 1px 0 @white;
     }
 }
 
-.profileImageMedium img{
+.profileImageMedium img {
     height: 32px;
 }
 
@@ -89,7 +88,7 @@ a:active{
     height: 24px;
 }
 
-.initials{
+.initials {
     padding: 3px 0 0 5px;
     font-size: 15px;
     font-weight: bold;
@@ -107,11 +106,11 @@ a:active{
     -moz-box-shadow: 0px 0px 5px #333335;
     box-shadow: 0px 0px 5px #333335;
 
-    #menu{
+    #menu {
         position: absolute;
         top: 5px;
         right: 25px;
-        img{
+        img {
             height: 32px;
         }
     }
@@ -122,10 +121,10 @@ a:active{
     }
 }
 
-.emailSuggestion{
+.emailSuggestion {
     display: none;
     font-size: 12px;
-    span{
+    span {
         color: @yellow;
         font-weight: bold;
         text-decoration: underline;
@@ -171,23 +170,23 @@ a:active{
 
 /*region jquery mobile overrides*/
 
-.ui-field-contain{
+.ui-field-contain {
     padding: 0 !important;
     border-bottom: none !important;
-    label{
+    label {
         width: auto !important;
         min-width: 15%;
         margin-right: 0 !important;
         vertical-align: middle !important;
     }
-    input.ui-input-text{
+    input.ui-input-text {
         width: 73% !important;
         min-height: 1em !important;
         line-height: 1em !important;
     }
 }
 
-thead th, .ui-table-cell-label{
+thead th, .ui-table-cell-label {
     font-size: 16px;
 }
 
@@ -195,82 +194,86 @@ thead th, .ui-table-cell-label{
     margin-top: 1em !important;
 }
 
-.ui-body-c, .ui-overlay-c{
+.ui-body-c, .ui-overlay-c {
     text-shadow: none !important;
 }
 
-.ui-btn-inner{
+.ui-btn-inner {
     padding-top: 0.5em !important;
     padding-bottom: 0.5em !important;
 }
 
-.ui-icon{
+.ui-icon {
     background-image: url("@{root}icons-18-white.png") !important;
 }
 
-.ui-popup{
-    h2{
+.ui-popup {
+    h2 {
         text-align: center;
     }
-    input.ui-input-text{
+    input.ui-input-text {
         width: auto;
     }
-    .ui-btn{
+    .ui-btn {
         display: inline-block;
         width: 45% !important;
-        &:last-child{
+        &:last-child {
             float: right;
         }
     }
 }
 
-table .ui-btn-icon-right{
+table .ui-btn-icon-right {
     margin-top: 0;
 }
 
-table .ui-btn-inner{
+table .ui-btn-inner {
     padding-top: 0.4em !important;
     padding-bottom: 0.4em !important;
 }
+
 /*endregion*/
 
 /*region media queries*/
 @media screen and (max-width: 640px) {
-    #teamSettings{
-        td.name{
+    #teamSettings {
+        td.name {
             font-weight: bold;
         }
-        .tableWrapper{
+        .tableWrapper {
             margin-top: 20px;
         }
     }
-    table{
+
+    table {
         .ui-select {
             display: inline-block !important;
             left: -8px;
         }
-        tr{
+        tr {
             border-bottom: 1px solid #e6e6e6;
-            &:last-child{
+            &:last-child {
                 border-bottom: none;
             }
         }
-        .ui-btn{
+        .ui-btn {
             width: auto;
         }
     }
-    .ui-field-contain{
-        .ui-btn{
+
+    .ui-field-contain {
+        .ui-btn {
             width: 100%;
         }
-        .ui-select, .ui-input-text{
+        .ui-select, .ui-input-text {
             width: 100% !important;
         }
 
-        .ui-input-text{
+        .ui-input-text {
             padding: 0 .4em 0 .4em;
         }
     }
+
     #loginBg {
         background: @green;
     }
@@ -280,57 +283,60 @@ table .ui-btn-inner{
         -webkit-box-shadow: none;
         border-radius: 0;
     }
-    td:first-child{
+
+    td:first-child {
         border-top: 1px solid #aaa;
     }
-    select{
+
+    select {
         margin-left: 0;
         position: relative;
     }
 }
 
 @media screen and (max-width: 447px) {
-    .ui-field-contain .ui-input-text{
+    .ui-field-contain .ui-input-text {
         width: 96% !important;
     }
 }
 
 @media ( min-width: 640px ) {
-    #teamSettings{
-        /* Show the table header rows and set all cells to display: table-cell */
-        td,th, tbody th,tbody td,thead td,thead th {
+    #teamSettings {
+    /* Show the table header rows and set all cells to display: table-cell */
+        td, th, tbody th, tbody td, thead td, thead th {
             display: table-cell;
             margin: 0;
         }
-        /* Hide the labels in each cell */
-        td .ui-table-cell-label,th .ui-table-cell-label {
+    /* Hide the labels in each cell */
+        td .ui-table-cell-label, th .ui-table-cell-label {
             display: none;
         }
-        .ui-btn:not(.ui-btn-icon-right){
+        .ui-btn:not(.ui-btn-icon-right) {
             width: 200px;
         }
-        table .ui-btn:not(.ui-btn-icon-right){
+        table .ui-btn:not(.ui-btn-icon-right) {
             width: auto;
         }
 
-        .ui-field-contain{
-            .ui-btn:not(.ui-btn-icon-right), .ui-select:not(label), .ui-input-text{
+        .ui-field-contain {
+            .ui-btn:not(.ui-btn-icon-right), .ui-select:not(label), .ui-input-text {
                 width: 350px;
                 display: inline-table;
                 margin-top: 0;
             }
-            .ui-select:not(label), .ui-input-text{
+            .ui-select:not(label), .ui-input-text {
                 width: 200px;
             }
-            .ui-btn:not(.ui-btn-icon-right){
+            .ui-btn:not(.ui-btn-icon-right) {
                 float: right;
             }
         }
-        #newTeamWrapper, #currentTeamWrapper{
-            .ui-btn{
+        #newTeamWrapper, #currentTeamWrapper {
+            .ui-btn {
                 width: 210px;
             }
         }
     }
 }
+
 /*endregion*/
