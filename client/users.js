@@ -66,15 +66,6 @@ var UpdateUserProfile = _.debounce(function () {
                 sets["profile.picture"] = picture;
             Meteor.users.update(user, {$set: sets});
         }
-        else {
-            var profile = {};
-            if (name)
-                profile.name = name;
-            if (picture)
-                profile.picture = picture;
-
-            Meteor.users.update(user, {"$set": {profile: profile }});
-        }
     });
 }, 2000);
 

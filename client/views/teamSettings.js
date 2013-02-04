@@ -110,7 +110,6 @@ var removePopups = function () {
 Template.teamSettingsView.events = {
     'click #currentTeam': function (event) {
         var selectedTeam = $(event.currentTarget).find(':selected').val();
-        if (!selectedTeam) return;
         UpdateCurrentTeam(selectedTeam);
     },
     'click #memberRole': function (event) {

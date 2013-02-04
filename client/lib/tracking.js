@@ -48,12 +48,7 @@ var updateUserPosition = function (position) {
             distanceCalculator(last.lat, last.lng, now.lat, now.lng, EARTH_DIAMETER)) return;
     }
 
-    if (!user.profile) {
-        var profile = {position: now};
-        Meteor.users.update(user, {"$set": {"profile": profile }});
-    } else {
-        Meteor.users.update(user, {"$set": {"profile.position": now }});
-    }
+    Meteor.users.update(user, {"$set": {"profile.position": now }});
 };
 
 var errorTracking = function (error) {

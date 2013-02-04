@@ -63,10 +63,12 @@ var updateTitle = function () {
 var syncCurrentTeam = function () {
     Meteor.autorun(function () {
         var user = Meteor.user();
-        if (user && user.profile && user.profile.currentTeam)
+        if (user && user.profile && user.profile.currentTeam) {
             Session.set("currentTeam", user.profile.currentTeam);
-        else
+        }
+        else {
             Session.set("currentTeam", null);
+        }
     });
 };
 
