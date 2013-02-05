@@ -242,11 +242,6 @@ var CHAT = (function () {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Initialization
-    console.log("Rendering");
-    console.log("Done Rendering.");
-    console.log("Mobile chat rendering");
-    console.log("Mobile chat Rendered");
-
     $(document).on("mobileinit", function () {
         // Reference: http://jquerymobile.com/demos/1.1.0/docs/api/globalconfig.html
         $.extend($.mobile, {
@@ -254,9 +249,7 @@ var CHAT = (function () {
             ajaxEnabled: false
         });
     });
-
     //TODO: why is .ui-loader showing up(now it's just being hidden in css)
-    console.log("Chat destroying");
 
     Meteor.startup(function () {
         setupMobileChat();

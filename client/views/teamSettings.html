@@ -93,6 +93,14 @@
             {{/template}}
             <br/>
 
+            {{#template template='alertPopup' id='onlyTeamAdminPopup' title='Only Admin'}}
+            <div>You are the only admin in this team!</div>
+            {{/template}}
+
+            {{#template template='inputPopup' id='onlyTeamPopup' title='Only Team' acceptId='createNewTeam' acceptText='Create Team'}}
+            <div>You can't remove yourself from your only team!</div>
+            {{/template}}
+
             {{#if isTeamMember}}
             <button id="leaveTeam" data-theme="y">Leave this team</button>
             {{/if}}

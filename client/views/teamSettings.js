@@ -1,5 +1,5 @@
 (function () {
-    var popups = ["inviteMemberPopup", "newTeamPopup", "renameTeamPopup"];
+    var popups = ["inviteMemberPopup", "newTeamPopup", "renameTeamPopup", "onlyTeamAdminPopup", "onlyTeamPopup"];
 
     function currentTeam() {
         var teamId = Session.get("currentTeam");
@@ -21,6 +21,12 @@
                 }
             });
         }
+    }
+
+    function getAdmins(team){
+        if (!team) return null;
+        if (!team.administrators) return null;
+        return team.administrators;
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -106,6 +112,16 @@
         });
     }
 
+    function setupOnlyTeamAdmin(){
+        var onlyAdminPopup = $("#onlyTeamAdminPopup");
+        onlyAdminPopup.popup({theme: "a", overlayTheme: "a", dismissible: true});
+    }
+
+    function setupOnlyTeam(){
+        var onlyTeamPopup = $("#onlyTeamPopup");
+        onlyTeamPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
+    }
+
 ///////////////////////////////////////////////////////////////////////////////
 // Template Functions
 
@@ -153,13 +169,11 @@
             USERS.UpdateCurrentTeam(selectedTeam);
         },
         'click #memberRole': function (event) {
-            var select = $(event.currentTarget);
-
-            var selectedRole = select.find(':selected').val();
-            var member = select.data("id");
-
-            //TODO
-            console.log("member " + member + " change role to " + selectedRole);
+            selectRole(event);
+        },
+        'keyup #memberRole': function (event) {
+            //TODO Only on enter?
+            selectRole(event);
         }
 //    'keyup #teamName': function (event) {
 //        var name = $(event.currentTarget).val();
@@ -167,17 +181,65 @@
 //    }
     };
 
+    function selectRole(event){
+        var select = $(event.currentTarget);
+        var selectedRole = select.find(':selected').val();
+        var member = select.data("id");
+
+        var selectedRoleText = select.find(':selected').text().toLowerCase();
+        if((selectedRoleText !== "admin") && Session.get("isTeamAdmin") && lastTeamAdmin()){
+            select.val(0);
+            select.selectmenu("refresh");
+            $("#onlyTeamAdminPopup").popup("open");
+        }
+
+        //TODO: Change roles and remove from admin
+        console.log("member " + member + " change role to " + selectedRole);
+    }
+
+    //Returns true if the user is an admin of less than 2 teams.
+    function lastTeamAdmin(){
+        var team = currentTeam();
+        //No team in currentTeam
+        if(!team) return false;
+
+        var admins = getAdmins(team);
+        //More than one admin
+        if(admins.length > 1) return false;
+
+        var userId = Meteor.user()._id;
+        //Not in admin list
+        if(!userId || $.inArray(userId, admins)<0) return false;
+
+        //Only admin left
+        return true;
+    }
+
+    //Returns true if the user is part of less than 2 teams.
+    function lastTeam(){
+        var teams = Teams.find().fetch();
+        if(teams.length > 1) return false;
+        return true;
+    }
+
     Template.teamSettingsView.rendered = function () {
         TOOLS.RenderPage(this.firstNode.parentNode, popups);
 
         setupInviteMember();
         setupAddTeam();
         setupRenameTeam();
+        setupOnlyTeamAdmin();
+        setupOnlyTeam();
 
         TOOLS.On("#leaveTeam", "vclick", function () {
-            var answer = confirm("Are you sure you want to leave this team?");
-            if (answer) {
-                console.log("leave");
+            if(lastTeam()){
+                $("#onlyTeamPopup").popup("open");
+            }else{
+                var answer = confirm("Are you sure you want to leave this team?");
+                if (answer) {
+                    //TODO Hookup leaving
+                    console.log("leave");
+                }
             }
         });
 
