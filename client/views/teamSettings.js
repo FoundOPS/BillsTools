@@ -1,5 +1,5 @@
 (function () {
-    var popups = ["inviteMemberPopup", "newTeamPopup", "renameTeamPopup", "onlyTeamAdminPopup", "onlyTeamPopup"];
+    var popups = ["inviteMemberPopup", "newTeamPopup", "renameTeamPopup", "lastTeamAdminPopup", "lastTeamPopup"];
 
     function currentTeam() {
         var teamId = Session.get("currentTeam");
@@ -112,14 +112,15 @@
         });
     }
 
-    function setupOnlyTeamAdmin(){
-        var onlyAdminPopup = $("#onlyTeamAdminPopup");
-        onlyAdminPopup.popup({theme: "a", overlayTheme: "a", dismissible: true});
+    function setupLastTeamAdminCheck(){
+        //TODO Support ok on enter press.
+        var lastAdminPopup = $("#lastTeamAdminPopup");
+        lastAdminPopup.popup({theme: "a", overlayTheme: "a", dismissible: true});
     }
 
-    function setupOnlyTeam(){
-        var onlyTeamPopup = $("#onlyTeamPopup");
-        onlyTeamPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
+    function setupLastTeamCheck(){
+        var lastTeamPopup = $("#lastTeamPopup");
+        lastTeamPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -190,7 +191,7 @@
         if((selectedRoleText !== "admin") && Session.get("isTeamAdmin") && lastTeamAdmin()){
             select.val(0);
             select.selectmenu("refresh");
-            $("#onlyTeamAdminPopup").popup("open");
+            $("#lastTeamAdminPopup").popup("open");
         }
 
         //TODO: Change roles and remove from admin
@@ -228,12 +229,12 @@
         setupInviteMember();
         setupAddTeam();
         setupRenameTeam();
-        setupOnlyTeamAdmin();
-        setupOnlyTeam();
+        setupLastTeamAdminCheck();
+        setupLastTeamCheck();
 
         TOOLS.On("#leaveTeam", "vclick", function () {
             if(lastTeam()){
-                $("#onlyTeamPopup").popup("open");
+                $("#lastTeamPopup").popup("open");
             }else{
                 var answer = confirm("Are you sure you want to leave this team?");
                 if (answer) {
@@ -249,6 +250,10 @@
                 console.log("delete");
             }
         });
+
+        $(".ui-popup").on("popupafteropen", function(){
+            $(this).find(".acceptButton").focus();
+        })
     };
 
     Template.teamSettingsView.destroyed = function () {
