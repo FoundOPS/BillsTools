@@ -34,12 +34,12 @@
     function setupInviteMember() {
         var inviteMemberPopup = $("#inviteMemberPopup");
 
-        $("#openInviteMember").on("vclick", function () {
+        TOOLS.On("#openInviteMember", "vclick", function () {
             inviteMemberPopup.find("input").val("");
             inviteMemberPopup.popup("open");
         });
 
-        $("#inviteMember").on("click", function () {
+        TOOLS.On("#inviteMember", "click", function () {
             //TODO
             //clear input
             inviteMemberPopup.popup("close");
@@ -61,7 +61,7 @@
         }, 300);
         $("input.email").keyup(checkEmail);
 
-        $("#memberEmailSuggestion span").on("vclick", function () {
+        TOOLS.On("#memberEmailSuggestion span", "vclick", function () {
             inviteMemberPopup.find(".email").val($(this)[0].innerText);
             $("#memberEmailSuggestion").attr("style", "display:none");
         });
@@ -70,12 +70,11 @@
     function setupAddTeam() {
         var newTeamPopup = $("#newTeamPopup");
 
-        $("#openNewTeamPopup").on("vclick", function () {
+        TOOLS.On("#openNewTeamPopup", "vclick", function () {
             newTeamPopup.find("input").val("");
             newTeamPopup.popup("open");
         });
-
-        $("#addTeam").on("click", function () {
+        TOOLS.On("#addTeam", "click", function () {
             var input = newTeamPopup.find("input");
             var teamName = input.val();
 
@@ -92,12 +91,12 @@
     function setupRenameTeam() {
         var renameTeamPopup = $("#renameTeamPopup");
 
-        $("#openRenameTeamPopup").on("vclick", function () {
+        TOOLS.On("#openRenameTeamPopup", "vclick", function () {
             var input = renameTeamPopup.find("input");
             input.val(currentTeam().name);
             renameTeamPopup.popup("open");
         });
-        $("#renameTeam").on("click", function () {
+        TOOLS.On("#renameTeam", "click", function () {
             var input = renameTeamPopup.find("input");
             var name = input.val();
             //TODO some validation
@@ -175,14 +174,14 @@
         setupAddTeam();
         setupRenameTeam();
 
-        $("#leaveTeam").on("vclick", function () {
+        TOOLS.On("#leaveTeam", "vclick", function () {
             var answer = confirm("Are you sure you want to leave this team?");
             if (answer) {
                 console.log("leave");
             }
         });
 
-        $("#deleteTeam").on("vclick", function () {
+        TOOLS.On("#deleteTeam", "vclick", function () {
             var answer = confirm("Are you sure you want to delete this team?");
             if (answer) {
                 console.log("delete");

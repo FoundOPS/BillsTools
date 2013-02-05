@@ -49,6 +49,17 @@ var TOOLS = (function () {
     };
 
     /**
+     * Bind to event only once
+     * @param selector The selector for the event
+     * @param event The event to bind to
+     * @param func The function to trigger
+     */
+    my.On = function (selector, event, func) {
+        var boundClass = "bound" + event;
+        $(selector + ":not(." + boundClass + ")").addClass(boundClass).on(event, func);
+    };
+
+    /**
      * Destroy a JQM page
      * @param [popups] array of popups
      */
