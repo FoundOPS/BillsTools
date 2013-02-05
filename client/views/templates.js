@@ -12,6 +12,7 @@
     });
 
     Template.inputPopup.events = {
+        //close popup on cancel button click
         'click .cancel': function (event) {
             var popup = $(event.currentTarget).parent(".ui-popup");
             popup.popup("close");

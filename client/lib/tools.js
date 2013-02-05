@@ -25,6 +25,15 @@ var TOOLS = (function () {
         return jQuery('<div />').append(this.eq(0).clone()).html();
     };
 
+    //render a JQM page
+    //parameters: the current template node, an array of popups to destroy (in case re-rendering)
+    my.RenderPage = function (templateNode, popups) {
+        if (popups)
+            my.RemovePopups(popups);
+
+        $(templateNode).trigger("destroy").trigger("create");
+    };
+
 //Remove remnant jQuery Mobile popups
 //takes an array of element ids
     my.RemovePopups = function (popupElements) {

@@ -34,8 +34,6 @@
     function setupInviteMember() {
         var inviteMemberPopup = $("#inviteMemberPopup");
 
-        inviteMemberPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
-
         $("#openInviteMember").on("vclick", function () {
             inviteMemberPopup.find("input").val("");
             inviteMemberPopup.popup("open");
@@ -47,7 +45,6 @@
             inviteMemberPopup.popup("close");
             inviteMemberPopup.find("input").val("");
         });
-
 
         //create email suggestions as they type
         var checkEmail = _.debounce(function () {
@@ -72,7 +69,7 @@
 
     function setupAddTeam() {
         var newTeamPopup = $("#newTeamPopup");
-        newTeamPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
+
         $("#openNewTeamPopup").on("vclick", function () {
             newTeamPopup.find("input").val("");
             newTeamPopup.popup("open");
@@ -94,7 +91,7 @@
 
     function setupRenameTeam() {
         var renameTeamPopup = $("#renameTeamPopup");
-        renameTeamPopup.popup({theme: "a", overlayTheme: "a", dismissible: false});
+
         $("#openRenameTeamPopup").on("vclick", function () {
             var input = renameTeamPopup.find("input");
             input.val(currentTeam().name);
@@ -172,9 +169,7 @@
     };
 
     Template.teamSettingsView.rendered = function () {
-        TOOLS.RemovePopups(popups);
-
-        $("#teamWrapper").trigger("create");
+        TOOLS.RenderPage(this.firstNode.parentNode, popups);
 
         setupInviteMember();
         setupAddTeam();
