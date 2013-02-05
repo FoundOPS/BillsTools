@@ -49,6 +49,7 @@
 
     <div id="teamWrapper">
         <div id="teamSettings">
+            {{#if isTeamAdmin}}
             <h1>Team Settings</h1>
 
             <div id="newMembersWrapper" data-role="fieldcontain">
@@ -66,40 +67,38 @@
             <div class="tableWrapper">
                 {{> membersGrid}}
             </div>
+            {{/if}}
 
             <br/>
 
             <div data-role="fieldcontain" id="newTeamWrapper">
-                <label class="h2" {{#if memberOrAdmin}}for="openNewTeamPopup"{{/if}}>Team</label>
-                {{#if memberOrAdmin}}
+                <label class="h2" for="openNewTeamPopup">Team</label>
                 <button id="openNewTeamPopup" name="openNewTeamPopup" data-theme="g">Start a new team</button>
-                {{/if}}
             </div>
 
             {{#template template='inputPopup' id='newTeamPopup' title='New Team' acceptId='addTeam' acceptText='Add'}}
             <input type="text" placeholder="name"/>
             {{/template}}
 
-            {{#if memberOrAdmin}}
             <div data-role="fieldcontain" id="currentTeamWrapper">
                 <label for="currentTeam">Current Team:</label>
                 {{> currentTeamSelect }}
+                {{#if isTeamAdmin}}
                 <button id="openRenameTeamPopup" name="openRenameTeamPopup" data-theme="g">Rename</button>
+                {{/if}}
             </div>
-            {{/if}}
 
             {{#template template='inputPopup' id='renameTeamPopup' title='Rename Team' acceptId='renameTeam' acceptText='Rename'}}
             <input type="text" placeholder="name"/>
             {{/template}}
             <br/>
 
-            <!--TODO: make team name dynamic. ex: "Leave FoundOPS" and "Delete FoundOPS"-->
-            <!--TODO: show leave button only if member-->
-            {{#if memberOrNotAdmin}}
+            {{#if isTeamMember}}
             <button id="leaveTeam" data-theme="y">Leave this team</button>
             {{/if}}
-            <!--TODO: show delete button only if admin-->
+            {{#if isTeamAdmin}}
             <button id="deleteTeam" data-theme="y">Delete this team</button>
+            {{/if}}
         </div>
     </div>
 </template>

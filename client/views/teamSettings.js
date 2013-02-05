@@ -110,10 +110,6 @@
         });
     }
 
-    function removePopups() {
-        TOOLS.RemovePopups(popups);
-    }
-
 ///////////////////////////////////////////////////////////////////////////////
 // Template Functions
 
@@ -141,23 +137,18 @@
         return this.Status === status;
     };
 
-    Template.teamSettingsView.memberOrAdmin = function () {
-        var isTeamMember = Session.get("isTeamMember");
-        var isTeamAdmin = Session.get("isTeamAdmin");
-        return isTeamMember || isTeamAdmin;
-    };
-
-    Template.teamSettingsView.memberOrNotAdmin = function () {
-        var isTeamMember = Session.get("isTeamMember");
-        var isTeamAdmin = Session.get("isTeamAdmin");
-        return isTeamMember || !isTeamAdmin;
-    };
-
     Template.teamSettingsView.currentTeamName = function () {
         var team = currentTeam();
         if (!team || !team.name) return "";
 
         return team.name;
+    };
+
+    Template.teamSettingsView.isTeamAdmin = function () {
+        return Session.get("isTeamAdmin");
+    };
+    Template.teamSettingsView.isTeamMember = function () {
+        return Session.get("isTeamMember");
     };
 
     Template.teamSettingsView.events = {
@@ -181,6 +172,8 @@
     };
 
     Template.teamSettingsView.rendered = function () {
+        TOOLS.RemovePopups(popups);
+
         $("#teamWrapper").trigger("create");
 
         setupInviteMember();
@@ -204,6 +197,8 @@
 
     Template.teamSettingsView.destroyed = function () {
         //delay fixes spark flush error
-        _.delay(removePopups, 250);
+        _.delay(function () {
+            TOOLS.RemovePopups(popups);
+        }, 250);
     };
 }());
