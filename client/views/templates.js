@@ -1,5 +1,4 @@
 (function () {
-
     //runs the template with any hash parameters
     //if instantiated as a block helper, it will add the content as a property to hash
     Handlebars.registerHelper('template', function (options) {
@@ -11,4 +10,11 @@
         var template = Template[hash.template](hash);
         return new Handlebars.SafeString(template);
     });
+
+    Template.inputPopup.events = {
+        'click .cancel': function (event) {
+            var popup = $(event.currentTarget).parent(".ui-popup");
+            popup.popup("close");
+        }
+    };
 }());
