@@ -191,9 +191,6 @@
     };
 
     Template.teamSettingsView.destroyed = function () {
-        //delay fixes spark flush error
-        _.delay(function () {
-            TOOLS.RemovePopups(popups);
-        }, 250);
+        TOOLS.DestroyPage(popups);
     };
 }());

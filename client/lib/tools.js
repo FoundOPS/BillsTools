@@ -25,23 +25,38 @@ var TOOLS = (function () {
         return jQuery('<div />').append(this.eq(0).clone()).html();
     };
 
-    //render a JQM page
-    //parameters: the current template node, an array of popups to destroy (in case re-rendering)
-    my.RenderPage = function (templateNode, popups) {
-        if (popups)
-            my.RemovePopups(popups);
-
-        $(templateNode).trigger("destroy").trigger("create");
-    };
-
-//Remove remnant jQuery Mobile popups
+    //Remove remnant jQuery Mobile popups
 //takes an array of element ids
-    my.RemovePopups = function (popupElements) {
+    function removePopups(popupElements) {
         var elementsToRemove = _.map(popupElements, function (id) {
             return "#" + id + "-popup, " + id + "-screen";
         });
 
         $(elementsToRemove.join(", ")).empty().remove();
+    }
+
+    /**
+     * Render a JQM page
+     * @param jqmNode the element which contains the JQM widgets to create
+     * @param [popups] an array of popups to destroy (in case re-rendering)
+     * @constructor
+     */
+    my.RenderPage = function (jqmNode, popups) {
+        if (popups)
+            removePopups(popups);
+
+        $(jqmNode).trigger("destroy").trigger("create");
+    };
+
+    /**
+     * Destroy a JQM page
+     * @param [popups] array of popups
+     */
+    my.DestroyPage = function (popups) {
+        //delay fixes spark flush error
+        _.delay(function () {
+            removePopups(popups);
+        }, 250);
     };
 
 ///////////////////////////////////////////////////////////////////////////////
