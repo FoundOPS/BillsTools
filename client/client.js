@@ -67,11 +67,47 @@
             var user = Meteor.user();
             if (user && user.profile && user.profile.currentTeam) {
                 Session.set("currentTeam", user.profile.currentTeam);
+
+                if(isTeamAdmin(user)){
+                    Session.set("isTeamAdmin", true);
+                }else{
+                    Session.set("isTeamAdmin", false);
+                }
+                if(isTeamMember(user)){
+                    Session.set("isTeamMember", true);
+                }
+                else{
+                    Session.set("isTeamMember", false);
+                }
             }
             else {
                 Session.set("currentTeam", null);
+                Session.set("isTeamAdmin", null);
+                Session.set("isTeamMember", null);
             }
         });
+    }
+
+    function isTeamAdmin(user){
+        if(!user || !user.profile || !user.profile.currentTeam)return false;
+        var currentTeam = user.profile.currentTeam;
+        var userId = user._id;
+        var team = (Teams.findOne(currentTeam));
+        if(!team)return false;
+        var teamAdmins = team.administrators;
+        if(!teamAdmins)return false;
+        return ($.inArray(userId, teamAdmins) >= 0);
+    }
+
+    function isTeamMember(user){
+        if(!user || !user.profile || !user.profile.currentTeam)return false;
+        var currentTeam = user.profile.currentTeam;
+        var userId = user._id;
+        var team = (Teams.findOne(currentTeam));
+        if(!team)return false;
+        var teamMembers = team.members;
+        if(!teamMembers)return false;
+        return ($.inArray(userId, teamMembers) >= 0);
     }
 
     Meteor.startup(function () {

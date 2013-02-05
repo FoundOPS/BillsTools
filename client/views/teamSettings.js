@@ -141,6 +141,18 @@
         return this.Status === status;
     };
 
+    Template.teamSettingsView.memberOrAdmin = function () {
+        var isTeamMember = Session.get("isTeamMember");
+        var isTeamAdmin = Session.get("isTeamAdmin");
+        return isTeamMember || isTeamAdmin;
+    };
+
+    Template.teamSettingsView.memberOrNotAdmin = function () {
+        var isTeamMember = Session.get("isTeamMember");
+        var isTeamAdmin = Session.get("isTeamAdmin");
+        return isTeamMember || !isTeamAdmin;
+    };
+
     Template.teamSettingsView.currentTeamName = function () {
         var team = currentTeam();
         if (!team || !team.name) return "";
