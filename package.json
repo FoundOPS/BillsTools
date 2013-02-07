@@ -1,7 +1,7 @@
 {
-  "name": "routey",
+  "name": "Bills Tools",
   "version": "0.0.1",
-  "author": "Routey <routey.com>",
+  "author": "FoundOPS LLC",
   "description": "a simple zero-configuration command-line http server",
   "dependencies" : {
     "leaflet"   :  "0.5.*"

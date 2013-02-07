@@ -1,3 +1,5 @@
+// Copyright 2012 FoundOPS LLC. All Rights Reserved.
+
 (function () {
     //runs the template with any hash parameters
     //if instantiated as a block helper, it will add the content as a property to hash

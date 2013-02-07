@@ -1,3 +1,5 @@
+// Copyright 2012 FoundOPS LLC. All Rights Reserved.
+
 var UI = (function () {
     var my = {};
 

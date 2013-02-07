@@ -1,3 +1,5 @@
+// Copyright 2012 FoundOPS LLC. All Rights Reserved.
+
 (function () {
 
     //subscribe to the messages / users / teams
@@ -34,7 +36,7 @@
     // Initialization
 
     function fixFirefoxCss() {
-        if ($.browser.mozilla) {
+        if (navigator.userAgent.match(/firefox/i)) {
             //replace all encoded backslashes with nothing
             $("link").each(function () {
                 var link = this;

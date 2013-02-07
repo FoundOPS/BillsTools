@@ -16,3 +16,5 @@ ui functions
 template rendered, destroyed functions  
 - order templates and their functions by small to large  
 initialization / startup functions
+
+License: Copyright 2012 FoundOPS LLC. All Rights Reserved.

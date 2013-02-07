@@ -1,3 +1,5 @@
+// Copyright 2012 FoundOPS LLC. All Rights Reserved.
+
 Meteor.publish("directory", function () {
     //TODO filter by current user's team members
     return Meteor.users.find();
