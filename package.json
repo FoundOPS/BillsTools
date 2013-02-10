@@ -1,10 +1,13 @@
 {
-  "name": "Bills Tools",
-  "version": "0.0.1",
-  "author": "FoundOPS LLC",
-  "description": "a simple zero-configuration command-line http server",
-  "dependencies" : {
-    "leaflet"   :  "0.5.*"
-  },
-  "license": "Copyright FoundOPS LLC"
+    "name": "Bills Tools",
+    "version": "0.0.1",
+    "author": "FoundOPS LLC",
+    "description": "a simple zero-configuration command-line http server",
+    "dependencies": {
+        "leaflet": "0.5.*"
+    },
+    "devDependencies": {
+        "wd": "0.0.30"
+    },
+    "license": "Copyright FoundOPS LLC"
 }
